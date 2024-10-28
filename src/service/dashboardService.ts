@@ -1,6 +1,6 @@
 import axios from "axios"
 import { REST_SERVER_URL } from "../constants"
-import {  DashboardJSON, DashboardJson } from "../domain/DashboardJson"
+import {  DashboardJSON, DashboardJson } from "../domain/DashboardJSON"
 
 class DashboardService{
 
@@ -9,6 +9,13 @@ class DashboardService{
         return DashboardJson.fromJson(data.data)
     }
 
+    async deleteCenters(){
+        await axios.post(REST_SERVER_URL + "/borrarCentrosInactivos")
+    }
+
+    async deleteUsers(){
+        await axios.post(REST_SERVER_URL + "/borrarUsuariosInactivos")
+    }
 
 }
 

@@ -8,19 +8,37 @@ export const Dashboard = () => {
     const[users, setUsers] = useState(0)
     const[centers, setCenters] = useState(0)
 
+    const fetchData = async () => {
+        try {
+          const total = await dashboardService.getDashboardData();
+          setRecomendations(total.totalRecomendaciones);
+          setBooks(total.totalLibros)
+          setUsers(total.totalUsuarios)
+          setCenters(total.totalCentros)
+        } catch (error) {
+          console.error("Error al obtener la informacion del dashboard", error);
+        }
+      };
+
+      const deleteUsers = async () => {
+        try{
+            await dashboardService.deleteUsers()
+            await fetchData()
+        } catch {
+            console.error("Error al borrar los usuarios inactivos")
+        }
+      }
+
+      const deleteCenters = async () => {
+        try{
+            await dashboardService.deleteCenters()
+            await fetchData()
+        } catch {
+            console.error("Error al borrar los centros inactivos")
+        }
+      }
+
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const total = await dashboardService.getDashboardData();
-            setRecomendations(total.totalRecomendaciones);
-            setBooks(total.totalLibros)
-            setUsers(total.totalUsuarios)
-            setCenters(total.totalCentros)
-          } catch (error) {
-            console.error("Error al obtener la informacion del dashboard", error);
-          }
-        };
-    
         fetchData();
       }, []); 
     return <>
@@ -57,8 +75,8 @@ export const Dashboard = () => {
         </section>
         <section className="acciones">
             <h1>Acciones</h1>
-            <button className="btn-admin">Borrar usuarios inactivos</button>
-            <button className="btn-admin">Borrar centros inactivos</button>
+            <button className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
+            <button className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
         </section>
     </>
 }
