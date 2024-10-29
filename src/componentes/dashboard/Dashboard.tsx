@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import './dashboard.css'
-import { dashboardService } from '../service/dashboardService'
+import './Dashboard.css'
+import { dashboardService } from '../../service/dashboardService'
 
 export const Dashboard = () => {
     const [recomendations, setRecomendations] = useState(0)
@@ -8,19 +8,37 @@ export const Dashboard = () => {
     const[users, setUsers] = useState(0)
     const[centers, setCenters] = useState(0)
 
+    const fetchData = async () => {
+        try {
+          const total = await dashboardService.getDashboardData();
+          setRecomendations(total.totalRecomendaciones);
+          setBooks(total.totalLibros)
+          setUsers(total.totalUsuarios)
+          setCenters(total.totalCentros)
+        } catch (error) {
+          console.error("Error al obtener la informacion del dashboard", error);
+        }
+      };
+
+      const deleteUsers = async () => {
+        try{
+            await dashboardService.deleteUsers()
+            await fetchData()
+        } catch {
+            console.error("Error al borrar los usuarios inactivos")
+        }
+      }
+
+      const deleteCenters = async () => {
+        try{
+            await dashboardService.deleteCenters()
+            await fetchData()
+        } catch {
+            console.error("Error al borrar los centros inactivos")
+        }
+      }
+
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const total = await dashboardService.getDashboardData();
-            setRecomendations(total.totalRecomendaciones);
-            setBooks(total.totalLibros)
-            setUsers(total.totalUsuarios)
-            setCenters(total.totalCentros)
-          } catch (error) {
-            console.error("Error al obtener la informacion del dashboard", error);
-          }
-        };
-    
         fetchData();
       }, []); 
     return <>
@@ -29,14 +47,14 @@ export const Dashboard = () => {
             <article className="dashboard-item">
                 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#ffffff" viewBox="0 0 256 256"><path d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96ZM168,227.06l-36.43-18.21a8,8,0,0,0-7.16,0L88,227.06V174.37a87.89,87.89,0,0,0,80,0ZM128,152A56,56,0,1,0,72,96,56.06,56.06,0,0,0,128,152Zm0-96A40,40,0,1,1,88,96,40,40,0,0,1,128,56Z"></path></svg>
                 <div className="dashboard-description">
-                <h2>{recomendations}</h2>
+                <h2 data-testid="recomendations">{recomendations}</h2>
                 <h4>Recomendaciones</h4>
                 </div>
             </article>
             <article className="dashboard-item">
                 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#ffffff" viewBox="0 0 256 256"><path d="M231.65,194.55,198.46,36.75a16,16,0,0,0-19-12.39L132.65,34.42a16.08,16.08,0,0,0-12.3,19l33.19,157.8A16,16,0,0,0,169.16,224a16.25,16.25,0,0,0,3.38-.36l46.81-10.06A16.09,16.09,0,0,0,231.65,194.55ZM136,50.15c0-.06,0-.09,0-.09l46.8-10,3.33,15.87L139.33,66Zm6.62,31.47,46.82-10.05,3.34,15.9L146,97.53Zm6.64,31.57,46.82-10.06,13.3,63.24-46.82,10.06ZM216,197.94l-46.8,10-3.33-15.87L212.67,182,216,197.85C216,197.91,216,197.94,216,197.94ZM104,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V48A16,16,0,0,0,104,32ZM56,48h48V64H56Zm0,32h48v96H56Zm48,128H56V192h48v16Z"></path></svg>
                 <div className="dashboard-description">
-                <h2>{books}</h2>
+                <h2 data-testid="books">{books}</h2>
                 <h4>Libros registrados</h4>
                 </div>
             </article>
@@ -57,8 +75,8 @@ export const Dashboard = () => {
         </section>
         <section className="acciones">
             <h1>Acciones</h1>
-            <button className="btn-admin">Borrar usuarios inactivos</button>
-            <button className="btn-admin">Borrar centros inactivos</button>
+            <button data-testid="delete-users" className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
+            <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
         </section>
     </>
 }
