@@ -75,8 +75,8 @@ export const Dashboard = () => {
         </section>
         <section className="acciones">
             <h1>Acciones</h1>
-            <button className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
-            <button className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
+            <button data-testid="delete-users" className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
+            <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
         </section>
     </>
 }
