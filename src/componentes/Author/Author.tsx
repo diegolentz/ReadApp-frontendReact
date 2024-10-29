@@ -1,27 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Author.css";
 // import { authorService } from "../../service/authorService";
 
 export const Author = () => {
-    const [authors, setAuthors] = useState("autor name");
+    const [name, setName] = useState("LILIANA CINETTO ");
+    const [nacionality, setNacionality] = useState("autor nacionality");
 
-    // const fetchAuthors = async () => {
-    //     try {
-    //     const allAuthors = await authorService.getAuthorData();
-    //     setAuthors(allAuthors);
-    //     } catch (error) {
-    //     console.error("Error al obtener la informacion del author", error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchAuthors();
-    // }, []);
+   
 
     return <>
 
         <div className="author">
-            <p className="author__nombre">{authors}</p>
+            <p className="author__nombre">{name}</p>
             <div className="buttons">
                 <button >
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#80ed99" viewBox="0 0 256 256">
@@ -38,7 +28,7 @@ export const Author = () => {
                     </svg>
                 </button>
             </div>
-            <p className="author__nacionality">Nacionalidad Autor</p>
+            <p className="author__nacionality">{nacionality}</p>
         </div>
 
     </>
