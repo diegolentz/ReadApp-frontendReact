@@ -8,6 +8,10 @@ class AuthorService {
         // Asegúrate de mapear cada elemento del array a una instancia de AuthorJSON
         return data.data.map((item: any) => AuthorJson.fromJson(item));
     }
+
+    async deleteAuthor(author : number): Promise<void> {
+        await axios.delete(REST_SERVER_URL + "/reactAutor/" + author);
+    }
 }
 
 export const authorService = new AuthorService();
