@@ -6,8 +6,8 @@ import { Author } from './componentes/Author/Author.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Dashboard></Dashboard>
-    {/* <Author></Author> */}
+    {/* <Dashboard></Dashboard> */}
+    <Author></Author>
 
 
   </StrictMode>,
