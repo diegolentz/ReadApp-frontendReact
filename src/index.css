@@ -195,6 +195,7 @@ small,
 
 html {
     font-size: var(--text-base-size);
+    height: 100vh;
 }
 
 
