@@ -10,20 +10,19 @@ export const AuthorPage = () => {
             const autorData = await authorService.getAuthorData();
             setAutores(autorData);
     };
+
     const deleteAuthor = async (id: number) => {
         await authorService.deleteAuthor(id);
-        return [...autores];
-    }
-
-
+        setAutores((prevAutores) => prevAutores.filter(author => author.id !== id));
+    };
 
     useEffect(() => {
         fetchData();
-    }, [autores]);
+    }, []); 
 
     return (
        <>   
-            <Author renderAuthor= {autores} onDelete = {deleteAuthor}/>
+            <Author renderAuthor={autores} onDelete={deleteAuthor} />
        </>
     );
 };

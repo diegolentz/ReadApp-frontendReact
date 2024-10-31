@@ -1,10 +1,8 @@
 import "./Author.css";
 import { AuthorJSON } from "../../domain/AuthorJSON";
 
-
-
-    export const Author = ({ renderAuthor , onDelete } : 
-        { renderAuthor: AuthorJSON[], onDelete: (id: number) => void }) => {
+export const Author = ({ renderAuthor , onDelete } : 
+    { renderAuthor: AuthorJSON[], onDelete: (id: number) => void }) => {
 
     return (
         <div className="author-list">
