@@ -49,7 +49,6 @@ export const Login = () => {
                     <p>Password Recovery</p>
                 </button>
                 </div>
-                <a href=""><h4>¿Te olvidaste la contrasenia?</h4></a>
             </form> 
             
         </div>
