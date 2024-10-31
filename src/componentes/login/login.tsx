@@ -28,9 +28,6 @@ export const Login = () => {
                     <input type="password" id="password" name="password"/>
 
                     <label >Password</label>
-                    <div className="input__required">
-
-                    </div>
                 </div>
 
                 <div className='actions'>
