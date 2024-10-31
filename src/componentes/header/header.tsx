@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import './Dashboard.css'
+import './header.css'
 
-export const Dashboard = () => {
+export const HeaderComponent = () => {
     const [recomendations, setRecomendations] = useState(0)
     const[books, setBooks] = useState(0)
     const[users, setUsers] = useState(0)
