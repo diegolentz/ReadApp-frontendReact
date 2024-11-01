@@ -1,6 +1,6 @@
 .author-list{
-    width: 100vw;
-    height: 100vh;
+    /* width: 100vw; */
+    /* height: 100vh; */
     display: flex;
     gap: 2rem;
     flex-direction: column;
