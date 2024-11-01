@@ -9,7 +9,6 @@ export const Create = () => {
         <>
             <div >
                 <button className="create">+</button>
-
             </div>
         </>
     );
