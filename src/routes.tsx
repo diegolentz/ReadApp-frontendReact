@@ -1,14 +1,16 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Dashboard } from './componentes/dashboard/Dashboard'
 import { NavigationMenuComponent } from './componentes/navigationMenu/navigationMenu'
-import { Author } from './componentes/FolderAuthor/Author/Author'
 import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
+import { AuthorEdit } from './componentes/FolderAuthor/AuthorEdit/AuthorEdit'
 
 export const DefaultRoute = () => 
     <Routes>
         <Route path="/" element={<NavigationMenuComponent/>} />
         <Route path="/prueba" element={<Dashboard/>} />
         <Route path="/authors" element={<AuthorPage/>} />
+        <Route path="/authors/:id" element={<AuthorEdit/>} />
+
     </Routes>
 
 // export const NavigationMenuRoutes = () => 
