@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Dashboard } from './componentes/dashboard/Dashboard'
 import { NavigationMenuComponent } from './componentes/navigationMenu/navigationMenu'
-import { Author } from './componentes/Author/Author'
-import { AuthorPage } from './componentes/AuthorPage/AuthorPage'
+import { Author } from './componentes/FolderAuthor/Author/Author'
+import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
 
 export const DefaultRoute = () => 
     <Routes>

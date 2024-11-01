@@ -1,5 +1,5 @@
 import "./Author.css";
-import { AuthorJSON } from "../../domain/AuthorJSON";
+import { AuthorJSON } from "../../../domain/AuthorJSON";
 
 export const Author = ({ renderAuthor , onDelete } : 
     { renderAuthor: AuthorJSON[], onDelete: (id: number) => void }) => {
