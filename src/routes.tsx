@@ -14,8 +14,8 @@ export const AppRouter = () =>
                 {/* ESTO ES PARA QUE /home me muestre el dashboard por default */}
                 <Route index element={<Navigate to='dashboard' replace />} />
                 <Route path='dashboard' element={<Dashboard />} />
-                <Route path='author' element={<AuthorPage />} />
-                <Route path="/author/edit/:id" element={<AuthorEdit/>} />
+                <Route path='author' element={<AuthorPage/>} />
+                <Route path="author/edit/:id" element={<AuthorEdit/>} />
                 {/*  ACA FALTA COMPLETAR CON LIBROS*/}
                 {/* <Route path='dashboard' element={<Dashboard />} /> */}
             </Route>
