@@ -3,7 +3,7 @@ import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import "./AuthorEdit.css";
 import { useParams } from "react-router-dom";
-import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancelButton";
+import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
 import { useForm } from "react-hook-form";
 
 export const AuthorEdit = () => {
@@ -17,15 +17,15 @@ export const AuthorEdit = () => {
         setAuthor(authorData);
     };
 
-    
+
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
-        
+
         console.log(name, value);
-        
+
         const updatedAuthor = {
             ...author,
-            [name]: value, 
+            [name]: value,
         };
         const reloaded = Object.assign(new AuthorJSON(), updatedAuthor);
         setAuthor(reloaded);
@@ -37,38 +37,43 @@ export const AuthorEdit = () => {
 
     return (
         <>
-            <div className="formulario">
+            <div className="container">
                 <h3>Author Edit</h3>
-                
+
                 <form>
-                    <label>Name</label>
-                    <input
-                        type="text"
-                        {...register('name')}
-                        defaultValue={author?.name}
-                        onChange={editFile}
-                    />
-
-                    <label>Last Name</label>
-                    <input
-                        type="text"
-                        {...register('lastName')}
-                        defaultValue={author?.lastName}
-                        onChange={editFile}
-                    />
-
-                    <label>Language</label>
-                    <input
-                        type="text"
-                        {...register('nationality')}
-                        defaultValue={author?.nationality}
-                        onChange={editFile}
-                    />
+                    <div className="campo input__label--effect">
+                        <input
+                            type="text"
+                            {...register("name")}
+                            defaultValue={author?.name || ""}
+                            onChange={editFile}
+                            placeholder=" "
+                        />
+                        <label className="label">Name</label>
+                    </div>
+                    <div className="campo input__label--effect">
+                        <input
+                            type="text"
+                            {...register("lastName")}
+                            defaultValue={author?.lastName || ""}
+                            onChange={editFile}
+                            placeholder=" "
+                        />
+                        <label className="label">Last Name</label>
+                    </div>
+                    <div className="campo input__label--effect">
+                        <input
+                            type="text"
+                            {...register("nationality")}
+                            defaultValue={author?.nationality || ""}
+                            onChange={editFile}
+                            placeholder=" "
+                        />
+                        <label className="label">Language</label>
+                    </div>
                 </form>
-                
                 <SaveCancelButton />
-            
-            </div>
+            </div >
         </>
     );
 };

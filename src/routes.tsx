@@ -9,7 +9,7 @@ export const DefaultRoute = () =>
         <Route path="/" element={<NavigationMenuComponent/>} />
         <Route path="/prueba" element={<Dashboard/>} />
         <Route path="/authors" element={<AuthorPage/>} />
-        <Route path="/authors/:id" element={<AuthorEdit/>} />
+        <Route path="/author/edit/:id" element={<AuthorEdit/>} />
 
     </Routes>
 

@@ -8,7 +8,7 @@ export const Author = ({ renderAuthor, onDelete }:
     const navigate = useNavigate();
     
     const editAuthor = (id: number) => {
-        navigate(`/authors/${id}`);
+        navigate(`/author/edit/${id}`);
     };
 
     return (
