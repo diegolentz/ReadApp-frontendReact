@@ -4,9 +4,12 @@ import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { Author } from "../Author/Author";
 import { Create } from "../../FolderButtons/CreateButton/Create";
 import "./AuthorPage.css";
+import { useParams } from "react-router-dom";
 
 export const AuthorPage = () => {
     const [autores, setAutores] = useState<AuthorJSON[]>([]);
+    
+
 
     const fetchData = async () => {
         const autorData = await authorService.getAuthorData();
