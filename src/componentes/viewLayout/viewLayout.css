@@ -1,0 +1,52 @@
+main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+
+}
+
+header {
+    height: 7rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    background-color: var(--color-primary-bright);
+    padding: 2rem;
+    gap: 1rem;
+
+    div {
+        display: flex;
+        align-items: end;
+    }
+}
+
+div.content {
+    width: 100%;
+    height: 100%;
+
+    overflow: scroll;
+}
+
+ul {
+    justify-content: space-around;
+    align-items: center;
+    height: 7rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+
+    gap: 1rem;
+
+    background-color: var(--color-primary-mate);
+
+    & li {
+        list-style-type: none;
+    }
+
+}

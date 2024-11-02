@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './login.css'
 //import { useEffect, useState } from 'react'
 
@@ -31,11 +32,14 @@ export const Login = () => {
                 </div>
 
                 <div className='actions'>
-                <button  className='valid button-login' >
-                    <img src="src/assets/sign-in.svg" alt=""/>
-                    <p>Login</p>
-                </button>
 
+                <Link to="/home">
+                    <button  className='valid button-login' >
+                        <img src="src/assets/sign-in.svg" alt=""/>
+                        <p>Login</p>
+                    </button>
+                </Link>
+                
                 <button className="valid button-newAccount" >
                     <img src="src/assets/user-circle.svg" alt=""/>
                     <p>New account</p>
