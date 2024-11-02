@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { Dashboard } from './componentes/dashboard/Dashboard'
 import { ViewLayoutComponent } from './componentes/viewLayout/viewLayout'
-import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
 import { Login } from './componentes/login/login'
+import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
+import { AuthorEdit } from './componentes/FolderAuthor/AuthorEdit/AuthorEdit'
 
-export const AppRoutes = () =>
+
+export const AppRouter = () =>
     <Router>
         <Routes>
             <Route path='login' element={<Login />} />
@@ -13,6 +15,7 @@ export const AppRoutes = () =>
                 <Route index element={<Navigate to='dashboard' replace />} />
                 <Route path='dashboard' element={<Dashboard />} />
                 <Route path='author' element={<AuthorPage />} />
+                <Route path="/author/edit/:id" element={<AuthorEdit/>} />
                 {/*  ACA FALTA COMPLETAR CON LIBROS*/}
                 {/* <Route path='dashboard' element={<Dashboard />} /> */}
             </Route>
