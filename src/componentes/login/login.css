@@ -1,5 +1,5 @@
 /* Fondo del formulario y layout general */
-main {
+main.fondo-background {
     background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     background-size: cover;
     /* background-image: url('https://img.freepik.com/fotos-premium/estanterias-libros-fondo-pantalla-hd-imagen-fotografica_993236-8465.jpg?w=1380'); */
@@ -13,7 +13,7 @@ main {
 }
 
 .encabezado {
-    display: flex ;
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -164,16 +164,16 @@ button {
     }
 }
 
-button.valid:hover{
+button.valid:hover {
     filter: brightness(120%);
     opacity: 0.8;
 
-    & p{
+    & p {
         filter: invert();
         font-weight: bold;
     }
 
-    & img{
+    & img {
         filter: none;
     }
 }
@@ -183,14 +183,14 @@ button.invalid {
     opacity: 0.5;
 }
 
-.button-login{
-    background-color:  #52be80 ;
+.button-login {
+    background-color: #52be80;
 }
 
-.button-newAccount{
-    background-color: #5499c7 ;
+.button-newAccount {
+    background-color: #5499c7;
 }
 
-.button-passwordRecovery{
-    background-color:#af7ac5 ;
+.button-passwordRecovery {
+    background-color: #af7ac5;
 }

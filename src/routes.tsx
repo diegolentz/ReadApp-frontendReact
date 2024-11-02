@@ -1,29 +1,28 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { Dashboard } from './componentes/dashboard/Dashboard'
-import { NavigationMenuComponent } from './componentes/navigationMenu/navigationMenu'
+import { ViewLayoutComponent } from './componentes/viewLayout/viewLayout'
+import { Login } from './componentes/login/login'
 import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
 import { AuthorEdit } from './componentes/FolderAuthor/AuthorEdit/AuthorEdit'
-
-export const DefaultRoute = () => 
-    <Routes>
-        <Route path="/" element={<NavigationMenuComponent/>} />
-        <Route path="/prueba" element={<Dashboard/>} />
-        <Route path="/authors" element={<AuthorPage/>} />
-        <Route path="/author/edit/:id" element={<AuthorEdit/>} />
-
-    </Routes>
-
-// export const NavigationMenuRoutes = () => 
-//     <Routes>
-//         <Route path="/home" element={<TareasComponent/>} />
-//         <Route path="/authors/:id" element={<TareasComponent/>} />
-//         <Route path="/books/:id" element={<AsignarTareaComponent/>} />
-//         <Route path="/login" element={<AsignarTareaComponent/>} />
-//     </Routes>
 
 
 export const AppRouter = () =>
     <Router>
-        <DefaultRoute/>
-        {/* <NavigationMenuRoutes/> */}
+        <Routes>
+            <Route path='login' element={<Login />} />
+            <Route path='home' element={<ViewLayoutComponent />}>
+                {/* ESTO ES PARA QUE /home me muestre el dashboard por default */}
+                <Route index element={<Navigate to='dashboard' replace />} />
+                <Route path='dashboard' element={<Dashboard />} />
+                <Route path='author' element={<AuthorPage/>} />
+                <Route path="author/edit/:id" element={<AuthorEdit/>} />
+                {/*  ACA FALTA COMPLETAR CON LIBROS*/}
+                {/* <Route path='dashboard' element={<Dashboard />} /> */}
+            </Route>
+
+            {/* ESTO ES PARA QUE /ruta-banana rediriga al login */}
+            <Route path='*' element={<Navigate to='/login' replace />} />
+        </Routes>
     </Router>
+
+
