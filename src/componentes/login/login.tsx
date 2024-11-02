@@ -33,8 +33,8 @@ export const Login = () => {
 
                 <div className='actions'>
 
-                <Link to="/home">
-                    <button  className='valid button-login' >
+                <Link className='valid button-login' to="/home">
+                    <button   >
                         <img src="src/assets/sign-in.svg" alt=""/>
                         <p>Login</p>
                     </button>

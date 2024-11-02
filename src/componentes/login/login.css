@@ -185,6 +185,11 @@ button.invalid {
 
 .button-login {
     background-color: #52be80;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
 }
 
 .button-newAccount {
