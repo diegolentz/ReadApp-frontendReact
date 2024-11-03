@@ -6,6 +6,8 @@ export class BookJSON {
     public numberOfPages: number;
     public numberOfWords: number;
     public translations: string[];
+    public isBestSeller: boolean;
+    public isChallenging: boolean;
 
     constructor() {
         this.id = 0;
@@ -14,6 +16,8 @@ export class BookJSON {
         this.numberOfPages = 0;
         this.numberOfWords = 0;
         this.translations = [];
+        this.isBestSeller = false;
+        this.isChallenging = false;
     }
 
     fromJson(data: any): BookJSON {
@@ -23,6 +27,8 @@ export class BookJSON {
         this.numberOfPages = data.cantidadPaginas;
         this.numberOfWords = data.cantidadPalabras;
         this.translations = data.traducciones;
+        this.isBestSeller = data.esBestSeller;
+        this.isChallenging = data.esDesafiante;
 
         return Object.assign(new BookJSON(), {
             id: data.id,
@@ -30,7 +36,9 @@ export class BookJSON {
             author: data.autor,
             numberOfPages: data.cantidadPaginas,
             numberOfWords: data.cantidadPalabras,
-            translations: data.traducciones
+            translations: data.traducciones,
+            isBestSeller: data.esBestSeller,
+            isChallenging: data.esDesafiante
         });
     }
 }

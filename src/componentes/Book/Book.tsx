@@ -44,44 +44,36 @@ export const Book = ({book}: {book: BookJSON}) => {
                 </div>
             </div>
             <div className="libro__acciones">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#5321d0" viewBox="0 0 256 256">
-                        <path
-                            d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z" />
-                    </svg>
-                </div>
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="yellow" viewBox="0 0 256 256">
-                    <path
-                        d="M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z" />
-                    </svg>
-                </div>
+                <BestSellerIcon isBestSeller= {book.isBestSeller}></BestSellerIcon>
+                <ChallengeIcon isChallenging= {book.isChallenging}></ChallengeIcon>
             </div>
     </article>
     )
 
 }
 
-// export default function MyApp() {
-//   return (
-//     <div>
-//       <h1>Counters that update separately</h1>
-//       <MyButton />
-//       <MyButton />
-//     </div>
-//   );
-// }
+function ChallengeIcon({isChallenging}:{isChallenging: boolean}) {
 
-// function MyButton() {
-//   const [count, setCount] = useState(0);
+    if (isChallenging) return (
+        <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="yellow" viewBox="0 0 256 256">
+        <path
+            d="M183.89,153.34a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68ZM216,144a88,88,0,0,1-176,0c0-27.92,11-56.47,32.66-84.85a8,8,0,0,1,11.93-.89l24.12,23.41,22-60.41a8,8,0,0,1,12.63-3.41C165.21,36,216,84.55,216,144Zm-16,0c0-46.09-35.79-85.92-58.21-106.33L119.52,98.74a8,8,0,0,1-13.09,3L80.06,76.16C64.09,99.21,56,122,56,144a72,72,0,0,0,144,0Z" />
+        </svg>
+        </div>
+    )
+}
 
-//   function handleClick() {
-//     setCount(count + 1);
-//   }
+function BestSellerIcon({isBestSeller}:{isBestSeller: boolean}) {
 
-//   return (
-//     <button onClick={handleClick}>
-//       Clicked {count} times
-//     </button>
-//   );
-// }
+    if (isBestSeller) return (
+        <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#5321d0" viewBox="0 0 256 256">
+            <path
+                d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z" />
+        </svg>
+        </div>
+    )
+}
+
+

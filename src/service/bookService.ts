@@ -4,7 +4,7 @@ import { BookJson, BookJSON } from "../domain/BookJSON";
 
 class BookService {
     async getBooksShortData(): Promise<BookJSON[]> {
-        const books = await axios.get(REST_SERVER_URL + "/librosSearch");
+        const books = await axios.get(REST_SERVER_URL + "/getBooksReact");
         return books.data.map((item: BookJSON) => BookJson.fromJson(item));
     }
 }
