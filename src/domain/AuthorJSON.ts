@@ -25,9 +25,9 @@ export class EditAuthorJSON {
     toAuthor(data: EditAuthorJSON): AuthorJSON {
         return Object.assign(new AuthorJSON(), {
             id: data.id,
-            name: data.name,
-            lastName: data.lastName,
-            nationality: data.nationality
+            nombre: data.name,
+            apellido: data.lastName,
+            nacionalidad: data.nationality
         });
     }
 }
