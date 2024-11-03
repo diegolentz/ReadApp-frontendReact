@@ -1,29 +1,29 @@
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 import './login.css'
 //import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 // import { useEffect } from 'react'
 // import { userService } from '../../service/userService'
 import { User } from '../../domain/loginJSON'
+import { userService } from '../../service/userService'
 
 export const Login = () => {
-    const {register,handleSubmit,formState : {errors}} = useForm()
+    const {register,handleSubmit,formState : {errors},watch} = useForm()
 
     
-    // useEffect(()=>{
-    //     const username : string = watch('username')
-    //     const password : string = watch('password')
+        const username : string = watch('username')
+        const password : string = watch('password')
         
-    // const usuario : User = new User(username,password)
-    // const loginRequest = usuario.buildLoginRequest()
+        const usuario : User = new User(username,password)
+        const loginRequest = usuario.buildLoginRequest()
         
-    // })
     
-
-    const login = async () =>{
-        //const login = await userService.login(loginRequest) 
+    
+    const login = async ()  =>{
+        const login = await userService.login(loginRequest) 
     }
     
+
     const customSubmit = (data: unknown) => {
         console.log(data)
     }
