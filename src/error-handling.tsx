@@ -1,8 +1,4 @@
-//import { ErrorResponse } from "react-router-dom"
-
 const INTERNAL_SERVER_ERROR = 500
-
-// TODO: hacer tests
 
 export const mostrarMensajeError = (error: ErrorResponse, setearMensaje: (mensaje: string) => void) => {
 const status = error.response?.status
