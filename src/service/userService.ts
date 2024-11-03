@@ -7,13 +7,9 @@ class UserService {
 
     async login(loginRequest: LoginRequest): Promise<LoginResponse> {
         const response = await axios.post(`${REST_SERVER_URL}/login`, loginRequest);
-        console.log(response.data); // Muestra la respuesta completa en la consola
         this.loggedUserId = response.data.userID;
         localStorage.setItem("IdUser",this.loggedUserId.toString()) // Guarda el ID si es necesario
-
         return response.data
-        
-        
     }
 }
 

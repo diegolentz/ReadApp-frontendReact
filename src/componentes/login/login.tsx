@@ -1,28 +1,31 @@
-//import { Link } from 'react-router-dom'
+
 import './login.css'
-//import { useEffect, useState } from 'react'
+
 import { useForm } from 'react-hook-form'
-// import { useEffect } from 'react'
-// import { userService } from '../../service/userService'
+
 import { User } from '../../domain/loginJSON'
 import { userService } from '../../service/userService'
+import { useNavigate } from 'react-router-dom'
 
 export const Login = () => {
     const {register,handleSubmit,formState : {errors},watch} = useForm()
-
+    const navigate = useNavigate()
     
-        const username : string = watch('username')
-        const password : string = watch('password')
-        
-        const usuario : User = new User(username,password)
-        const loginRequest = usuario.buildLoginRequest()
-        
+    const username : string = watch('username')
+    const password : string = watch('password')
+    
+    const usuario : User = new User(username,password)
+    const loginRequest = usuario.buildLoginRequest()    
     
     
-    const login = async ()  =>{
-        const login = await userService.login(loginRequest) 
-    }
-    
+    const login = async () => {
+        try {
+            const loginResponse = await userService.login(loginRequest)
+            navigate('/home/dashboard')
+        } catch (error) {
+            console.error("Error durante el inicio de sesión:", error)
+        }
+    };
 
     const customSubmit = (data: unknown) => {
         console.log(data)
@@ -57,14 +60,11 @@ export const Login = () => {
 
                 <div className='actions'>
 
-
-                {/* <Link className='valid button-login' to="/home"> */}
-                <button type='submit' onClick={login} >
+                <button type='submit' className='valid button-login' onClick={login} >
                     <img src="src/assets/sign-in.svg" alt=""/>
                     <p>Login</p>
                 </button>
                 
-                {/* </Link> */}
                 
                 <button className="valid button-newAccount" >
                     <img src="src/assets/user-circle.svg" alt=""/>
