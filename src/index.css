@@ -100,6 +100,13 @@
     --space-md: calc(1.25 * var(--space-unit));
     --space-lg: calc(2 * var(--space-unit));
     --space-xl: calc(3.25 * var(--space-unit));
+    --space-xxl: calc(3.50 * var(--space-unit));
+
+    /* //////////////////////////////////////////////////// */
+    /* VARIABLES PARA HEIGHTS, WIDTS ETC) */
+    /* //////////////////////////////////////////////////// */
+    --dimension-unit: 1rem;
+    --dimension-md: calc(7 * var(--dimension-unit));
 
     /* //////////////////////////////////////////////////// */
     /* VARIABLES PARA IMAGENES*/

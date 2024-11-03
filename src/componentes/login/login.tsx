@@ -1,6 +1,10 @@
 
 import './login.css'
 
+import { paths } from '../../domain/routes'
+//import { useEffect, useState } from 'react'
+
+
 import { useForm } from 'react-hook-form'
 
 import { User } from '../../domain/loginJSON'
@@ -64,7 +68,6 @@ export const Login = () => {
                     <img src="src/assets/sign-in.svg" alt=""/>
                     <p>Login</p>
                 </button>
-                
                 
                 <button className="valid button-newAccount" >
                     <img src="src/assets/user-circle.svg" alt=""/>

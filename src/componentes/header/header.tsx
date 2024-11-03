@@ -1,21 +1,51 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import './header.css'
+import { Link, useLocation } from 'react-router-dom'
+import { paths } from '../../domain/routes'
+import { regex } from '../../domain/regex'
+
 
 export const HeaderComponent = () => {
-    const [recomendations, setRecomendations] = useState(0)
-    const[books, setBooks] = useState(0)
-    const[users, setUsers] = useState(0)
-    const[centers, setCenters] = useState(0)
+    const location  = useLocation()
+    
+    useEffect(() => {}, [location.pathname]);
 
-    useEffect(() => {
-        fetchData();
-      }, []); 
+    const resolveSubName = (string:string) => {
+        const match = string.match(regex.routeSlash)
+        if(match == null){
+            //ESTO ES SOLO PARA EVITAR tener <array || undefined>
+            return [""]
+        }
+        return match
+    };
+
+    const concatName = (string:string) => {
+        const list = resolveSubName(string)
+        if(list.length == 1){
+            return firstToUpperCase(list[0])
+        }else if(list.length>1){
+            return firstToUpperCase(list[0]).concat(" "+list[1])
+        }
+        
+    };
+    
+    const firstToUpperCase = (string:string) => {
+        return string[0].toUpperCase().concat(string.slice(1))
+    };
+
     return <>
-        <ul className="nav-menu">
-            <li className="nav-menu__option"></li>
-            <li className="nav-menu__option"></li>
-            <li className="nav-menu__option"></li>
-            <li className="nav-menu__option"></li>
-        </ul>
+
+            <header>
+                <img src="/src/assets/headerLogo.svg" alt="FOTO" />
+                <div>
+                    <Link to={`${paths.dashboard}`}>
+                        <h1>ReadApp/</h1>
+                    </Link>
+                    <h2>{concatName(location.pathname)}</h2>
+                </div>
+
+            </header>
+        
     </>
 }
+

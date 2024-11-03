@@ -1,6 +1,7 @@
 import "./Author.css";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { useNavigate } from "react-router-dom";
+import { paths } from "../../../domain/routes";
 
 export const Author = ({ renderAuthor, onDelete }:
     { renderAuthor: AuthorJSON[], onDelete: (id: number) => void }) => {
@@ -8,7 +9,7 @@ export const Author = ({ renderAuthor, onDelete }:
     const navigate = useNavigate();
     
     const editAuthor = (id: number) => {
-        navigate(`/home/author/edit/${id}`);
+        navigate(`/${paths.author}/edit/${id}`);
     };
 
     return (
