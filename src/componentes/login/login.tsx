@@ -25,7 +25,7 @@ export const Login = () => {
     const login = async () => {
         try {
             const loginResponse = await userService.login(loginRequest)
-            navigate('/home/dashboard')
+            navigate('/dashboard')
         } catch (error) {
             console.error("Error durante el inicio de sesión:", error)
         }
