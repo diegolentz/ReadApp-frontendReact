@@ -1,19 +1,19 @@
 
 import './login.css'
 
-import { paths } from '../../domain/routes'
-//import { useEffect, useState } from 'react'
-
-
 import { useForm } from 'react-hook-form'
 
 import { User } from '../../domain/loginJSON'
 import { userService } from '../../service/userService'
-import { useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { mostrarMensajeError, } from '../../error-handling'
+import { ErrorResponse } from '../../error-handling'
 
 export const Login = () => {
     const {register,handleSubmit,formState : {errors},watch} = useForm()
     const navigate = useNavigate()
+    const [errorMessage, setErrorMessage] = useState('')
     
     const username : string = watch('username')
     const password : string = watch('password')
@@ -26,10 +26,10 @@ export const Login = () => {
         try {
             const loginResponse = await userService.login(loginRequest)
             navigate('/dashboard')
-        } catch (error) {
-            console.error("Error durante el inicio de sesión:", error)
+        } catch (error:unknown) {
+            mostrarMensajeError(error as ErrorResponse,setErrorMessage)
         }
-    };
+    }
 
     const customSubmit = (data: unknown) => {
         console.log(data)
