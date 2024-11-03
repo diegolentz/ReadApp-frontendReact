@@ -1,48 +1,15 @@
-.indicadores {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 0.7fr));
-    grid-auto-rows: 15rem;
-    justify-content: center;
-    gap: 2rem;
-    padding-top: 1rem;
-    padding-bottom: 1.5rem;
-    border-width: 0px 0px 2px 0px;
-    border-style: solid;
-}
-
-.dashboard-item{
-    border-width: 1px;
-    border-style: solid;
-    background-color: var(--color-celeste-oscuro);
-    border-radius: 5%;
-    display: grid;
-    grid-template-columns: 40% 60%;
-    align-items: center;
-    justify-items: center;
-    color: white;
-}
-
-.dashboard-description{
+header {
+    height: var(--dimension-md);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-}
 
-.acciones{
-    padding-top: 2rem;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
+    background-color: var(--color-primary-bright);
+    padding: var(--space-sm);
+    gap: var(--space-xs);
 
-.btn-admin{
-    color: white;
-    width: 80%;
-    height: 3rem;
-    border-radius: 8px;
-    border-width: 2px;
-    background-color: var(--color-card-libro-gradiente);
+    div {
+        display: flex;
+        align-items: end;
+    }
 }

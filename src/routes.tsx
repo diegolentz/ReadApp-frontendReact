@@ -4,25 +4,26 @@ import { ViewLayoutComponent } from './componentes/viewLayout/viewLayout'
 import { Login } from './componentes/login/login'
 import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
 import { AuthorEdit } from './componentes/FolderAuthor/AuthorEdit/AuthorEdit'
+import { paths } from './domain/routes'
+
 
 
 export const AppRouter = () =>
     <Router>
         <Routes>
-            <Route path='login' element={<Login />} />
-            <Route path='home' element={<ViewLayoutComponent />}>
-                {/* ESTO ES PARA QUE /home me muestre el dashboard por default */}
-                <Route index element={<Navigate to='dashboard' replace />} />
-                <Route path='dashboard' element={<Dashboard />} />
-                <Route path='author' element={<AuthorPage/>} />
-                <Route path="author/edit/:id" element={<AuthorEdit/>} />
+            <Route path={`${paths.login}`} element={<Login />} />
+            
+            <Route element={<ViewLayoutComponent />}>
+                <Route path={`${paths.dashboard}`} element={<Dashboard />} />
+                <Route path={`${paths.author}`} element={<AuthorPage/>} />
+                <Route path={`${paths.author}/edit/:id`} element={<AuthorEdit/>} />
                 {/*  ACA FALTA COMPLETAR CON LIBROS*/}
-                {/* <Route path='dashboard' element={<Dashboard />} /> */}
             </Route>
 
             {/* ESTO ES PARA QUE /ruta-banana rediriga al login */}
-            <Route path='*' element={<Navigate to='/login' replace />} />
+            <Route path='*' element={<Navigate to={`${paths.login}`} replace />} />
         </Routes>
     </Router>
+
 
 
