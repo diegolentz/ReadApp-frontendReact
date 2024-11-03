@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import './login.css'
+import { paths } from '../../domain/routes'
 //import { useEffect, useState } from 'react'
 
 
@@ -33,7 +34,7 @@ export const Login = () => {
 
                 <div className='actions'>
 
-                <Link className='valid button-login' to="/home">
+                <Link className='valid button-login' to={`/${paths.dashboard}`}>
                     <button   >
                         <img src="src/assets/sign-in.svg" alt=""/>
                         <p>Login</p>

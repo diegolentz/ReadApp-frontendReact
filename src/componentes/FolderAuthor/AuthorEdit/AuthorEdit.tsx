@@ -44,6 +44,7 @@ export const AuthorEdit = () => {
                     <div className="campo input__label--effect">
                         <input
                             type="text"
+                            required
                             {...register("name")}
                             defaultValue={author?.name || ""}
                             onChange={editFile}
@@ -54,6 +55,7 @@ export const AuthorEdit = () => {
                     <div className="campo input__label--effect">
                         <input
                             type="text"
+                            required
                             {...register("lastName")}
                             defaultValue={author?.lastName || ""}
                             onChange={editFile}
@@ -64,6 +66,7 @@ export const AuthorEdit = () => {
                     <div className="campo input__label--effect">
                         <input
                             type="text"
+                            required
                             {...register("nationality")}
                             defaultValue={author?.nationality || ""}
                             onChange={editFile}
