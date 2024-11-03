@@ -5,6 +5,7 @@ import { Login } from './componentes/login/login'
 import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
 import { AuthorEdit } from './componentes/FolderAuthor/AuthorEdit/AuthorEdit'
 import { paths } from './domain/routes'
+import { BooksView } from './componentes/Book/BooksView'
 
 
 
@@ -17,7 +18,7 @@ export const AppRouter = () =>
                 <Route path={`${paths.dashboard}`} element={<Dashboard />} />
                 <Route path={`${paths.author}`} element={<AuthorPage/>} />
                 <Route path={`${paths.author}/edit/:id`} element={<AuthorEdit/>} />
-                {/*  ACA FALTA COMPLETAR CON LIBROS*/}
+                <Route path={`${paths.books}`} element={<BooksView/>} />
             </Route>
 
             {/* ESTO ES PARA QUE /ruta-banana rediriga al login */}
