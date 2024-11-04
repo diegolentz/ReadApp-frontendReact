@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { BookJSON } from '../../domain/BookJSON';
 import { bookService } from '../../service/bookService';
-import { Book } from './Book';
+import { Book, BookComponent } from './Book';
 
 export const BooksView = () => {
 
-    const [books, setBooks] = useState<BookJSON[]>([]);
+    const [books, setBooks] = useState<Array<Book>>([]);
 
     const fetchData = async () => {
         const books = await bookService.getBooksShortData();
@@ -17,7 +16,7 @@ export const BooksView = () => {
     }, []);
     
     return (
-        books.map((book: BookJSON) => <Book book={book}></Book>)
+        books.map((book: Book) => <BookComponent book={book} key={book.id}></BookComponent>)
     )
 }
 

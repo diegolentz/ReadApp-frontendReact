@@ -1,38 +1,53 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export class BookJSON {
-    public id: number;
-    public title: string;
-    public author: string;
-    public numberOfPages: number;
-    public numberOfWords: number;
-    public translations: string[];
 
-    constructor() {
-        this.id = 0;
-        this.title = "";
-        this.author = "";
-        this.numberOfPages = 0;
-        this.numberOfWords = 0;
-        this.translations = [];
-    }
-
-    fromJson(data: any): BookJSON {
-        this.id = data.id;
-        this.title = data.titulo;
-        this.author = data.autor;
-        this.numberOfPages = data.cantidadPaginas;
-        this.numberOfWords = data.cantidadPalabras;
-        this.translations = data.traducciones;
-
-        return Object.assign(new BookJSON(), {
-            id: data.id,
-            title: data.titulo,
-            author: data.autor,
-            numberOfPages: data.cantidadPaginas,
-            numberOfWords: data.cantidadPalabras,
-            translations: data.traducciones
-        });
-    }
+export type BookJSON = {
+    id: number;
+    title: string;
+    author: string;
+    numberOfPages: number;
+    numberOfWords: number;
+    translations: string[];
+    bestSeller: boolean;
+    challenging: boolean;
+    image: string
 }
+export class Book {
+    // public id: number;
+    // public title: string;
+    // public author: string;
+    // public numberOfPages: number;
+    // public numberOfWords: number;
+    // public translations: string[];
+    // public isBestSeller: boolean;
+    // public isChallenging: boolean;
 
-export const BookJson = new BookJSON()
+    constructor(        
+        public id : number = 0,
+        public title : string = "",
+        public author : string = "",
+        public numberOfPages : number = 0,
+        public numberOfWords : number = 0,
+        public translations : string[]= [],
+        public bestSeller : boolean = false,
+        public challenging : boolean = false,
+        public image : string = "") {
+
+    }
+
+    fromJson(data: BookJSON): Book {
+        return Object.assign(new Book(), data);
+    }
+
+    // fromJson(data: BookJSON): Book {
+    //     return new Book(
+    //         data.id, 
+    //         data.title,
+    //         data.author,
+    //         data.numberOfPages,
+    //         data.numberOfWords,
+    //         data.translations,
+    //         data.isBestSeller,
+    //         data.isChallenging)
+    // }
+
+}
