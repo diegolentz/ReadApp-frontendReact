@@ -2,7 +2,7 @@ import './login.css'
 import { User } from '../../domain/loginJSON'
 import { useForm } from 'react-hook-form'
 
-export const CreateAccount = ({changePage}) => {
+export const CreateAccount = ({changePage} : {changePage :() => void}) => {
     const {register,handleSubmit,formState : {errors},watch} = useForm()
 
     const email    : string = watch('email')
