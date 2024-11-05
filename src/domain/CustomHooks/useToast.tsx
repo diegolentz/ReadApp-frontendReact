@@ -1,11 +1,11 @@
 import { ReactNode, useState } from "react"
-import { Toast } from "../../componentes/Toaster/Toast"
+import { Toast, ToastType } from "../../componentes/Toaster/Toast"
 
 export const useToast = () =>{
-    const [toastList, setToasts] = useState<ReactNode[]>([])
+    const [toastList, setToasts] = useState<ToastParams[]>([])
 
-    const showToast = (text: string) => {
-        setToasts([...toastList, text])
+    const showToast = (message : string, type :ToastType) => {
+        setToasts([...toastList, {message:message, type:type}])
         setTimeout(()=>{
             setToasts(l=>l.slice(1))
         }, 2700)
@@ -13,12 +13,17 @@ export const useToast = () =>{
 
     const toast = (
         <>
-        {toastList.map(text =>{
-            return <Toast type="success" message={`${text}`}/>
+        {toastList.map((toastParams) =>{
+            return <Toast type={`${toastParams.type}`} message={`${toastParams.message}`}/>
         })}
         </>
     )
 
 
-    return [toast, showToast]
+    return [toast, showToast    ]
+}
+
+export type ToastParams = {
+    message:ReactNode,
+    type:ToastType
 }

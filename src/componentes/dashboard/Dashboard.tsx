@@ -18,8 +18,8 @@ export const Dashboard = () => {
           setBooks(total.totalLibros)
           setUsers(total.totalUsuarios)
           setCenters(total.totalCentros)
-        } catch (error) {
-          console.error("Error al obtener la informacion del dashboard", error);
+        } catch  {
+            showToast("Error al obtener la informacion del dashboard", "error");
         }
       };
 
@@ -27,9 +27,9 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteUsers()
             await fetchData()
-            showToast("Usuarios inactivos eliminados correctamente")
+            showToast("Usuarios inactivos eliminados correctamente", "success")
         } catch {
-            console.error("Error al borrar los usuarios inactivos")
+            showToast("Error al borrar los usuarios inactivos", "error")
             
         }
       }
@@ -38,9 +38,9 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteCenters()
             await fetchData() 
-            showToast("Centros inactivos eliminados correctamente")
+            showToast("Centros inactivos eliminados correctamente", "success")
         } catch {
-            console.error("Error al borrar los centros inactivos")
+            showToast("Error al borrar los centros inactivos", "error")
         }
       }
 
