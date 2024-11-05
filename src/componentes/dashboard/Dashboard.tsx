@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import './Dashboard.css'
 import { dashboardService } from '../../service/dashboardService'
 import { useToast } from '../../domain/CustomHooks/useToast'
-import { Toast } from '../Toaster/Toast'
 
 
 export const Dashboard = () => {
@@ -28,7 +27,7 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteUsers()
             await fetchData()
-            showToast("hola")
+            showToast("Usuarios inactivos eliminados correctamente")
         } catch {
             console.error("Error al borrar los usuarios inactivos")
             
@@ -39,7 +38,7 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteCenters()
             await fetchData() 
-            showToast("chau")
+            showToast("Centros inactivos eliminados correctamente")
         } catch {
             console.error("Error al borrar los centros inactivos")
         }

@@ -8,7 +8,7 @@ export const useToast = () =>{
         setToasts([...toastList, text])
         setTimeout(()=>{
             setToasts(l=>l.slice(1))
-        }, 5000)
+        }, 2700)
     }
 
     const toast = (
