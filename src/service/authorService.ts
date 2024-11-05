@@ -4,16 +4,16 @@ import { AuthorJSON,EditAuthorJSON,AuthorJson ,EditAuthorJson} from "../domain/A
 
 class AuthorService {
     async getAuthorData(): Promise<AuthorJSON[]> {
-        const data = await axios.get(REST_SERVER_URL + "/reactAutor");
+        const data = await axios.get(REST_SERVER_URL + "/allAuthors");
         return data.data.map((item: AuthorJSON) => AuthorJson.fromJson(item));
     }
 
     async deleteAuthor(author : number): Promise<void> {
-        await axios.delete(REST_SERVER_URL + "/reactAutor/" + author);
+        await axios.delete(REST_SERVER_URL + "/deleteAutor/" + author);
     }
 
     async getAuthor(id: number): Promise<EditAuthorJSON> {
-        const data = await axios.get(REST_SERVER_URL + "/reactAutor/" + id);
+        const data = await axios.get(REST_SERVER_URL + "/getAutor/" + id);
         return EditAuthorJson.fromJson(data.data);   
     }
 

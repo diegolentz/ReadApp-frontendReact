@@ -36,12 +36,14 @@ export class AuthorJSON {
     public name: string;
     public lastName: string;
     public nationality: string;
+    public creator: boolean;
 
     constructor() {
         this.id = 0;
         this.name = "";
         this.lastName = "";
         this.nationality = "";
+        this.creator = true;
     }
 
     fromJson(data: any): AuthorJSON {
@@ -49,12 +51,14 @@ export class AuthorJSON {
         this.name = data.nombre;
         this.lastName = data.apellido;
         this.nationality = data.nacionalidad;
+        this.creator = data.creadorLibros;
 
         return Object.assign(new AuthorJSON(), {
             id: data.id,
             name: data.nombre,
             lastName: data.apellido,
-            nationality: data.nacionalidad
+            nationality: data.nacionalidad,
+            creator: data.creadorLibros
         });
     }
 }
