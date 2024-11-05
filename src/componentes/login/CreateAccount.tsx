@@ -51,9 +51,16 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
                 <div className="campo">
                     <input type="email" {...register('email',{
                         required : true,
-                        maxLength: 15})}/> 
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}    
+                        maxLength: 25,
+                        pattern: {
+                            value: /^[^@]+@[^@]+\.[^@]+$/, // Expresión regular para verificar el formato del correo
+                            message: 'El correo debe contener un "@" y un dominio válido', // Mensaje de error para formato incorrecto
+                          }
+                        })}/> 
+                    {errors.email?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
+                    {errors.email?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    {/* {errors.email?.type === "pattern" && <div className="input__required"><span>{errors.email.message}</div>}     */}
+
 
                     <label >email</label>
                 </div>
@@ -70,15 +77,15 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
         
                 <div className="campo">
                     <input type="password" {...register('password',{required:true})}/>
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    {errors.password?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
+                    {errors.password?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
                     <label >Password</label>
                 </div>
 
                 <div className="campo">
                     <input type="text" {...register('name',{required:true})}/>
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    {errors.name?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
+                    {errors.name?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
                     <label >Name</label>
                 </div>
 

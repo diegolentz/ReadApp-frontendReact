@@ -71,8 +71,8 @@ export const Login = () => {
         
                 <div className="campo">
                     <input type="password" {...register('password',{required:true})}/>
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    {errors.password?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
+                    {errors.password?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
                     <label >Password</label>
                 </div>
 
