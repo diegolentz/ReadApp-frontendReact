@@ -45,7 +45,6 @@ export const Login = () => {
         console.log(data)
     }
 
-
     return (isLoginPage?<> 
         <main className="fondo-background">
            

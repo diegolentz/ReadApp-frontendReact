@@ -1,20 +1,27 @@
 import './login.css'
 import { User } from '../../domain/loginJSON'
 import { useForm } from 'react-hook-form'
+import { userService } from '../../service/userService'
+import { ErrorResponse, mostrarMensajeError } from '../../error-handling'
+import { useState } from 'react'
 
 export const CreateAccount = ({changePage} : {changePage :() => void}) => {
     const {register,handleSubmit,formState : {errors},watch} = useForm()
+    const [errorMessage, setErrorMessage] = useState('')
 
     const email    : string = watch('email')
     const username : string = watch('username')
     const password : string = watch('password')
     const name     : string = watch('name')
 
-    const usuario : User = new User(email,username,password,name)
-
-
-    const create = () => {
-
+    const nuevoUsuario : User = new User(email,username,password,name)
+    const createRequest  = nuevoUsuario.buildCreateAccountRequest()
+    const create = async () => {
+        try{
+            const create = await userService.create(createRequest)
+        }catch(error:unknown){
+            mostrarMensajeError(error as ErrorResponse,setErrorMessage)
+        }
     }
 
     const customSubmit = (data: unknown) => {
