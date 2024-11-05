@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
 import './Dashboard.css'
 import { dashboardService } from '../../service/dashboardService'
+import { useToast } from '../../domain/CustomHooks/useToast'
+import { Toast } from '../Toaster/Toast'
+
 
 export const Dashboard = () => {
     const [recomendations, setRecomendations] = useState(0)
     const[books, setBooks] = useState(0)
     const[users, setUsers] = useState(0)
     const[centers, setCenters] = useState(0)
+    const [listToasts, showToast] = useToast()
 
     const fetchData = async () => {
         try {
@@ -24,19 +28,23 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteUsers()
             await fetchData()
+            showToast("hola")
         } catch {
             console.error("Error al borrar los usuarios inactivos")
+            
         }
       }
 
       const deleteCenters = async () => {
         try{
             await dashboardService.deleteCenters()
-            await fetchData()
+            await fetchData() 
+            showToast("chau")
         } catch {
             console.error("Error al borrar los centros inactivos")
         }
       }
+
 
     useEffect(() => {
         fetchData();
@@ -78,5 +86,6 @@ export const Dashboard = () => {
             <button data-testid="delete-users" className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
             <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
         </section>
+        {listToasts}
     </>
 }
