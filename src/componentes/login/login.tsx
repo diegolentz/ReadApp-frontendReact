@@ -25,7 +25,7 @@ export const Login = () => {
     
     const login = async () => {
     
-        if (!username || !password) {
+        if (validacion()) {
             setErrorMessage("Please fill in both fields.");   
             return
         }   
@@ -36,6 +36,9 @@ export const Login = () => {
             mostrarMensajeError(error as ErrorResponse,setErrorMessage)
         }
     }
+
+    const validacion = () : boolean => !username || !password 
+
 
     const changePage = () =>{
         setLoginPage(!isLoginPage)
