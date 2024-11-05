@@ -2,7 +2,7 @@ export type LoginRequest = {
     username: string
     password: string
 }
-export type createAccountRequest = {
+export type CreateAccountRequest = {
     email   : string
     username: string
     password: string
@@ -27,7 +27,7 @@ export class User {
         }
     }
 
-    buildCreateAccountRequest(): createAccountRequest {
+    buildCreateAccountRequest(): CreateAccountRequest {
         return {
             email   : this.email,
             username: this.username,

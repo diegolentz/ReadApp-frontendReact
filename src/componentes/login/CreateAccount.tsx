@@ -1,21 +1,36 @@
 import './login.css'
 import { User } from '../../domain/loginJSON'
 import { useForm } from 'react-hook-form'
+import { userService } from '../../service/userService'
+import { ErrorResponse, mostrarMensajeError } from '../../error-handling'
+import { useState } from 'react'
 
 export const CreateAccount = ({changePage} : {changePage :() => void}) => {
     const {register,handleSubmit,formState : {errors},watch} = useForm()
+    const [errorMessage, setErrorMessage] = useState('')
 
     const email    : string = watch('email')
     const username : string = watch('username')
     const password : string = watch('password')
     const name     : string = watch('name')
 
-    const usuario : User = new User(email,username,password,name)
-
-
-    const create = () => {
-
+    const nuevoUsuario : User = new User(email,username,password,name)
+    const createRequest  = nuevoUsuario.buildCreateAccountRequest()
+    const create = async () => {
+        try{
+            if(validacion()){
+                setErrorMessage("Please fill in both fields.");   
+                return
+            }
+            const create = await userService.create(createRequest)
+            alert("Account created successfully")
+            changePage()
+        }catch(error:unknown){
+            mostrarMensajeError(error as ErrorResponse,setErrorMessage)
+        }
     }
+
+    const validacion = () : boolean =>!email || !username || !password || !name
 
     const customSubmit = (data: unknown) => {
         console.log(data)
@@ -33,12 +48,18 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
 
             <form onSubmit={ handleSubmit(customSubmit) } id="loginForm" className="form__inputs borde--iluminado" action="/submit-login" method="post">
                 
-                <div className="campo">
-                    <input type="email" {...register('email',{
+                <div className="campo ">
+                    <input type="text" {...register('email',{
                         required : true,
-                        maxLength: 15})}/> 
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}    
+                        maxLength: 25,
+                        pattern: {
+                            value: /^[^@]+@[^@]+\.[^@]+$/, 
+                            message: 'El correo debe contener un "@" y un dominio válido', // Mensaje de error para formato incorrecto
+                            }
+                        })}/> 
+                    {errors.email?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
+                    {errors.email?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    {/* {errors.email?.type === "pattern" && <div className="input__required"><span>{errors.email.message}</div>}     */}
 
                     <label >email</label>
                 </div>
@@ -55,15 +76,15 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
         
                 <div className="campo">
                     <input type="password" {...register('password',{required:true})}/>
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    {errors.password?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
+                    {errors.password?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
                     <label >Password</label>
                 </div>
 
                 <div className="campo">
                     <input type="text" {...register('name',{required:true})}/>
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    {errors.name?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
+                    {errors.name?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
                     <label >Name</label>
                 </div>
 
