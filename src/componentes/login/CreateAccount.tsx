@@ -75,7 +75,7 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
                     </button>
 
                     <button className="valid button-passwordRecovery" onClick={changePage}>
-                        <img src="src/assets/key.svg" alt=""/>
+                        <img src="src/assets/key-return.svg" alt=""/>
                         <p>Back to login</p>
                     </button>
                 </div>
