@@ -26,7 +26,7 @@ export const Author = ({ renderAuthor, onDelete }:
                                 />
                             </svg>
                         </button>
-                        {author.creator ?  (
+                        {!author.creator ?  (
                             <button onClick={() => onDelete(author.id)}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fa0000" viewBox="0 0 256 256">
                                     <path

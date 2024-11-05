@@ -1,14 +1,13 @@
 .author-list{
-    /* width: 100vw; */
-    /* height: 100vh; */
     display: flex;
     gap: 2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 28rem;
 }
 .author {
-    width: 25rem;
+    width: 100%;
     padding: 0.8rem;
     gap: 0.5rem;
     display: grid;
@@ -42,14 +41,14 @@
     gap: 0.5rem;
     justify-content: center;
     align-items: center;
-
+    
     & button {
         background-color: transparent;
         border: none;
     }
 
     & svg {
-        height: 2.5rem;
-        width: 2.5rem;
+        /* height: 2.5rem; */
+        /* width: 2.5rem; */
     }
 }

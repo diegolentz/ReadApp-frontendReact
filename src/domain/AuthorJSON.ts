@@ -31,6 +31,23 @@ export class EditAuthorJSON {
         });
     }
 }
+export class CreateAuthorJSON {
+    public lenguaNativa: string;
+    public edad: number;
+    public apellido: string;
+    public nombre: string;
+    public seudonimo: string;
+
+    constructor() {
+        this.nombre = "diego";
+        this.apellido = "el mas";
+        this.edad = 30;
+        this.seudonimo = "tranki";
+        this.lenguaNativa = "ALEMAN";
+    }
+
+}
+
 export class AuthorJSON {
     public id: number;
     public name: string;
@@ -65,3 +82,4 @@ export class AuthorJSON {
 
 export const AuthorJson = new AuthorJSON()
 export const EditAuthorJson = new EditAuthorJSON()
+export const CreateAuthorJson = new CreateAuthorJSON()

@@ -4,7 +4,7 @@ import { authorService } from "../../../service/authorService";
 import "./AuthorEdit.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { paths } from "../../../domain/routes";
 
 export const AuthorEdit = () => {
@@ -36,13 +36,11 @@ export const AuthorEdit = () => {
 
     const confirmEdit = async () => {
             const newAuthor = EditAuthorJson.toAuthor(author!);
-            
-        
             await authorService.editAuthor(newAuthor);
-            navigate(paths.author);
-
-        
+            // setAuthor(author)
+            navigate(`/${paths.author}`);
     };
+
     useEffect(() => {
         getAuthor(+id!);
     }, [id]);
@@ -88,7 +86,7 @@ export const AuthorEdit = () => {
                                 </option>
                             ))}
                         </select>
-                        {/* <label className="label">Language</label> */}
+                        <label className="label">Language</label>
                     </div>
                 </form>
                 <button onClick={confirmEdit}>guardar!</button>

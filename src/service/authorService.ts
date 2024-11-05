@@ -1,6 +1,6 @@
 import axios from "axios";
 import { REST_SERVER_URL } from "../constants";
-import { AuthorJSON,EditAuthorJSON,AuthorJson ,EditAuthorJson} from "../domain/AuthorJSON";
+import { AuthorJSON,EditAuthorJSON,AuthorJson ,EditAuthorJson, CreateAuthorJSON} from "../domain/AuthorJSON";
 
 class AuthorService {
     async getAuthorData(): Promise<AuthorJSON[]> {
@@ -19,6 +19,10 @@ class AuthorService {
 
     async editAuthor(author: AuthorJSON): Promise<void> {
         await axios.put(REST_SERVER_URL + "/editAuthor" , author);
+    }
+
+    async createAuthor(author: CreateAuthorJSON): Promise<void> {
+        await axios.post(REST_SERVER_URL + "/createAuthor", author);
     }
 }
 

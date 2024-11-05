@@ -18,7 +18,8 @@
     padding: 0.15rem;
   }
 
-  & input, select {
+  & input,
+  select {
     height: 4rem;
     padding: 1rem;
     width: 100%;
@@ -36,7 +37,9 @@
 }
 
 div.input__label--effect {
-  & input, select {
+
+  & input,
+  select {
     border-radius: 1rem;
     border-color: var(--color-fondo);
     outline: none;
@@ -56,14 +59,17 @@ div.input__label--effect {
     top: 28%;
   }
 
-  & input:focus, select:focus {
+  & input:focus,
+  select:focus {
     border-color: var(--color-searchbar);
     border-radius: 1rem;
   }
 
   /* SI el input es focuseado, o tambien si es valido. SE aplican los estilos al proximo label dentro del mismo container */
   & input:focus~label,
-input:valid~label {
+  input:valid~label,
+  select:focus~label,
+  select:valid~label {
     transform: translateY(-2rem);
     font-size: 1em;
     background-color: var(--color-searchbar);
