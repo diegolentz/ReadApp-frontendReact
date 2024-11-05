@@ -18,6 +18,10 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
     const createRequest  = nuevoUsuario.buildCreateAccountRequest()
     const create = async () => {
         try{
+            if(validacion()){
+                setErrorMessage("Please fill in both fields.");   
+                return
+            }
             const create = await userService.create(createRequest)
             alert("Account created successfully")
             changePage()
@@ -25,6 +29,8 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
             mostrarMensajeError(error as ErrorResponse,setErrorMessage)
         }
     }
+
+    const validacion = () : boolean =>!email || !username || !password || !name
 
     const customSubmit = (data: unknown) => {
         console.log(data)
