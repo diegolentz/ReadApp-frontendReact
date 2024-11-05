@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import './Dashboard.css'
 import { dashboardService } from '../../service/dashboardService'
+import { useToast } from '../../domain/CustomHooks/useToast'
+
 
 export const Dashboard = () => {
     const [recomendations, setRecomendations] = useState(0)
     const[books, setBooks] = useState(0)
     const[users, setUsers] = useState(0)
     const[centers, setCenters] = useState(0)
+    const [listToasts, showToast] = useToast()
 
     const fetchData = async () => {
         try {
@@ -15,8 +18,8 @@ export const Dashboard = () => {
           setBooks(total.totalLibros)
           setUsers(total.totalUsuarios)
           setCenters(total.totalCentros)
-        } catch (error) {
-          console.error("Error al obtener la informacion del dashboard", error);
+        } catch  {
+            showToast("Error al obtener la informacion del dashboard", "error");
         }
       };
 
@@ -24,25 +27,29 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteUsers()
             await fetchData()
+            showToast("Usuarios inactivos eliminados correctamente", "success")
         } catch {
-            console.error("Error al borrar los usuarios inactivos")
+            showToast("Error al borrar los usuarios inactivos", "error")
+            
         }
       }
 
       const deleteCenters = async () => {
         try{
             await dashboardService.deleteCenters()
-            await fetchData()
+            await fetchData() 
+            showToast("Centros inactivos eliminados correctamente", "success")
         } catch {
-            console.error("Error al borrar los centros inactivos")
+            showToast("Error al borrar los centros inactivos", "error")
         }
       }
+
 
     useEffect(() => {
         fetchData();
       }, []); 
     return <>
-        <h1>Indicadores</h1>
+        <h1 className='titulo'>Indicadores</h1>
         <section className="indicadores">
             <article className="dashboard-item">
                 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#ffffff" viewBox="0 0 256 256"><path d="M216,96A88,88,0,1,0,72,163.83V240a8,8,0,0,0,11.58,7.16L128,225l44.43,22.21A8.07,8.07,0,0,0,176,248a8,8,0,0,0,8-8V163.83A87.85,87.85,0,0,0,216,96ZM56,96a72,72,0,1,1,72,72A72.08,72.08,0,0,1,56,96ZM168,227.06l-36.43-18.21a8,8,0,0,0-7.16,0L88,227.06V174.37a87.89,87.89,0,0,0,80,0ZM128,152A56,56,0,1,0,72,96,56.06,56.06,0,0,0,128,152Zm0-96A40,40,0,1,1,88,96,40,40,0,0,1,128,56Z"></path></svg>
@@ -78,5 +85,6 @@ export const Dashboard = () => {
             <button data-testid="delete-users" className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
             <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
         </section>
+        {listToasts}
     </>
 }
