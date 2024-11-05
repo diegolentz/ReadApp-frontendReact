@@ -19,6 +19,8 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
     const create = async () => {
         try{
             const create = await userService.create(createRequest)
+            alert("Account created successfully")
+            changePage()
         }catch(error:unknown){
             mostrarMensajeError(error as ErrorResponse,setErrorMessage)
         }
