@@ -48,19 +48,18 @@ export const CreateAccount = ({changePage} : {changePage :() => void}) => {
 
             <form onSubmit={ handleSubmit(customSubmit) } id="loginForm" className="form__inputs borde--iluminado" action="/submit-login" method="post">
                 
-                <div className="campo">
-                    <input type="email" {...register('email',{
+                <div className="campo ">
+                    <input type="text" {...register('email',{
                         required : true,
                         maxLength: 25,
                         pattern: {
-                            value: /^[^@]+@[^@]+\.[^@]+$/, // Expresión regular para verificar el formato del correo
+                            value: /^[^@]+@[^@]+\.[^@]+$/, 
                             message: 'El correo debe contener un "@" y un dominio válido', // Mensaje de error para formato incorrecto
-                          }
+                            }
                         })}/> 
                     {errors.email?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
                     {errors.email?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
                     {/* {errors.email?.type === "pattern" && <div className="input__required"><span>{errors.email.message}</div>}     */}
-
 
                     <label >email</label>
                 </div>
