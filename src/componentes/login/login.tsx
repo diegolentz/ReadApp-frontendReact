@@ -24,6 +24,11 @@ export const Login = () => {
     const loginRequest = usuario.buildLoginRequest()    
     
     const login = async () => {
+    
+        if (!username || !password) {
+            setErrorMessage("Please fill in both fields.");   
+            return
+        }   
         try {
             const loginResponse = await userService.login(loginRequest)
             navigate('/dashboard')
@@ -39,6 +44,7 @@ export const Login = () => {
     const customSubmit = (data: unknown) => {
         console.log(data)
     }
+
 
     return (isLoginPage?<> 
         <main className="fondo-background">
