@@ -6,6 +6,7 @@ import { AuthorPage } from './componentes/FolderAuthor/AuthorPage/AuthorPage'
 import { AuthorEdit } from './componentes/FolderAuthor/AuthorEdit/AuthorEdit'
 import { paths } from './domain/routes'
 import { BooksView } from './componentes/Book/BooksView'
+import { AuthorCreate } from './componentes/FolderAuthor/AuthorCreate/AuthorCreate'
 
 
 
@@ -18,6 +19,7 @@ export const AppRouter = () =>
                 <Route path={`${paths.dashboard}`} element={<Dashboard />} />
                 <Route path={`${paths.author}`} element={<AuthorPage/>} />
                 <Route path={`${paths.author}/edit/:id`} element={<AuthorEdit/>} />
+                <Route path={`${paths.author}/create`} element={<AuthorCreate/>} />
                 <Route path={`${paths.books}`} element={<BooksView/>} />
             </Route>
 

@@ -28,7 +28,6 @@ export const AuthorPage = () => {
     return (
         <>   
             <div className="pageFormat">
-                <h3>Authors Page</h3>
                 <Author renderAuthor={autores} onDelete={deleteAuthor} />
                 <Create></Create>
             </div>
