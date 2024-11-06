@@ -36,10 +36,15 @@ export const AuthorManager = () => {
     };
     const editAuthor = async (author: AuthorJSON) => {
         console.log(author);
-        await authorService.editAuthor(author);
-        setAuthors((prevAuthors) => prevAuthors.map((a) => (a.id === author.id ? author : a)));
+        
+        const autorEdit = author.toAuthor(author);
+        await authorService.editAuthor(autorEdit);
+        setAuthors((prevAuthors) => 
+            prevAuthors.map((a) => (a.id === author.id ? author : a))
+        );
         setView("list");
-    }
+    };
+    
 
     // const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     //     const { name, value } = event.target;

@@ -55,13 +55,13 @@ export class AuthorJSON {
         });
     }
     toAuthor(data: AuthorJSON): AutorEditJSON {
-        return Object.assign(new AutorEditJSON(
-            data.id,
-            data.name,
-            data.lastName,
-            data.nationality
-        ), {});
-    }
+        return Object.assign(new AutorEditJSON(data.id, data.name, data.lastName, data.nationality), {
+            id: data.id,
+            nombre: data.name,
+            apellido: data.lastName,
+            nacionalidad: data.nationality
+        });
+}
 }
 
 class AutorEditJSON {
