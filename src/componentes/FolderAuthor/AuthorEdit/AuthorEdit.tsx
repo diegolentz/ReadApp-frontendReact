@@ -1,49 +1,31 @@
 import { useEffect, useState, ChangeEvent } from "react";
-import { EditAuthorJson, EditAuthorJSON } from "../../../domain/AuthorJSON";
-import { authorService } from "../../../service/authorService";
+import { AuthorJSON } from "../../../domain/AuthorJSON";
 import "./AuthorEdit.css";
-import { useNavigate, useParams } from "react-router-dom";
 import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
 import { set, useForm } from "react-hook-form";
-import { paths } from "../../../domain/routes";
 
-export const AuthorEdit = () => {
-    const [author, setAuthor] = useState<EditAuthorJSON>();
+export const AuthorEdit = ({renderAuthor, onEdit}: 
+    {renderAuthor : AuthorJSON,
+     onEdit : (author: AuthorJSON) => void
+    }) => {
+
     const { register } = useForm();
-    const params = useParams();
-    const { id } = params;
+    const [author, setAuthor] = useState(renderAuthor);  
 
-    const navigate = useNavigate();
-    
-    
-    const getAuthor = async (id: number) => {
-        const authorData = await authorService.getAuthor(+id!);
-        setAuthor(authorData);
-    };
+    const confirmEdit = () => {
+        onEdit(author);
+    }
 
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
-
         console.log(name, value);
-
         const updatedAuthor = {
             ...author,
             [name]: value,
         };
-        const reloaded = Object.assign(new EditAuthorJSON(), updatedAuthor);
+        const reloaded = Object.assign(new AuthorJSON(), updatedAuthor);
         setAuthor(reloaded);
     };
-
-    const confirmEdit = async () => {
-            const newAuthor = EditAuthorJson.toAuthor(author!);
-            await authorService.editAuthor(newAuthor);
-            // setAuthor(author)
-            navigate(`/${paths.author}`);
-    };
-
-    useEffect(() => {
-        getAuthor(+id!);
-    }, [id]);
 
     return (
         <>
@@ -56,7 +38,7 @@ export const AuthorEdit = () => {
                             type="text"
                             required
                             {...register("name")}
-                            defaultValue={author?.name}
+                            defaultValue={renderAuthor?.name}
                             onChange={editFile}
                             placeholder=" "
                         />
@@ -67,7 +49,7 @@ export const AuthorEdit = () => {
                             type="text"
                             required
                             {...register("lastName")}
-                            defaultValue={author?.lastName}
+                            defaultValue={renderAuthor?.lastName}
                             onChange={editFile}
                             placeholder=" "
                         />
@@ -76,11 +58,11 @@ export const AuthorEdit = () => {
                     <div className="campo input__label--effect">
                         <select
                             {...register("nationality")}
-                            defaultValue={author?.nationality}
+                            defaultValue={renderAuthor?.nationality}
                             onChange={editFile}
                         >
                             
-                            {author?.lenguajes?.map((language) => (
+                            {renderAuthor.lenguajes?.map((language) => (
                                 <option key={language} value={language}>
                                     {language}
                                 </option>
@@ -89,8 +71,8 @@ export const AuthorEdit = () => {
                         <label className="label">Language</label>
                     </div>
                 </form>
-                <button onClick={confirmEdit}>guardar!</button>
-                <SaveCancelButton />
+                <button  onClick={confirmEdit} >guardar!</button>
+                {/* <SaveCancelButton /> */}
             </div>
         </>
     );

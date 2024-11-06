@@ -1,6 +1,6 @@
 import axios from "axios";
 import { REST_SERVER_URL } from "../constants";
-import { AuthorJSON,EditAuthorJSON,AuthorJson ,EditAuthorJson, CreateAuthorJSON} from "../domain/AuthorJSON";
+import { AuthorJSON,AuthorJson, CreateAuthorJSON} from "../domain/AuthorJSON";
 
 class AuthorService {
     async getAuthorData(): Promise<AuthorJSON[]> {
