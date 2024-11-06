@@ -3,42 +3,41 @@ import { CreateAuthorJSON, CreateAuthorJson } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { useForm } from "react-hook-form";
 
-export const AuthorCreate = ({idiomas}:
-    {idiomas: string[]}
-) => {  
-    const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
-    const {register} = useForm();
+export const AuthorCreate = ({ idiomas, onCreate }:
+    {
+        idiomas: string[],
+        onCreate: (author: CreateAuthorJSON) => void
+    }
+) => {
 
-    
+    const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
+    const { register } = useForm();
+
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
-    
         const updatedAuthor = {
             ...author,
             [name]: value,
         };
-        const reloaded = Object.assign(new CreateAuthorJSON(), updatedAuthor);
-        setAuthor(reloaded);
-    
-        console.log(updatedAuthor); // Muestra el autor actualizado
+        setAuthor(Object.assign(new CreateAuthorJSON(), updatedAuthor));
     };
 
-    const confirmCreate = async () => {
-        console.log(author);
-        await authorService.createAuthor(author!);
+    const confirmCreate = () => {
+        onCreate(author);
     };
 
     return (
         <>
             <div className="container">
-                <h3>Author Edit</h3>
+                <h3>Author Create</h3>
 
                 <form>
                     <div className="campo input__label--effect">
                         <input
                             type="text"
                             required
-                            {...register("name")}
+                            {...register("nombre")}
+                            name="nombre"
                             onChange={editFile}
                             placeholder=" "
                         />
@@ -48,7 +47,8 @@ export const AuthorCreate = ({idiomas}:
                         <input
                             type="text"
                             required
-                            {...register("lastName")}
+                            {...register("apellido")}
+                            name="apellido"
                             onChange={editFile}
                             placeholder=" "
                         />
@@ -56,10 +56,12 @@ export const AuthorCreate = ({idiomas}:
                     </div>
                     <div className="campo input__label--effect">
                         <select
-                            {...register("nationality")}
+                            {...register("nacionalidad")}
+                            name="nacionalidad"
                             onChange={editFile}
+                            defaultValue=""
                         >
-                            
+                            <option value="" disabled>Select your language</option>
                             {idiomas.map((language) => (
                                 <option key={language} value={language}>
                                     {language}
@@ -69,8 +71,7 @@ export const AuthorCreate = ({idiomas}:
                         <label className="label">Language</label>
                     </div>
                 </form>
-                {/* <button  onClick={confirmEdit} >guardar!</button> */}
-                {/* <SaveCancelButton /> */}
+                <button onClick={confirmCreate}>Guardar</button>
             </div>
         </>
     );

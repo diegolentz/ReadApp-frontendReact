@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { authorService } from "../../../service/authorService";
-import { AuthorJSON } from "../../../domain/AuthorJSON";
+import { AuthorJSON, CreateAuthorJSON } from "../../../domain/AuthorJSON";
 import { Author } from "../Author/Author";
 import "./AuthorPage.css";
 import AuthorEdit from "../AuthorEdit/AuthorEdit";
@@ -41,8 +41,13 @@ export const AuthorManager = () => {
     };
 
     const createAuthor = () => setView("create");
+    
+     const confirmCreate = async (author : CreateAuthorJSON) => {
+         console.log(author);
+        await authorService.createAuthor(author);
+        setView("list");
+    };
 
-    // Actualizar lenguajes cuando se cargan los autores
     useEffect(() => {
         if (authors.length > 0) {
             setLenguajes(authors[0].lenguajes || []);
@@ -61,19 +66,17 @@ export const AuthorManager = () => {
                 {view === "list" && (
                     <div>
                         <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} />
-                        <Create onClick={createAuthor} />
+                        <Create onClick={createAuthor}/>
                     </div>
                 )}
                 {view === "edit" && (
                     <div>
-                        <p>funciona!</p>
                         <AuthorEdit renderAuthor={selectedAuthor} onEdit={editAuthor} />
                     </div>
                 )}
                 {view === "create" && (
                     <div>
-                        <p>funciona</p>
-                        <AuthorCreate idiomas={lenguajes} />
+                        <AuthorCreate idiomas={lenguajes} onCreate={confirmCreate}/>
                     </div>
                 )}
                 {view === "show" && (

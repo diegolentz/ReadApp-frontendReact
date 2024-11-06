@@ -1,21 +1,12 @@
 export class CreateAuthorJSON {
     public nombre: string;
     public apellido: string;
-    public lenguaNativa: string;
+    public nacionalidad: string;
 
     constructor() {
         this.nombre = "";
         this.apellido = "";
-        this.lenguaNativa = "";
-    }
-
-    toCreate(data: AuthorJSON): CreateAuthorJSON {
-        return Object.assign(new CreateAuthorJSON(), {
-            nombre: data.name,
-            apellido: data.lastName,
-            lenguaNativa: data.nationality
-        });
-
+        this.nacionalidad = "";
     }
 
 }
