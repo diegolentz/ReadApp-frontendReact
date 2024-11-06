@@ -12,11 +12,6 @@ class AuthorService {
         await axios.delete(REST_SERVER_URL + "/deleteAutor/" + author);
     }
 
-    // async getAuthor(id: number): Promise<EditAuthorJSON> {
-    //     const data = await axios.get(REST_SERVER_URL + "/getAutor/" + id);
-    //     return EditAuthorJson.fromJson(data.data);   
-    // }
-
     async editAuthor(author: AutorEditJSON): Promise<void> {
         await axios.put(REST_SERVER_URL + "/editAuthor" , author);
     }

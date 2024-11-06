@@ -64,7 +64,7 @@ export class AuthorJSON {
 }
 }
 
-class AutorEditJSON {
+export class AutorEditJSON {
     constructor(
         public id: number,
         public nombre: string,

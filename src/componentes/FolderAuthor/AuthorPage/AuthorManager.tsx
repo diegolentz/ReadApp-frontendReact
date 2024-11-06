@@ -2,21 +2,18 @@ import { useState, useEffect } from "react";
 import { authorService } from "../../../service/authorService";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { Author } from "../Author/Author";
-// import { Create } from "../../FolderButtons/CreateButton/Create";
 import "./AuthorPage.css";
 import AuthorEdit from "../AuthorEdit/AuthorEdit";
-import { set } from "react-hook-form";
-
-
+import { Create } from "../../FolderButtons/CreateButton/Create";
+import { AuthorCreate } from "../AuthorCreate/AuthorCreate";
 
 type ViewType = "list" | "create" | "edit" | "show";
 
 export const AuthorManager = () => {
-
     const [view, setView] = useState<ViewType>("list");
     const [selectedAuthor, setSelectedAuthor] = useState<AuthorJSON>(new AuthorJSON());
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
-
+    const [lenguajes, setLenguajes] = useState<string[]>([]); // Estado específico para lenguajes
 
     const fetchData = async () => {
         const autorData = await authorService.getAuthorData();
@@ -32,35 +29,25 @@ export const AuthorManager = () => {
         const author = authors.find((author) => author.id === id);
         setSelectedAuthor(author!);
         setView("edit");
-      
     };
+
     const editAuthor = async (author: AuthorJSON) => {
-        console.log(author);
-        
         const autorEdit = author.toAuthor(author);
         await authorService.editAuthor(autorEdit);
-        setAuthors((prevAuthors) => 
+        setAuthors((prevAuthors) =>
             prevAuthors.map((a) => (a.id === author.id ? author : a))
         );
         setView("list");
     };
-    
 
-    // const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    //     const { name, value } = event.target;
-    //     const updatedAuthor = {
-    //         ...authors,
-    //         [name]: name === "edad" ? Number(value) : value, // Convierte a número si el campo es "edad"
-    //     };
-    //     setAuthors(updatedAuthor);
-    //     console.log(updatedAuthor); // Muestra el autor actualizado
-    // };
-    // const confirmCreate = async () => {
-    //     console.log(autores);
-    //     // await authorService.createAuthor(CreateAuthorJson.toCreate(autores));
-    //     // navigate(`/${paths.author}`);
-    //     // console.log(author);
-    // };
+    const createAuthor = () => setView("create");
+
+    // Actualizar lenguajes cuando se cargan los autores
+    useEffect(() => {
+        if (authors.length > 0) {
+            setLenguajes(authors[0].lenguajes || []);
+        }
+    }, [authors]);
 
     useEffect(() => {
         if (view === "list") {
@@ -70,11 +57,11 @@ export const AuthorManager = () => {
 
     return (
         <>
-
             <div className="pageFormat">
                 {view === "list" && (
                     <div>
                         <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} />
+                        <Create onClick={createAuthor} />
                     </div>
                 )}
                 {view === "edit" && (
@@ -85,7 +72,8 @@ export const AuthorManager = () => {
                 )}
                 {view === "create" && (
                     <div>
-                        {/* <Author renderAuthor={authors} onDelete={deleteAuthor} /> */}
+                        <p>funciona</p>
+                        <AuthorCreate idiomas={lenguajes} />
                     </div>
                 )}
                 {view === "show" && (
