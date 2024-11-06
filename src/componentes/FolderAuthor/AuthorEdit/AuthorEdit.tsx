@@ -4,11 +4,13 @@ import "./AuthorEdit.css";
 import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
 import { set, useForm } from "react-hook-form";
 
-export const AuthorEdit = ({renderAuthor, onEdit}: 
+export const AuthorEdit = ({renderAuthor, onEdit, editable}: 
     {renderAuthor : AuthorJSON,
-     onEdit : (author: AuthorJSON) => void
+     onEdit : (author: AuthorJSON) => void,
+     editable: boolean
     }) => {
 
+    
     const { register } = useForm();
     const [author, setAuthor] = useState(renderAuthor);  
 
@@ -41,6 +43,7 @@ export const AuthorEdit = ({renderAuthor, onEdit}:
                             defaultValue={renderAuthor?.name}
                             onChange={editFile}
                             placeholder=" "
+                            disabled={!editable}
                         />
                         <label className="label">Name</label>
                     </div>
@@ -52,6 +55,7 @@ export const AuthorEdit = ({renderAuthor, onEdit}:
                             defaultValue={renderAuthor?.lastName}
                             onChange={editFile}
                             placeholder=" "
+                            disabled={!editable}
                         />
                         <label className="label">Last Name</label>
                     </div>
@@ -60,6 +64,7 @@ export const AuthorEdit = ({renderAuthor, onEdit}:
                             {...register("nationality")}
                             defaultValue={renderAuthor?.nationality}
                             onChange={editFile}
+                            disabled={!editable}
                         >
                             
                             {renderAuthor.lenguajes?.map((language) => (

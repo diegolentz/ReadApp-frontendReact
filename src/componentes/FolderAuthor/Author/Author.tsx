@@ -1,10 +1,11 @@
 import "./Author.css";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 
-export const Author = ({ renderAuthor, onDelete , onSelect}:
+export const Author = ({ renderAuthor, onDelete , onSelect, onDetail}:
     { renderAuthor: AuthorJSON[], 
         onDelete: (id: number) => void, 
         onSelect : (id : number) => void 
+        onDetail : (id : number) => void
     }) => {
 
     const editAuthor = (id: number) => {
@@ -15,11 +16,15 @@ export const Author = ({ renderAuthor, onDelete , onSelect}:
         onDelete(id);
     }
 
+    const showAuthor = (id: number) => {
+        onDetail(id);
+    }
+
     return (
         <div className="author-list">
             {renderAuthor.map((author) => (
-                <div key={author.id} className="author">
-                    <p className="author__nombre">{author.name} {author.lastName} </p>
+                <div key={author.id} className="author" >
+                    <p className="author__nombre" onClick={() => showAuthor(author.id)}>{author.name} {author.lastName} </p>
                     <div className="buttons">
                         
                         <button onClick={() => editAuthor(author.id)}>

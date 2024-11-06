@@ -13,11 +13,13 @@ export const AuthorManager = () => {
     const [view, setView] = useState<ViewType>("list");
     const [selectedAuthor, setSelectedAuthor] = useState<AuthorJSON>(new AuthorJSON());
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
-    const [lenguajes, setLenguajes] = useState<string[]>([]); // Estado específico para lenguajes
+    const [lenguajes, setLenguajes] = useState<string[]>([]);
+    const [editable, setEditable] = useState<boolean>(false);
 
     const fetchData = async () => {
         const autorData = await authorService.getAuthorData();
         setAuthors(autorData);
+        setLenguajes(autorData[0].lenguajes);
     };
 
     const deleteAuthor = async (id: number) => {
@@ -27,6 +29,7 @@ export const AuthorManager = () => {
 
     const toEdit = (id: number) => {
         const author = authors.find((author) => author.id === id);
+        setEditable(true);
         setSelectedAuthor(author!);
         setView("edit");
     };
@@ -41,18 +44,19 @@ export const AuthorManager = () => {
     };
 
     const createAuthor = () => setView("create");
-    
-     const confirmCreate = async (author : CreateAuthorJSON) => {
-         console.log(author);
+
+    const confirmCreate = async (author: CreateAuthorJSON) => {
+        console.log(author);
         await authorService.createAuthor(author);
         setView("list");
     };
 
-    useEffect(() => {
-        if (authors.length > 0) {
-            setLenguajes(authors[0].lenguajes || []);
-        }
-    }, [authors]);
+    const showAuthor = (id: number) => {
+        const author = authors.find((author) => author.id === id);
+        setSelectedAuthor(author!);
+        setEditable(false);
+        setView("show");
+    }; 
 
     useEffect(() => {
         if (view === "list") {
@@ -61,30 +65,23 @@ export const AuthorManager = () => {
     }, [view]);
 
     return (
-        <>
-            <div className="pageFormat">
-                {view === "list" && (
-                    <div>
-                        <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} />
-                        <Create onClick={createAuthor}/>
-                    </div>
-                )}
-                {view === "edit" && (
-                    <div>
-                        <AuthorEdit renderAuthor={selectedAuthor} onEdit={editAuthor} />
-                    </div>
-                )}
-                {view === "create" && (
-                    <div>
-                        <AuthorCreate idiomas={lenguajes} onCreate={confirmCreate}/>
-                    </div>
-                )}
-                {view === "show" && (
-                    <div>
-                        {/* <Author renderAuthor={authors} onDelete={deleteAuthor} /> */}
-                    </div>
-                )}
-            </div>
-        </>
+        <div className="pageFormat">
+            {view === "list" && (
+                <div>
+                    <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} onDetail={showAuthor}/>
+                    <Create onClick={createAuthor} />
+                </div>
+            )}
+            {(view === "edit" || view === "show") && (
+                <div>
+                    <AuthorEdit renderAuthor={selectedAuthor} onEdit={editAuthor} editable={editable} />
+                </div>
+            )}
+            {view === "create" && (
+                <div>
+                    <AuthorCreate idiomas={lenguajes} onCreate={confirmCreate} />
+                </div>
+            )}
+        </div>
     );
 };
