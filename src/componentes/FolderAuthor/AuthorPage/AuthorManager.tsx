@@ -6,15 +6,17 @@ import "./AuthorPage.css";
 import AuthorEdit from "../AuthorEdit/AuthorEdit";
 import { Create } from "../../FolderButtons/CreateButton/Create";
 import { AuthorCreate } from "../AuthorCreate/AuthorCreate";
+import { useNavigate, useParams } from "react-router-dom";
 
-type ViewType = "list" | "create" | "edit" | "show";
 
-export const AuthorManager = () => {
-    const [view, setView] = useState<ViewType>("list");
+export const AuthorManager = ({ view }: {view : string}) => {
     const [selectedAuthor, setSelectedAuthor] = useState<AuthorJSON>(new AuthorJSON());
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
     const [lenguajes, setLenguajes] = useState<string[]>([]);
     const [editable, setEditable] = useState<boolean>(false);
+
+    const navigate = useNavigate();
+    const params = useParams<{ id: string }>();
 
     const fetchData = async () => {
         const autorData = await authorService.getAuthorData();
@@ -22,16 +24,10 @@ export const AuthorManager = () => {
         setLenguajes(autorData[0].lenguajes);
     };
 
-    const deleteAuthor = async (id: number) => {
-        await authorService.deleteAuthor(id);
-        setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
-    };
-
     const toEdit = (id: number) => {
-        const author = authors.find((author) => author.id === id);
         setEditable(true);
-        setSelectedAuthor(author!);
-        setView("edit");
+        setSelectedAuthor(authors.find((a) => a.id === id) || new AuthorJSON());
+        navigate(`/author/edit/${id}`);
     };
 
     const editAuthor = async (author: AuthorJSON) => {
@@ -40,30 +36,34 @@ export const AuthorManager = () => {
         setAuthors((prevAuthors) =>
             prevAuthors.map((a) => (a.id === author.id ? author : a))
         );
-        setView("list");
+        navigate(`/author/list`);
     };
 
-    const createAuthor = () => setView("create");
+    const deleteAuthor = async (id: number) => {
+        await authorService.deleteAuthor(id);
+        setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
+    };
+    
+    const createAuthor = () => navigate(`/author/create`);
 
     const confirmCreate = async (author: CreateAuthorJSON) => {
-        console.log(author);
         await authorService.createAuthor(author);
-        setView("list");
+        navigate(`/author/list`);
     };
 
     const showAuthor = (id: number) => {
-        const author = authors.find((author) => author.id === id);
-        setSelectedAuthor(author!);
         setEditable(false);
-        setView("show");
-    }; 
+        navigate(`/author/show/${id}`);
+    };
 
     useEffect(() => {
         if (view === "list") {
             fetchData();
+        } else if (view === "edit" || view === "show") {
+            setEditable(view === "edit");
         }
-    }, [view]);
-
+    }, [view, params.id]);
+    
     return (
         <div className="pageFormat">
             {view === "list" && (
@@ -74,7 +74,11 @@ export const AuthorManager = () => {
             )}
             {(view === "edit" || view === "show") && (
                 <div>
-                    <AuthorEdit renderAuthor={selectedAuthor} onEdit={editAuthor} editable={editable} />
+                    <AuthorEdit 
+                        renderAuthor={selectedAuthor} 
+                        onSelect={editAuthor} 
+                        editable={editable} 
+                    />
                 </div>
             )}
             {view === "create" && (

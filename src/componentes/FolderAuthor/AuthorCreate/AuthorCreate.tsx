@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { CreateAuthorJSON, CreateAuthorJson } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,15 @@ export const AuthorCreate = ({ idiomas, onCreate }:
 ) => {
 
     const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
+    const [lenguajes, setLenguajes] = useState<string[]>(idiomas);
     const { register } = useForm();
+
+    useEffect(() => {
+        
+        (idiomas.length > 0 ) ? 
+        setLenguajes(idiomas) :
+        getIdiomas();
+    }, [idiomas]);
 
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -20,6 +28,11 @@ export const AuthorCreate = ({ idiomas, onCreate }:
             [name]: value,
         };
         setAuthor(Object.assign(new CreateAuthorJSON(), updatedAuthor));
+    };
+
+    const getIdiomas = async () => {
+        const idiomas = await authorService.getAuthor(1);
+        setLenguajes(idiomas.lenguajes);
     };
 
     const confirmCreate = () => {
@@ -62,7 +75,7 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                             defaultValue=""
                         >
                             <option value="" disabled>Select your language</option>
-                            {idiomas.map((language) => (
+                            {lenguajes.map((language) => (
                                 <option key={language} value={language}>
                                     {language}
                                 </option>

@@ -8,6 +8,11 @@ class AuthorService {
         return data.data.map((item: AuthorJSON) => AuthorJson.fromJson(item));
     }
 
+    async getAuthor(id: number): Promise<AuthorJSON> {
+        const data = await axios.get(REST_SERVER_URL + "/getAutor/" + id);
+        return AuthorJson.fromJson(data.data);
+    }
+
     async deleteAuthor(author : number): Promise<void> {
         await axios.delete(REST_SERVER_URL + "/deleteAutor/" + author);
     }
