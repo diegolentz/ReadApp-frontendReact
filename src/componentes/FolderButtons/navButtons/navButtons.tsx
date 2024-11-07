@@ -20,7 +20,7 @@ export const NavButtonsComponent = () => {
             </NavLink>
 
             <NavLink
-                to={`${paths.author}`}
+                to={`${paths.author}/list`}
                 className={({ isActive }) =>
                     isActive ? "active" : "pending"
                 }

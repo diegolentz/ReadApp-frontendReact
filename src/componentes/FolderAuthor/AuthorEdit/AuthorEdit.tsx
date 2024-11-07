@@ -10,7 +10,9 @@ export const AuthorEdit = ({renderAuthor, onEdit, editable}:
      editable: boolean
     }) => {
 
-    
+    useEffect(() => {
+        setAuthor(renderAuthor);
+    }, [renderAuthor]);
     const { register } = useForm();
     const [author, setAuthor] = useState(renderAuthor);  
 
