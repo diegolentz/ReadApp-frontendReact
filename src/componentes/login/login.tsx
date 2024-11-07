@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { mostrarMensajeError, } from '../../error-handling'
 import { ErrorResponse } from '../../error-handling'
 import { CreateAccount } from './CreateAccount'
+import { Button } from '@mui/material'
 
 export const Login = () => {
     const {register,handleSubmit,formState : {errors},watch} = useForm()
@@ -78,20 +79,23 @@ export const Login = () => {
 
                 <div className='actions'>
 
-                <button type='submit' className='valid button-login' onClick={login} >
+                {/* <button type='submit' className='valid button-login' onClick={login} >
+                </button> */}
+
+                <Button variant='contained' color = 'success' type='submit' onClick={login}>
                     <img src="src/assets/sign-in.svg" alt=""/>
                     <p>Login</p>
-                </button>
+                </Button>
                 
-                <button className="valid button-newAccount" onClick= {changePage}>
+                <Button variant='contained'  onClick= {changePage}>
                     <img src="src/assets/user-circle.svg" alt=""/>
                     <p>New account</p>
-                </button>
+                </Button>
 
-                <button className="valid button-passwordRecovery">
+                <Button variant='contained' color = 'secondary'>
                     <img src="src/assets/key.svg" alt=""/>
                     <p>Password Recovery</p>
-                </button>
+                </Button>
                 </div>
             </form> 
                       
