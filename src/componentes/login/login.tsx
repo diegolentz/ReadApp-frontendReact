@@ -1,6 +1,8 @@
 
 import './login.css'
-
+import LoginIcon from '@mui/icons-material/Login';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import { useForm } from 'react-hook-form'
 
 import { User } from '../../domain/loginJSON'
@@ -79,21 +81,15 @@ export const Login = () => {
 
                 <div className='actions'>
 
-                {/* <button type='submit' className='valid button-login' onClick={login} >
-                </button> */}
-
-                <Button variant='contained' color = 'success' type='submit' onClick={login}>
-                    <img src="src/assets/sign-in.svg" alt=""/>
+                <Button variant='contained' color = 'success' type='submit' onClick={login} startIcon= {<LoginIcon fontSize='large'></LoginIcon>}>
                     <p>Login</p>
                 </Button>
                 
-                <Button variant='contained'  onClick= {changePage}>
-                    <img src="src/assets/user-circle.svg" alt=""/>
+                <Button variant='contained'  onClick= {changePage} startIcon= {<AccountCircleOutlinedIcon fontSize='large'></AccountCircleOutlinedIcon>} >
                     <p>New account</p>
                 </Button>
 
-                <Button variant='contained' color = 'secondary'>
-                    <img src="src/assets/key.svg" alt=""/>
+                <Button variant='contained' color = 'secondary' startIcon= {<KeyOutlinedIcon fontSize='large'></KeyOutlinedIcon>}>
                     <p>Password Recovery</p>
                 </Button>
                 </div>
