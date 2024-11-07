@@ -1,12 +1,11 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import "./AuthorEdit.css";
-import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
 import { set, useForm } from "react-hook-form";
 
-export const AuthorEdit = ({renderAuthor, onEdit, editable}: 
+export const AuthorEdit = ({renderAuthor, onSelect, editable}: 
     {renderAuthor : AuthorJSON,
-     onEdit : (author: AuthorJSON) => void,
+        onSelect : (author: AuthorJSON) => void,
      editable: boolean
     }) => {
 
@@ -17,7 +16,7 @@ export const AuthorEdit = ({renderAuthor, onEdit, editable}:
     const [author, setAuthor] = useState(renderAuthor);  
 
     const confirmEdit = () => {
-        onEdit(author);
+        onSelect(author);
     }
 
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

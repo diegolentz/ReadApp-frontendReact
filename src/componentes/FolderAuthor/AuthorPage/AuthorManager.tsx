@@ -16,7 +16,6 @@ export const AuthorManager = ({ view }: {view : string}) => {
     const [lenguajes, setLenguajes] = useState<string[]>([]);
     const [editable, setEditable] = useState<boolean>(false);
 
-    const params = useParams();
     const navigate = useNavigate();
 
     const fetchData = async () => {
@@ -29,8 +28,10 @@ export const AuthorManager = ({ view }: {view : string}) => {
         await authorService.deleteAuthor(id);
         setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
     };
-
+    
     const toEdit = (id: number) => {
+        setEditable(true);
+        setSelectedAuthor(authors.find((a) => a.id === id) || new AuthorJSON());
         navigate(`/author/edit/${id}`);
     };
 
@@ -51,19 +52,14 @@ export const AuthorManager = ({ view }: {view : string}) => {
     };
 
     const showAuthor = (id: number) => {
+        setEditable(false);
         navigate(`/author/show/${id}`);
     };
 
     useEffect(() => {
         if (view === "list") {
             fetchData();
-        } else if (view === "edit" || view === "show") {
-            const id = Number(params.id);
-            const author = authors.find((author) => author.id === id);
-            if (author) {
-                setSelectedAuthor(author);
-                setEditable(view === "edit");
-            }
+        
         }
     }, [view]);
 
@@ -77,7 +73,7 @@ export const AuthorManager = ({ view }: {view : string}) => {
             )}
             {(view === "edit" || view === "show") && (
                 <div>
-                    <AuthorEdit renderAuthor={selectedAuthor} onEdit={editAuthor} editable={editable} />
+                    <AuthorEdit renderAuthor={selectedAuthor} onSelect={editAuthor} editable={editable} />
                 </div>
             )}
             {view === "create" && (
