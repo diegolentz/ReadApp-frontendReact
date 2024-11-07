@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { Dashboard } from './componentes/dashboard/Dashboard';
 import { ViewLayoutComponent } from './componentes/viewLayout/viewLayout';
 import { Login } from './componentes/login/login';
-import { AuthorManager } from './componentes/FolderAuthor/AuthorPage/AuthorManager';
+import { AuthorManager } from './componentes/FolderAuthor/AuthorManager/AuthorManager';
 import { paths } from './domain/routes';
 import { BooksView } from './componentes/Book/BooksView';
 
