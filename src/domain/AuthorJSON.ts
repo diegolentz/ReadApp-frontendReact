@@ -1,49 +1,12 @@
-export class EditAuthorJSON {
-    public id: number;
-    public name: string;
-    public lastName: string;
-    public nationality: string;
-    public lenguajes: string[];
-
-    constructor() {
-        this.id = 0;
-        this.name = "";
-        this.lastName = "";
-        this.nationality = "";
-        this.lenguajes = [];
-    }
-
-    fromJson(data: any): EditAuthorJSON {
-        this.id = data.id;
-        this.name = data.nombre;
-        this.lastName = data.apellido;
-        this.nationality = data.nacionalidad;
-        this.lenguajes = data.lenguaje;
-
-        return this;
-    }
-    toAuthor(data: EditAuthorJSON): AuthorJSON {
-        return Object.assign(new AuthorJSON(), {
-            id: data.id,
-            nombre: data.name,
-            apellido: data.lastName,
-            nacionalidad: data.nationality
-        });
-    }
-}
 export class CreateAuthorJSON {
-    public lenguaNativa: string;
-    public edad: number;
-    public apellido: string;
     public nombre: string;
-    public seudonimo: string;
+    public apellido: string;
+    public nacionalidad: string;
 
     constructor() {
-        this.nombre = "diego";
-        this.apellido = "el mas";
-        this.edad = 30;
-        this.seudonimo = "tranki";
-        this.lenguaNativa = "ALEMAN";
+        this.nombre = "";
+        this.apellido = "";
+        this.nacionalidad = "";
     }
 
 }
@@ -54,6 +17,7 @@ export class AuthorJSON {
     public lastName: string;
     public nationality: string;
     public creator: boolean;
+    public lenguajes: string[];
 
     constructor() {
         this.id = 0;
@@ -61,6 +25,7 @@ export class AuthorJSON {
         this.lastName = "";
         this.nationality = "";
         this.creator = true;
+        this.lenguajes = [];
     }
 
     fromJson(data: any): AuthorJSON {
@@ -69,17 +34,36 @@ export class AuthorJSON {
         this.lastName = data.apellido;
         this.nationality = data.nacionalidad;
         this.creator = data.creadorLibros;
+        this.lenguajes = data.lenguaje;
 
         return Object.assign(new AuthorJSON(), {
             id: data.id,
             name: data.nombre,
             lastName: data.apellido,
             nationality: data.nacionalidad,
-            creator: data.creadorLibros
+            creator: data.creadorLibros,
+            lenguajes : data.lenguaje
         });
+    }
+    toAuthor(data: AuthorJSON): AutorEditJSON {
+        return Object.assign(new AutorEditJSON(data.id, data.name, data.lastName, data.nationality), {
+            id: data.id,
+            nombre: data.name,
+            apellido: data.lastName,
+            nacionalidad: data.nationality
+        });
+}
+}
+
+export class AutorEditJSON {
+    constructor(
+        public id: number,
+        public nombre: string,
+        public apellido: string,
+        public nacionalidad: string
+    ) {
     }
 }
 
 export const AuthorJson = new AuthorJSON()
-export const EditAuthorJson = new EditAuthorJSON()
 export const CreateAuthorJson = new CreateAuthorJSON()

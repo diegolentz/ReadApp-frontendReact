@@ -1,94 +1,77 @@
 import { ChangeEvent, useState } from "react";
 import { CreateAuthorJSON, CreateAuthorJson } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
-import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { paths } from "../../../domain/routes";
 
-export const AuthorCreate = () => {  
+export const AuthorCreate = ({ idiomas, onCreate }:
+    {
+        idiomas: string[],
+        onCreate: (author: CreateAuthorJSON) => void
+    }
+) => {
+
     const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
-    const {register} = useForm();
+    const { register } = useForm();
 
-    const navigate = useNavigate();
-    
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
-    
         const updatedAuthor = {
             ...author,
-            [name]: name === "edad" ? Number(value) : value, // Convierte a número si el campo es "edad"
+            [name]: value,
         };
-    
-        setAuthor(updatedAuthor);
-    
-        console.log(updatedAuthor); // Muestra el autor actualizado
+        setAuthor(Object.assign(new CreateAuthorJSON(), updatedAuthor));
     };
 
-    const confirmCreate = async () => {
-        console.log(author);
-        await authorService.createAuthor(author!);
-        navigate(`/${paths.author}`);
-        // console.log(author);
-        // Navigate("/author"); //
+    const confirmCreate = () => {
+        onCreate(author);
     };
 
     return (
         <>
             <div className="container">
                 <h3>Author Create</h3>
+
                 <form>
                     <div className="campo input__label--effect">
                         <input
                             type="text"
-                            {...register("nombre")}
                             required
+                            {...register("nombre")}
+                            name="nombre"
                             onChange={editFile}
+                            placeholder=" "
                         />
                         <label className="label">Name</label>
                     </div>
                     <div className="campo input__label--effect">
                         <input
                             type="text"
-                            {...register("apellido")}
                             required
+                            {...register("apellido")}
+                            name="apellido"
                             onChange={editFile}
+                            placeholder=" "
                         />
                         <label className="label">Last Name</label>
                     </div>
                     <div className="campo input__label--effect">
-                        <input
-                            type="number"
-                            {...register("edad")}
-                            required
+                        <select
+                            {...register("nacionalidad")}
+                            name="nacionalidad"
                             onChange={editFile}
-                        />
-                        <label className="label">Years</label>
+                            defaultValue=""
+                        >
+                            <option value="" disabled>Select your language</option>
+                            {idiomas.map((language) => (
+                                <option key={language} value={language}>
+                                    {language}
+                                </option>
+                            ))}
+                        </select>
+                        <label className="label">Language</label>
                     </div>
-                    <div className="campo input__label--effect">
-                        <input
-                            type="text"
-                            {...register("seudonimo")}
-                            required
-                            onChange={editFile}
-                        />
-                        <label className="label">Alias</label>
-                    </div>
-                    <div className="campo input__label--effect">
-                        <input
-                            type="text"
-                            {...register("lenguaNativa")}
-                            required
-                            onChange={editFile}
-                        />
-                        <label className="label">Lenguaje</label>
-                    </div>
-                    <button 
-                        type="button"
-                        onClick={confirmCreate}
-                    >Guardar</button>
-                    <SaveCancelButton />
                 </form>
+                <button onClick={confirmCreate}>Guardar</button>
             </div>
         </>
     );
