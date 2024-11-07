@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { authorService } from "../../../service/authorService";
 import { AuthorJSON, CreateAuthorJSON } from "../../../domain/AuthorJSON";
 import { Author } from "../Author/Author";
-import "./AuthorPage.css";
+// import "./AuthorPage.css";
 import AuthorEdit from "../AuthorEdit/AuthorEdit";
 import { Create } from "../../FolderButtons/CreateButton/Create";
 import { AuthorCreate } from "../AuthorCreate/AuthorCreate";

@@ -1,12 +1,20 @@
-import "./Author.css";
+import { Card, CardContent, Typography, IconButton, Box } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
+import { Height } from "@mui/icons-material";
 
-export const Author = ({ renderAuthor, onDelete , onSelect, onDetail}:
-    { renderAuthor: AuthorJSON[], 
-        onDelete: (id: number) => void, 
-        onSelect : (id : number) => void 
-        onDetail : (id : number) => void
-    }) => {
+export const Author = ({
+    renderAuthor,
+    onDelete,
+    onSelect,
+    onDetail,
+}: {
+    renderAuthor: AuthorJSON[];
+    onDelete: (id: number) => void;
+    onSelect: (id: number) => void;
+    onDetail: (id: number) => void;
+}) => {
 
     const editAuthor = (id: number) => {
         onSelect(id);
@@ -14,39 +22,107 @@ export const Author = ({ renderAuthor, onDelete , onSelect, onDetail}:
 
     const deleteAuthor = (id: number) => {
         onDelete(id);
-    }
+    };
 
     const showAuthor = (id: number) => {
         onDetail(id);
-    }
+    };
 
     return (
-        <div className="author-list">
+        <Box 
+            display="flex" 
+            flexDirection="column" 
+            alignItems="center" 
+            gap={1.5} 
+            width="100%" 
+            height= "100%"
+        >
             {renderAuthor.map((author) => (
-                <div key={author.id} className="author" >
-                    <p className="author__nombre" onClick={() => showAuthor(author.id)}>{author.name} {author.lastName} </p>
-                    <div className="buttons">
+
+                <Card 
+                key={author.id} variant="outlined" sx={{ 
+                        display: "flex", 
+                        alignItems: "center",
+                        padding: 1, 
+                        width: 250, 
+                        height: 100,
+                        borderRadius: 2,
+                        borderColor: '#d50000',
+                        backgroundColor: "#e57373",
+                    }}>
+
+                    <CardContent onClick={() => showAuthor(author.id)} sx={{ 
+                            flexGrow: 1, 
+                            cursor: "pointer",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "start",
+                            gap: 2,
+
+                        }}>
+                        <Typography 
+                            variant="h5" 
+                            color="text.primary"
+                        >
+                            {author.name} {author.lastName}
+                        </Typography>
+
+                        <Typography 
+                            variant="h6"
+                            color="text.secondary"
+                        >
+                            {author.nationality}
+                        </Typography>
+
+                    </CardContent>
+                    <Box 
+                        display="flex" 
+                        flexDirection="column" 
+                        alignItems="center"  
+                        justifyContent="space-between"
+                        width="10%"
+                        height="100%"
+                        gap={0.5}
+
+                        >
                         
-                        <button onClick={() => editAuthor(author.id)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#80ed99" viewBox="0 0 256 256">
-                                <path
-                                    d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM51.31,160,136,75.31,152.69,92,68,176.68ZM48,179.31,76.69,208H48Zm48,25.38L79.31,188,164,103.31,180.69,120Zm96-96L147.31,64l24-24L216,84.68Z"
-                                />
-                            </svg>
-                        </button>
-                        {!author.creator ?  (
-                            <button onClick={() => deleteAuthor(author.id)}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#fa0000" viewBox="0 0 256 256">
-                                    <path
-                                        d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"
-                                    />
-                                </svg>
-                            </button>
-                        ) : null}
-                    </div>
-                    <p className="author__nacionality">{author.nationality}</p>
-                </div>
+                        <IconButton 
+                            onClick={() => editAuthor(author.id)} 
+                            color="success"
+                             
+                            sx={{height: "33%",
+                                padding: 0,
+                            }}
+                            >
+                            <EditIcon sx={
+                                { height: "auto" }
+                            }/>
+                        </IconButton>
+
+
+                        {!author.creator && (
+                            <IconButton 
+                            sx={{ height: "33%" }}
+                                onClick={() => deleteAuthor(author.id)} 
+                                color="error" 
+                                size="small">
+
+                                <DeleteIcon fontSize="small" />
+                            </IconButton>
+                        )}
+                        <IconButton 
+                            onClick={() => showAuthor(author.id)} 
+                            sx={{ height: "33%" }}
+                            color="primary" 
+                            >
+
+                            <EditIcon fontSize="small" />
+                        </IconButton>
+                    </Box>
+                </Card>
             ))}
-        </div>
+        </Box>
     );
 };
+
+export default Author;
