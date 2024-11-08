@@ -11,9 +11,14 @@ export const Dashboard = () => {
     const[centers, setCenters] = useState(0)
     const [listToasts, showToast] = useToast()
 
+    let changeState = false
+
     const fetchData = async () => {
         try {
           const total = await dashboardService.getDashboardData();
+          if(total.totalRecomendaciones != recomendations || total.totalLibros != books || total.totalUsuarios != users || total.totalCentros != centers ){
+            changeState = true
+          }
           setRecomendations(total.totalRecomendaciones);
           setBooks(total.totalLibros)
           setUsers(total.totalUsuarios)
@@ -27,7 +32,7 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteUsers()
             await fetchData()
-            showToast("Usuarios inactivos eliminados correctamente", "success")
+             changeState ? showToast("Usuarios inactivos eliminados correctamente", "success") : showToast("No hay usuarios inactivos para eliminar", "info")
         } catch {
             showToast("Error al borrar los usuarios inactivos", "error")
             
@@ -38,7 +43,7 @@ export const Dashboard = () => {
         try{
             await dashboardService.deleteCenters()
             await fetchData() 
-            showToast("Centros inactivos eliminados correctamente", "success")
+            changeState ? showToast("Centros inactivos eliminados correctamente", "success") : showToast("No hay centros inactivos para eliminar", "info")
         } catch {
             showToast("Error al borrar los centros inactivos", "error")
         }
