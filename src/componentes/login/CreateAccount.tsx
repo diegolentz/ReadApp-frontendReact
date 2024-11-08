@@ -4,6 +4,7 @@ import { userService } from '../../service/userService'
 import { ErrorResponse, mostrarMensajeError } from '../../error-handling'
 import { useState } from 'react'
 import { Box, Button, TextField, Snackbar, Alert } from '@mui/material'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 
 export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
     const [errorMessage, setErrorMessage] = useState('')
@@ -157,9 +158,10 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     <div className="actions">
                         <Button
                             variant="contained"
-                            color="primary"
+                            color="success"
                             type="submit"
                             fullWidth
+                            startIcon={ <AccountCircleOutlinedIcon fontSize="large"/>}
                         >
                             Create Account
                         </Button>
@@ -175,7 +177,6 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     </div>
                 </Box>
 
-                {/* Snackbar para mostrar el mensaje de error o éxito */}
                 <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                     <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
                     {snackbarSeverity === 'success' ? "Account create successfully" : errorMessage || "An error occurred. Please try again."}
