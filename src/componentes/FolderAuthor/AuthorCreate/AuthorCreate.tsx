@@ -5,16 +5,16 @@ import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select,
 
 export const AuthorCreate = ({ idiomas, onCreate }:
     {
-        idiomas: string[],  // Lista de idiomas recibida como prop
-        onCreate: (author: CreateAuthorJSON) => void  // Función callback para enviar el autor creado
+        idiomas: string[],
+        onCreate: (author: CreateAuthorJSON) => void
     }
 ) => {
 
     const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
     const [lenguajes, setLenguajes] = useState<string[]>(idiomas);
     const [hasError, setHasError] = useState(false);
-    const [nameError, setNameError] = useState(false);
-    const [lastNameError, setLastNameError] = useState(false);
+    const [nameError, setNameError] = useState(true);
+    const [lastNameError, setLastNameError] = useState(true);
     const [nameHelperText, setNameHelperText] = useState("");
     const [lastNameHelperText, setLastNameHelperText] = useState("");
 
@@ -31,7 +31,6 @@ export const AuthorCreate = ({ idiomas, onCreate }:
         setLenguajes(idiomas.lenguajes);
     };
 
-    // Función para validar los campos de texto
     const validateField = (fieldName: string, value: string) => {
         const lettersAndSpacesRegex = /^[a-zA-Z\s]+$/;
         let error = false;
@@ -50,7 +49,6 @@ export const AuthorCreate = ({ idiomas, onCreate }:
         return { error, helperText };
     };
 
-    // Actualización del estado del autor al cambiar los campos
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | SelectChangeEvent<string>) => {
         const { name, value } = event.target;
 
@@ -67,16 +65,20 @@ export const AuthorCreate = ({ idiomas, onCreate }:
 
         setAuthor((prevAuthor) => ({
             ...prevAuthor,
-            [name]: value, // Actualiza el campo correspondiente en el estado
+            [name]: value,
         }));
     };
 
     const confirmCreate = () => {
-        if (!author.nacionalidad || nameError || lastNameError) {
-            setHasError(!author.nacionalidad); // Verifica si hay errores
-        } else {
+        const isNameValid = !nameError && author.nombre.trim() !== '';
+        const isLastNameValid = !lastNameError && author.apellido.trim() !== '';
+        const isNationalityValid = author.nacionalidad.trim() !== '';
+    
+        if (isNameValid && isLastNameValid && isNationalityValid) {
             setHasError(false);
-            onCreate(author); // Llama a la función de callback para enviar el autor
+            onCreate(author);
+        } else {
+            setHasError(true); 
         }
     };
 
@@ -96,10 +98,10 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                     label="Name"
                     variant="outlined"
                     onChange={editFile}
-                    name="nombre" // Asegúrate de que el nombre coincida con la propiedad de la clase CreateAuthorJSON
-                    value={author.nombre} // Asegúrate de que el valor coincida con el estado
+                    name="nombre"
+                    value={author.nombre}
                     sx={{ width: '20rem' }}
-                    InputProps={{ style: { fontSize: '1.5rem' } }}
+                    slotProps={{ input: { style: { fontSize: '1.5rem' } } }}
                     error={nameError}
                     helperText={nameError ? nameHelperText : ''}
                 />
@@ -107,8 +109,8 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                     label="Last Name"
                     variant="outlined"
                     onChange={editFile}
-                    name="apellido" // Asegúrate de que el nombre coincida con la propiedad de la clase CreateAuthorJSON
-                    value={author.apellido} // Asegúrate de que el valor coincida con el estado
+                    name="apellido" 
+                    value={author.apellido}
                     sx={{ width: '20rem' }}
                     InputProps={{ style: { fontSize: '1.5rem' } }}
                     error={lastNameError}
@@ -119,8 +121,8 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                     <Select
                         labelId="nationality-select-label"
                         id="nationality-select"
-                        name="nacionalidad" // Asegúrate de que el nombre coincida con la propiedad de la clase CreateAuthorJSON
-                        value={author.nacionalidad || ''} // Asegúrate de que el valor coincida con el estado
+                        name="nacionalidad"
+                        value={author.nacionalidad || ''} 
                         label="Language"
                         onChange={editFile}
                         sx={{ width: '20rem' }}

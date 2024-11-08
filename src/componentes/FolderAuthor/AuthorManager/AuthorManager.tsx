@@ -78,8 +78,8 @@ export const AuthorManager = ({ view }: {view : string}) => {
                     <Box
                         sx={{
                             position: "fixed",
-                            bottom: "10rem",
-                            right: "0rem",
+                            bottom: "13rem",
+                            right: "1rem",
                             zIndex: 1000,
                         }}
                     >
