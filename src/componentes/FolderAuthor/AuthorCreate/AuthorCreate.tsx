@@ -12,6 +12,11 @@ export const AuthorCreate = ({ idiomas, onCreate }:
 
     const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
     const [lenguajes, setLenguajes] = useState<string[]>(idiomas);
+    const [hasError, setHasError] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const [lastNameError, setLastNameError] = useState(false);
+    const [nameHelperText, setNameHelperText] = useState("");
+    const [lastNameHelperText, setLastNameHelperText] = useState("");
 
     useEffect(() => {
         if (idiomas.length > 0) {
@@ -26,9 +31,40 @@ export const AuthorCreate = ({ idiomas, onCreate }:
         setLenguajes(idiomas.lenguajes);
     };
 
+    // Función para validar los campos de texto
+    const validateField = (fieldName: string, value: string) => {
+        const lettersAndSpacesRegex = /^[a-zA-Z\s]+$/;
+        let error = false;
+        let helperText = "";
+
+        const trimmedValue = value.trim();
+
+        if (!trimmedValue) {
+            error = true;
+            helperText = `${fieldName} cannot be empty.`;
+        } else if (!lettersAndSpacesRegex.test(trimmedValue)) {
+            error = true;
+            helperText = `${fieldName} must contain only letters and spaces.`;
+        }
+
+        return { error, helperText };
+    };
+
     // Actualización del estado del autor al cambiar los campos
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | SelectChangeEvent<string>) => {
         const { name, value } = event.target;
+
+        if (name === "nombre" || name === "apellido") {
+            const { error, helperText } = validateField(name, value);
+            if (name === "nombre") {
+                setNameError(error);
+                setNameHelperText(helperText);
+            } else if (name === "apellido") {
+                setLastNameError(error);
+                setLastNameHelperText(helperText);
+            }
+        }
+
         setAuthor((prevAuthor) => ({
             ...prevAuthor,
             [name]: value, // Actualiza el campo correspondiente en el estado
@@ -36,10 +72,13 @@ export const AuthorCreate = ({ idiomas, onCreate }:
     };
 
     const confirmCreate = () => {
-        onCreate(author); // Llama a la función de callback para enviar el autor
+        if (!author.nacionalidad || nameError || lastNameError) {
+            setHasError(!author.nacionalidad); // Verifica si hay errores
+        } else {
+            setHasError(false);
+            onCreate(author); // Llama a la función de callback para enviar el autor
+        }
     };
-
-    const hasError = false; // Define hasError variable
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
@@ -61,6 +100,8 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                     value={author.nombre} // Asegúrate de que el valor coincida con el estado
                     sx={{ width: '20rem' }}
                     InputProps={{ style: { fontSize: '1.5rem' } }}
+                    error={nameError}
+                    helperText={nameError ? nameHelperText : ''}
                 />
                 <TextField
                     label="Last Name"
@@ -70,6 +111,8 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                     value={author.apellido} // Asegúrate de que el valor coincida con el estado
                     sx={{ width: '20rem' }}
                     InputProps={{ style: { fontSize: '1.5rem' } }}
+                    error={lastNameError}
+                    helperText={lastNameError ? lastNameHelperText : ''}
                 />
                 <FormControl sx={{ width: '20rem' }} error={hasError}>
                     <InputLabel id="nationality-select-label">Language</InputLabel>
