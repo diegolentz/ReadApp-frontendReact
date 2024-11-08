@@ -2,7 +2,6 @@ import { Card, CardContent, Typography, IconButton, Box } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
-import { Height } from "@mui/icons-material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export const Author = ({
@@ -86,7 +85,7 @@ export const Author = ({
                         justifyContent="space-between"
                         width="20%"
                         height="100%"
-                        gap={0.5}
+                        gap={0.5} 
                     >
                         <IconButton
                             onClick={() => showAuthor(author.id)}

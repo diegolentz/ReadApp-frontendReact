@@ -1,6 +1,14 @@
+import * as React from 'react';
 import { useEffect, useState, ChangeEvent } from "react";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Button from '@mui/material/Button';
 import { AuthorJSON } from "../../../domain/AuthorJSON";
-import "./AuthorEdit.css";
 import { useForm } from "react-hook-form";
 import { authorService } from "../../../service/authorService";
 import { useParams } from "react-router-dom";
@@ -11,9 +19,15 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     const [author, setAuthor] = useState<AuthorJSON>(renderAuthor); 
     const params = useParams<{ id: string }>();
     const { register, setValue } = useForm();
+    const [hasError, setHasError] = useState(false);
 
     const confirmEdit = () => {
-        onSelect(author);
+        if (!author.nationality) {
+            setHasError(true);
+        } else {
+            setHasError(false);
+            onSelect(author);
+        }
     };
 
     const getAuthor = async (id: number) => {
@@ -39,62 +53,64 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
         }
     }, [renderAuthor, params.id]);
 
-    // useEffect(() => {
-    //     if (author.id !== 0) {
-    //         setValue("name", author.name);
-    //         setValue("lastName", author.lastName);
-    //         setValue("nationality", author.nationality);
-    //     }
-    // }, [author, setValue]);
-
     return (
-        <div className="container">
+        <>           
             <h3>Author Edit</h3>
-
-            <form>
-                <div className="campo input__label--effect">
-                    <input
-                        type="text"
-                        required
-                        {...register("name")}
-                        onChange={editFile}
-                        placeholder=" "
-                        disabled={!editable}
-                        value={author.name} 
-                    />
-                    <label className="label">Name</label>
-                </div>
-                <div className="campo input__label--effect">
-                    <input
-                        type="text"
-                        required
-                        {...register("lastName")}
-                        onChange={editFile}
-                        placeholder=" "
-                        disabled={!editable}
-                        value={author.lastName} 
-                                            />
-                    <label className="label">Last Name</label>
-                </div>
-                <div className="campo input__label--effect">
-                    <select
-                        {...register("nationality")}
-                        onChange={editFile}
-                        disabled={!editable}
-                        value={author.nationality}
+            <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} noValidate autoComplete="off">
+                <TextField
+                    label="Name"
+                    variant="outlined"
+                    required
+                    {...register("name")}
+                    onChange={editFile}
+                    disabled={!editable}
+                    value={author.name || ''}
+                    fullWidth
+                />
+                <TextField
+                    label="Last Name"
+                    variant="outlined"
+                    required
+                    {...register("lastName")}
+                    onChange={editFile}
+                    disabled={!editable}
+                    value={author.lastName || ''}
+                    fullWidth
+                />
+                
+                <FormControl 
+                    fullWidth 
+                    required 
+                    sx={{ mt: 2 }} 
+                    error={hasError && !author.nationality} 
+                    disabled={!editable}
+                >
+                    <InputLabel id="nationality-select-label">Language</InputLabel>
+                    <Select
+                        labelId="nationality-select-label"
+                        id="nationality-select"
+                        value={author.nationality || ''}
+                        label="Language"
+                        onChange={(event: SelectChangeEvent) => editFile(event as ChangeEvent<HTMLInputElement>)}
+                        renderValue={(value) => (value ? value : "⚠️ - Please select")}
                     >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
                         {author.lenguajes?.map((language) => (
-                            <option key={language} value={language}>
+                            <MenuItem key={language} value={language}>
                                 {language}
-                            </option>
+                            </MenuItem>
                         ))}
-                    </select>
-                    <label className="label">Language</label>
-                </div>
-            </form>
+                    </Select>
+                    <FormHelperText>{hasError && !author.nationality ? "This field is required" : "Select the author's language"}</FormHelperText>
+                </FormControl>
+            </Box>
 
-            <button onClick={confirmEdit}>Guardar</button>
-        </div>
+            <Button onClick={confirmEdit} variant="contained" color="primary" sx={{ mt: 2 }}>
+                Guardar
+            </Button>
+        </>
     );
 };
 
