@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useEffect, useState, ChangeEvent } from "react";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -9,22 +8,24 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import { AuthorJSON } from "../../../domain/AuthorJSON";
-import { useForm } from "react-hook-form";
 import { authorService } from "../../../service/authorService";
-import { useParams } from "react-router-dom";
-import { Flare } from '@mui/icons-material';
+import { Navigate, useParams } from "react-router-dom";
 
 export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     { renderAuthor: AuthorJSON, onSelect: (author: AuthorJSON) => void, editable: boolean }) => {
 
     const [author, setAuthor] = useState<AuthorJSON>(renderAuthor);
     const params = useParams<{ id: string }>();
-    const { register, setValue } = useForm();
+
     const [hasError, setHasError] = useState(false);
+    const [lastNameError, setLastNameError] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const [lastNameHelperText, setLastNameHelperText] = useState("");
+    const [nameHelperText, setNameHelperText] = useState("");
 
     const confirmEdit = () => {
-        if (!author.nationality) {
-            setHasError(true);
+        if (!author.nationality || nameError || lastNameError) {
+            setHasError(!author.nationality);
         } else {
             setHasError(false);
             onSelect(author);
@@ -36,8 +37,37 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
         setAuthor(fetchedAuthor);
     };
 
-    const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | SelectChangeEvent<string>) => {
+    const validateField = (fieldName: string, value: string) => {
+        const lettersAndSpacesRegex = /^[a-zA-Z\s]+$/;
+        let error = false;
+        let helperText = "";
+
+        const trimmedValue = value.trim();
+
+        if (!trimmedValue) {
+            error = true;
+            helperText = `${fieldName} cannot be empty.`;
+        } else if (!lettersAndSpacesRegex.test(trimmedValue)) {
+            error = true;
+            helperText = `${fieldName} must contain only letters and spaces.`;
+        }
+
+        return { error, helperText };
+    };
+
+    const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
         const { name, value } = event.target;
+
+        if (name === "name" || name === "lastName") {
+            const { error, helperText } = validateField(name, value);
+            if (name === "name") {
+                setNameError(error);
+                setNameHelperText(helperText);
+            } else if (name === "lastName") {
+                setLastNameError(error);
+                setLastNameHelperText(helperText);
+            }
+        }
 
         const updatedAuthor = {
             ...author,
@@ -55,8 +85,9 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     }, [renderAuthor, params.id]);
 
     return (
-        <>
-            <Box component="form"
+        <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
+            <Box
+                component="form"
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
@@ -68,27 +99,29 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                 <TextField
                     label="Name"
                     variant="outlined"
-                    required
-                    {...register("name")}
                     onChange={editFile}
+                    name="name"
                     disabled={!editable}
                     value={author.name || ''}
                     sx={{ width: '20rem' }}
                     InputProps={{ style: { fontSize: '1.5rem' } }}
+                    error={nameError}
+                    helperText={nameError ? nameHelperText : ''}
                 />
                 <TextField
                     label="Last Name"
                     variant="outlined"
-                    required
-                    {...register("lastName")}
                     onChange={editFile}
+                    name="lastName"
                     disabled={!editable}
                     value={author.lastName || ''}
                     sx={{ width: '20rem' }}
                     InputProps={{ style: { fontSize: '1.5rem' } }}
+                    error={lastNameError}
+                    helperText={lastNameError ? lastNameHelperText : ''}
                 />
 
-                <FormControl sx={{ width: '20rem' }} error={false}>
+                <FormControl sx={{ width: '20rem' }} error={hasError}>
                     <InputLabel id="nationality-select-label">Language</InputLabel>
                     <Select
                         labelId="nationality-select-label"
@@ -98,28 +131,29 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                         value={author.nationality || ''}
                         label="Language"
                         onChange={(event: SelectChangeEvent) => editFile(event)}
+                        sx={{ width: '20rem' }}
                     >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-
                         {author.lenguajes?.map((language) => (
-                            <MenuItem key={language} value={language} >
+                            <MenuItem key={language} value={language}>
                                 {language}
                             </MenuItem>
                         ))}
                     </Select>
-                    <FormHelperText>{/* Puedes poner aquí un mensaje de error o ayuda opcional */}</FormHelperText>
+                    {hasError && (
+                        <FormHelperText>Language selection is required.</FormHelperText>
+                    )}
                 </FormControl>
-
-
-
             </Box>
 
-            <Button onClick={confirmEdit} variant="contained" color="primary" sx={{ mt: 2 }}>
-                Guardar
-            </Button>
-        </>
+            <Box display="flex" justifyContent="center" gap="1rem" >
+                <Button variant="contained" color="error" sx={{ width: '10rem', borderRadius: "4rem"  }}>
+                    Cancel
+                </Button>
+                <Button onClick={confirmEdit} variant="contained" color="success" sx={{ width: '10rem', borderRadius: "4rem" }}>
+                    Save
+                </Button>
+            </Box>
+        </Box>
     );
 };
 
