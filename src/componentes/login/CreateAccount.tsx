@@ -1,87 +1,188 @@
 import './login.css'
 import { User } from '../../domain/loginJSON'
-import { useForm } from 'react-hook-form'
+import { userService } from '../../service/userService'
+import { ErrorResponse, mostrarMensajeError } from '../../error-handling'
+import { useState } from 'react'
+import { Box, Button, TextField, Snackbar, Alert } from '@mui/material'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 
-export const CreateAccount = ({changePage} : {changePage :() => void}) => {
-    const {register,handleSubmit,formState : {errors},watch} = useForm()
+export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
+    const [errorMessage, setErrorMessage] = useState('')
+   
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
+    const [openSnackbar, setOpenSnackbar] = useState(false)
 
-    const email    : string = watch('email')
-    const username : string = watch('username')
-    const password : string = watch('password')
-    const name     : string = watch('name')
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
 
-    const usuario : User = new User(email,username,password,name)
+    const [formErrors, setFormErrors] = useState({
+        email: '',
+        username: '',
+        password: '',
+        name: ''
+    })
 
+    const nuevoUsuario: User = new User(email, username, password, name)
+    const createRequest = nuevoUsuario.buildCreateAccountRequest()
 
-    const create = () => {
+    // Validación del formulario
+    const validateForm = () => {
+        const errors: any = {}
 
+        if (!email) {
+            errors.email = 'Email is required'
+        } else if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+            errors.email = 'Email must be a valid email address'
+        }
+
+        if (!username) {
+            errors.username = 'Username is required'
+        } else if (username.length > 15) {
+            errors.username = 'Username cannot be longer than 15 characters'
+        }
+
+        if (!password) {
+            errors.password = 'Password is required'
+        }
+
+        if (!name) {
+            errors.name = 'Name is required'
+        }
+
+        setFormErrors(errors)
+        return Object.keys(errors).length === 0
     }
 
-    const customSubmit = (data: unknown) => {
-        console.log(data)
+    // Crear la cuenta
+    const create = async () => {
+        if (!validateForm()) {
+            return
+        }
+
+        try {
+            const create = await userService.create(createRequest)
+            setErrorMessage('Account create successfully') 
+            setSnackbarSeverity('success') 
+            setOpenSnackbar(true) 
+            changePage() 
+        } catch (error: unknown) {
+            mostrarMensajeError(error as ErrorResponse, setErrorMessage)
+            setSnackbarSeverity('error') 
+            setOpenSnackbar(true) 
+        }
     }
 
-    return <>
 
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false)
+        setErrorMessage('')
+    }
+
+    return (
         <main className="fondo-background">
-           
-           <div className=" form__container ">
-               <div className="encabezado ">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256"><path d="M208,24H72A32,32,0,0,0,40,56V224a8,8,0,0,0,8,8H192a8,8,0,0,0,0-16H56a16,16,0,0,1,16-16H208a8,8,0,0,0,8-8V32A8,8,0,0,0,208,24Zm-8,160H72a31.82,31.82,0,0,0-16,4.29V56A16,16,0,0,1,72,40H200Z"></path></svg>
-                   <h1>ReadApp</h1> 
+            <div className="form__container">
+                <div className="encabezado">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
+                        <path d="M208,24H72A32,32,0,0,0,40,56V224a8,8,0,0,0,8,8H192a8,8,0,0,0,0-16H56a16,16,0,0,1,16-16H208a8,8,0,0,0,8-8V32A8,8,0,0,0,208,24Zm-8,160H72a31.82,31.82,0,0,0-16,4.29V56A16,16,0,0,1,72,40H200Z"></path>
+                    </svg>
+                    <h1>ReadApp</h1>
                 </div>
 
-            <form onSubmit={ handleSubmit(customSubmit) } id="loginForm" className="form__inputs borde--iluminado" action="/submit-login" method="post">
-                
-                <div className="campo">
-                    <input type="email" {...register('email',{
-                        required : true,
-                        maxLength: 15})}/> 
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}    
+                <Box
+                    component="form"
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        create()
+                    }}
+                    display="flex"
+                    flexDirection="column"
+                    gap={2}
+                    width="100%"
+                    maxWidth="400px"
+                    mx="auto"
+                >
+                    <TextField
+                        id="email"
+                        label="Email"
+                        variant="outlined"
+                        type="email"
+                        required
+                        fullWidth
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        error={!!formErrors.email}
+                        helperText={formErrors.email || ''}
+                    />
 
-                    <label >email</label>
-                </div>
-        
-                <div className="campo ">
-                    <input type="text" {...register('username',{
-                        required : true,
-                        maxLength: 15})}/> 
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}    
+                    <TextField
+                        id="username"
+                        label="Username"
+                        variant="outlined"
+                        type="text"
+                        required
+                        fullWidth
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        error={!!formErrors.username}
+                        helperText={formErrors.username || ''}
+                    />
 
-                    <label >Username</label>
-                </div>
-        
-                <div className="campo">
-                    <input type="password" {...register('password',{required:true})}/>
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
-                    <label >Password</label>
-                </div>
+                    <TextField
+                        id="password"
+                        label="Password"
+                        variant="outlined"
+                        type="password"
+                        required
+                        fullWidth
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        error={!!formErrors.password}
+                        helperText={formErrors.password || ''}
+                    />
 
-                <div className="campo">
-                    <input type="text" {...register('name',{required:true})}/>
-                    {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                    {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
-                    <label >Name</label>
-                </div>
+                    <TextField
+                        id="name"
+                        label="Name"
+                        variant="outlined"
+                        type="text"
+                        required
+                        fullWidth
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        error={!!formErrors.name}
+                        helperText={formErrors.name || ''}
+                    />
 
-                <div className='actions'>
+                    <div className="actions">
+                        <Button
+                            variant="contained"
+                            color="success"
+                            type="submit"
+                            fullWidth
+                            startIcon={ <AccountCircleOutlinedIcon fontSize="large"/>}
+                        >
+                            Create Account
+                        </Button>
 
-                    <button type='submit' className='valid button-login' onClick={create} >
-                        <img src="src/assets/sign-in.svg" alt=""/>
-                        <p>Create Account</p>
-                    </button>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={changePage}
+                            fullWidth
+                        >
+                            Back to Login
+                        </Button>
+                    </div>
+                </Box>
 
-                    <button className="valid button-passwordRecovery" onClick={changePage}>
-                        <img src="src/assets/key-return.svg" alt=""/>
-                        <p>Back to login</p>
-                    </button>
-                </div>
-            </form> 
+                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                    <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+                    {snackbarSeverity === 'success' ? "Account create successfully" : errorMessage || "An error occurred. Please try again."}
+                    </Alert>
+                </Snackbar>
             </div>
-
         </main>
-    </>
-} 
+    )
+}

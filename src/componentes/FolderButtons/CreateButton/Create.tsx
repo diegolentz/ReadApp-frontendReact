@@ -1,15 +1,15 @@
-import { useNavigate } from "react-router-dom";
 import "./Create.css";
 import { paths } from "../../../domain/routes";
 
-export const Create = () => {
-    const navigate = useNavigate();
+export const Create = ({onClick} : 
+    {onClick : () => void
+    }) => {
+
     
     const createAuthor = () => {
-        navigate(`/${paths.author}/create`);
-        
-        // navigate(`/${paths.author}/edit/${id}`);
-    }
+            onClick();
+        };
+
 
     return (
         <>
