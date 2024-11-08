@@ -12,11 +12,12 @@ import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { useForm } from "react-hook-form";
 import { authorService } from "../../../service/authorService";
 import { useParams } from "react-router-dom";
+import { Flare } from '@mui/icons-material';
 
-export const AuthorEdit = ({ renderAuthor, onSelect, editable }: 
+export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     { renderAuthor: AuthorJSON, onSelect: (author: AuthorJSON) => void, editable: boolean }) => {
 
-    const [author, setAuthor] = useState<AuthorJSON>(renderAuthor); 
+    const [author, setAuthor] = useState<AuthorJSON>(renderAuthor);
     const params = useParams<{ id: string }>();
     const { register, setValue } = useForm();
     const [hasError, setHasError] = useState(false);
@@ -32,12 +33,12 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
 
     const getAuthor = async (id: number) => {
         const fetchedAuthor = await authorService.getAuthor(id);
-        setAuthor(fetchedAuthor); 
+        setAuthor(fetchedAuthor);
     };
 
-    const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | SelectChangeEvent<string>) => {
         const { name, value } = event.target;
-        
+
         const updatedAuthor = {
             ...author,
             [name]: value,
@@ -49,14 +50,21 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
         if (renderAuthor.id !== 0) {
             setAuthor(renderAuthor);
         } else if (params.id) {
-            getAuthor(Number(params.id)); 
+            getAuthor(Number(params.id));
         }
     }, [renderAuthor, params.id]);
 
     return (
-        <>           
-            <h3>Author Edit</h3>
-            <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }} noValidate autoComplete="off">
+        <>
+            <Box component="form"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                gap={3}
+                width="100%"
+                height="100%"
+                padding={5}
+            >
                 <TextField
                     label="Name"
                     variant="outlined"
@@ -65,7 +73,8 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                     onChange={editFile}
                     disabled={!editable}
                     value={author.name || ''}
-                    fullWidth
+                    sx={{ width: '20rem' }}
+                    InputProps={{ style: { fontSize: '1.5rem' } }}
                 />
                 <TextField
                     label="Last Name"
@@ -75,36 +84,36 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                     onChange={editFile}
                     disabled={!editable}
                     value={author.lastName || ''}
-                    fullWidth
+                    sx={{ width: '20rem' }}
+                    InputProps={{ style: { fontSize: '1.5rem' } }}
                 />
-                
-                <FormControl 
-                    fullWidth 
-                    required 
-                    sx={{ mt: 2 }} 
-                    error={hasError && !author.nationality} 
-                    disabled={!editable}
-                >
+
+                <FormControl sx={{ width: '20rem' }} error={false}>
                     <InputLabel id="nationality-select-label">Language</InputLabel>
                     <Select
                         labelId="nationality-select-label"
                         id="nationality-select"
+                        name="nationality"
+                        disabled={!editable}
                         value={author.nationality || ''}
                         label="Language"
-                        onChange={(event: SelectChangeEvent) => editFile(event as ChangeEvent<HTMLInputElement>)}
-                        renderValue={(value) => (value ? value : "⚠️ - Please select")}
+                        onChange={(event: SelectChangeEvent) => editFile(event)}
                     >
                         <MenuItem value="">
                             <em>None</em>
                         </MenuItem>
+
                         {author.lenguajes?.map((language) => (
-                            <MenuItem key={language} value={language}>
+                            <MenuItem key={language} value={language} sx={{display: 'flex', flexDirection:'column'}}>
                                 {language}
                             </MenuItem>
                         ))}
                     </Select>
-                    <FormHelperText>{hasError && !author.nationality ? "This field is required" : "Select the author's language"}</FormHelperText>
+                    <FormHelperText>{/* Puedes poner aquí un mensaje de error o ayuda opcional */}</FormHelperText>
                 </FormControl>
+
+
+
             </Box>
 
             <Button onClick={confirmEdit} variant="contained" color="primary" sx={{ mt: 2 }}>

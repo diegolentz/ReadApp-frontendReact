@@ -65,7 +65,7 @@ export const AuthorManager = ({ view }: {view : string}) => {
     }, [view, params.id]);
     
     return (
-        <div className="pageFormat">
+        <>
             {view === "list" && (
                 <div>
                     <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} onDetail={showAuthor}/>
@@ -86,6 +86,6 @@ export const AuthorManager = ({ view }: {view : string}) => {
                     <AuthorCreate idiomas={lenguajes} onCreate={confirmCreate} />
                 </div>
             )}
-        </div>
+        </>
     );
 };
