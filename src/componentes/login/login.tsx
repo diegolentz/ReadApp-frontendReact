@@ -1,75 +1,85 @@
 import './login.css'
-import LoginIcon from '@mui/icons-material/Login';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
-import Alert from '@mui/material/Alert';
-import { useForm } from 'react-hook-form';
-import { User } from '../../domain/loginJSON';
-import { userService } from '../../service/userService';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { mostrarMensajeError } from '../../error-handling';
-import { ErrorResponse } from '../../error-handling';
-import { CreateAccount } from './CreateAccount';
-import { Snackbar, Button, TextField, Box } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined'
+import Alert from '@mui/material/Alert'
+import { useState } from 'react'
+import { mostrarMensajeError } from '../../error-handling'
+import { ErrorResponse } from '../../error-handling'
+import { CreateAccount } from './CreateAccount'
+import { Snackbar, Button, TextField, Box } from '@mui/material'
+import { userService } from '../../service/userService'
+import { User } from '../../domain/loginJSON'
+import { useNavigate } from 'react-router-dom'
 
 export const Login = () => {
-    // const { register, handleSubmit, formState: { errors }, watch } = useForm();
-    const navigate = useNavigate();
-    const [errorMessage, setErrorMessage] = useState('');
-    const [isLoginPage, setLoginPage] = useState(true);
-    const [openSnackbar, setOpenSnackbar] = useState(false); // Control state for Snackbar visibility
-    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success'); // Severity state for Snackbar
+    const navigate = useNavigate()
+    const [errorMessage, setErrorMessage] = useState('')
+    const [isLoginPage, setLoginPage] = useState(true)
+    const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
 
-    // const username: string = watch('username');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState({
-        error: false,
-        message: ''
-    });
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
 
-    const usuario: User = new User('', username, password, '');
-    const loginRequest = usuario.buildLoginRequest();
+    const [errors, setErrors] = useState({
+        username: '',
+        password: '',
+    })
+
+    const usuario: User = new User('', username, password, '')
+    const loginRequest = usuario.buildLoginRequest()
 
     const login = async (event: React.FormEvent) => {
-        event.preventDefault(); // Prevent default form submission (no page reload)
+        event.preventDefault()
 
-        if (validacion()) {
-            setErrorMessage('Please fill in both fields.');
-            setSnackbarSeverity('error');
-            setOpenSnackbar(true);
-            return;
+        let formValid = true
+        const newErrors = {
+            username: '',
+            password: '',
         }
+
+        if (!username) {
+            formValid = false
+            newErrors.username = 'Username is required'
+        }
+
+        if (!password) {
+            formValid = false
+            newErrors.password = 'Password is required'
+        }
+
+        setErrors(newErrors)
+
+        if (!formValid) {
+            setSnackbarSeverity('error')
+            setErrorMessage('Please fill in both fields.')
+            setOpenSnackbar(true)
+            return
+        }
+
         try {
-            await userService.login(loginRequest);
-            setSnackbarSeverity('success');
-            setOpenSnackbar(true);
-            setTimeout(() => navigate('/dashboard'), 2000); // Delay navigation to allow Snackbar to be visible
+            await userService.login(loginRequest)
+            setSnackbarSeverity('success')
+            setOpenSnackbar(true)
+            setTimeout(() => navigate('/dashboard'), 2000)
         } catch (error: unknown) {
-            mostrarMensajeError(error as ErrorResponse, setErrorMessage);
-            setSnackbarSeverity('error');
-            setOpenSnackbar(true);
+            mostrarMensajeError(error as ErrorResponse, setErrorMessage)
+            setSnackbarSeverity('error')
+            setOpenSnackbar(true)
         }
-    };
-
-    const validacion = (): boolean => !username || !password;
+    }
 
     const changePage = () => {
-        setLoginPage(!isLoginPage);
-    };
-
-    const customSubmit = (data: unknown) => {
-        console.log(data);
-    };
+        setLoginPage(!isLoginPage)
+    }
 
     const handleCloseSnackbar = () => {
-        setOpenSnackbar(false);
-    };
+        setOpenSnackbar(false)
+    }
 
     return (isLoginPage ? <>
         <main className="fondo-background">
-
             <div className="form__container">
                 <div className="encabezado ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
@@ -79,60 +89,60 @@ export const Login = () => {
                 </div>
 
                 <Box component="form"
-                    onSubmit={login} 
+                    onSubmit={login}
                     display="flex"
                     flexDirection="column"
-                    gap={2} 
+                    gap={2}
                     width="100%"
-                    maxWidth="400px" 
-                    mx="auto" >
-
+                    maxWidth="400px"
+                    mx="auto">
+                    
                     <TextField
                         id="outlined-basic"
-                        label="username"
+                        label="Username"
                         variant="outlined"
                         type="text"
                         required
-                        error={error.error}
-                        helperText={error.message}
+                        error={!!errors.username}
+                        helperText={errors.username || ''}
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
-                        />
+                    />
 
                     <TextField
                         id="outlined-basic"
-                        label="password"
+                        label="Password"
                         variant="outlined"
                         type="password"
-                        error={error.error}
-                        helperText={error.message}
+                        required
+                        error={!!errors.password}
+                        helperText={errors.password || ''}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
-                        required />
+                    />
 
                     <Button
-                        variant='contained'
-                        color='success'
-                        type='submit'
+                        variant="contained"
+                        color="success"
+                        type="submit"
                         startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
                         <p>Login</p>
                     </Button>
 
                     <Button
-                        variant='contained'
+                        variant="contained"
                         onClick={changePage}
-                        startIcon={<AccountCircleOutlinedIcon fontSize='large' />}>
+                        startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
                         <p>New account</p>
                     </Button>
 
                     <Button
-                        variant='contained'
-                        color='secondary'
-                        startIcon={<KeyOutlinedIcon fontSize='small' />}>
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<KeyOutlinedIcon fontSize="small" />}>
                         <p>Password Recovery</p>
                     </Button>
                 </Box>
-
             </div>
 
             <Snackbar
@@ -147,4 +157,4 @@ export const Login = () => {
 
         </main>
     </> : <CreateAccount changePage={changePage} />)
-};
+}
