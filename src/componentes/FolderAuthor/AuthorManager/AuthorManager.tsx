@@ -13,8 +13,6 @@ import { Box } from "@mui/material";
 export const AuthorManager = ({ view }: {view : string}) => {
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
     const [editable, setEditable] = useState<boolean>(false);
-    const [selectedAuthor, setSelectedAuthor] = useState<AuthorJSON>(new AuthorJSON());
-    const [lenguajes, setLenguajes] = useState<string[]>([]);
 
     const navigate = useNavigate();
     const params = useParams<{ id: string }>();
@@ -22,41 +20,31 @@ export const AuthorManager = ({ view }: {view : string}) => {
     const fetchData = async () => {
         const autorData = await authorService.getAuthorData();
         setAuthors(autorData);
-        // setLenguajes(autorData[0].lenguajes);
     };
 
     const toEdit = (id: number) => {
         setEditable(true);
-        // setSelectedAuthor(authors.find((a) => a.id === id) || new AuthorJSON());
         navigate(`/author/edit/${id}`);
     };
-
-    const editAuthor = async (author: AuthorJSON) => {
-        const autorEdit = author.toAuthor(author);
-        await authorService.editAuthor(autorEdit);
-        setAuthors((prevAuthors) =>
-            prevAuthors.map((a) => (a.id === author.id ? author : a))
-        );
-        navigate(`/author/list`);
-    };
+    
+    const createAuthor = () => navigate(`/author/create`);
 
     const deleteAuthor = async (id: number) => {
         await authorService.deleteAuthor(id);
         setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
     };
     
-    const createAuthor = () => navigate(`/author/create`);
+    const showAuthor = (id: number) => {
+        setEditable(false);
+        navigate(`/author/show/${id}`);
+    };
 
     const confirmCreate = async (author: CreateAuthorJSON) => {
         await authorService.createAuthor(author);
         navigate(`/author/list`);
     };
 
-    const showAuthor = (id: number) => {
-        setEditable(false);
-        navigate(`/author/show/${id}`);
-    };
-
+    
     useEffect(() => {
         if (view === "list") {
             fetchData();
@@ -90,8 +78,7 @@ export const AuthorManager = ({ view }: {view : string}) => {
             {(view === "edit" || view === "show") && (
                 <div>
                     <AuthorEdit 
-                        renderAuthor={selectedAuthor} 
-                        onSelect={editAuthor} 
+                        
                         editable={editable} 
                     />
                 </div>
@@ -99,7 +86,7 @@ export const AuthorManager = ({ view }: {view : string}) => {
             {view === "create" && (
                 <div>
 
-                    <AuthorCreate idiomas={lenguajes} onCreate={confirmCreate} />
+                    {/* <AuthorCreate  onCreate={confirmCreate} /> */}
                 </div>
             )}
         </>

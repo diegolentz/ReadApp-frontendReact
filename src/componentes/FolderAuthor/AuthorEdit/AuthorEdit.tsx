@@ -9,14 +9,16 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
-export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
-    { renderAuthor: AuthorJSON, onSelect: (author: AuthorJSON) => void, editable: boolean }) => {
+export const AuthorEdit = ({editable }:{  editable: boolean }) => {
 
-    const [author, setAuthor] = useState<AuthorJSON>(renderAuthor);
+    const [author, setAuthor] = useState<AuthorJSON>(new AuthorJSON());
+    const [lenguajes, setLenguajes] = useState<string[]>([]);
+    
     const params = useParams<{ id: string }>();
+    const navigate = useNavigate();
 
     const [hasError, setHasError] = useState(false);
     const [lastNameError, setLastNameError] = useState(false);
@@ -25,28 +27,30 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     const [lastNameHelperText, setLastNameHelperText] = useState("");
     const [nameHelperText, setNameHelperText] = useState("");
 
-    const confirmEdit = () => {
+    const getAuthor = async () => {
+        const id = Number(params.id);
+        const fetchedAuthor = await authorService.getAuthor(id);
+        setAuthor(fetchedAuthor);
+        const idiomas = await authorService.getIdiomas();
+        setLenguajes(idiomas);
+    };
+ 
+    const confirmEdit  = async () => {
         if (!author.nationality || nameError || lastNameError) {
             setHasError(!author.nationality);
         } else {
-            // console.log("hola");
             setHasError(false);
-            onSelect(author);
+            const autorEdit = author.toAuthor(author);
+            await authorService.editAuthor(autorEdit);
+            navigate(`/author/list`);
         }
-    };
-
-    const getAuthor = async (id: number) => {
-        const fetchedAuthor = await authorService.getAuthor(id);
-        setAuthor(fetchedAuthor);
     };
 
     const validateField = (fieldName: string, value: string) => {
         const lettersAndSpacesRegex = /^[a-zA-Z\s]+$/;
         let error = false;
         let helperText = "";
-
         const trimmedValue = value.trim();
-
         if (!trimmedValue) {
             error = true;
             helperText = `${fieldName} cannot be empty.`;
@@ -54,13 +58,11 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
             error = true;
             helperText = `${fieldName} must contain only letters and spaces.`;
         }
-
         return { error, helperText };
     };
 
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
         const { name, value } = event.target;
-
         if (name === "name" || name === "lastName") {
             const { error, helperText } = validateField(name, value);
             if (name === "name") {
@@ -71,7 +73,6 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                 setLastNameHelperText(helperText);
             }
         }
-
         const updatedAuthor = {
             ...author,
             [name]: value,
@@ -80,12 +81,8 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     };
 
     useEffect(() => {
-        if (renderAuthor.id !== 0) {
-            setAuthor(renderAuthor);
-        } else if (params.id) {
-            getAuthor(Number(params.id));
-        }
-    }, [renderAuthor, params.id]);
+      getAuthor();
+    }, [params.id]);
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
@@ -124,7 +121,7 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                     helperText={lastNameError ? lastNameHelperText : ''}
                 />
 
-                {/* <FormControl sx={{ width: '20rem' }} error={hasError}> */}
+                <FormControl sx={{ width: '20rem' }} error={hasError}>
                     <InputLabel id="nationality-select-label">Language</InputLabel>
                     <Select
                         labelId="nationality-select-label"
@@ -136,18 +133,18 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                         onChange={(event: SelectChangeEvent) => editFile(event)}
                         sx={{ width: '20rem' }}
                     >
-                        {/* {author.lenguajes?.map((language) => (
+                        {lenguajes?.map((language) => (
                             <MenuItem key={language} value={language}
                             >
                                 {language}
                             </MenuItem>
-                        ))} */}
+                        ))}
 
                     </Select>
                     {hasError && (
                         <FormHelperText>Language selection is required.</FormHelperText>
                     )}
-                {/* </FormControl> */}
+                </FormControl>
             </Box>
 
             <Box display="flex" justifyContent="center" gap="1rem" >
