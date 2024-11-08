@@ -11,37 +11,44 @@ import { useState } from 'react';
 import { mostrarMensajeError } from '../../error-handling';
 import { ErrorResponse } from '../../error-handling';
 import { CreateAccount } from './CreateAccount';
-import { Snackbar, Button } from '@mui/material';
+import { Snackbar, Button, TextField, Box } from '@mui/material';
 
 export const Login = () => {
-    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+    // const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoginPage, setLoginPage] = useState(true);
     const [openSnackbar, setOpenSnackbar] = useState(false); // Control state for Snackbar visibility
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success'); // Severity state for Snackbar
 
-    const username: string = watch('username');
-    const password: string = watch('password');
+    // const username: string = watch('username');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState({
+        error: false,
+        message: ''
+    });
 
-    const usuario: User = new User("", username, password, "");
+    const usuario: User = new User('', username, password, '');
     const loginRequest = usuario.buildLoginRequest();
 
-    const login = async () => {
+    const login = async (event: React.FormEvent) => {
+        event.preventDefault(); // Prevent default form submission (no page reload)
+
         if (validacion()) {
-            setErrorMessage("Please fill in both fields.");
-            setSnackbarSeverity('error'); // Set severity to error if validation fails
+            setErrorMessage('Please fill in both fields.');
+            setSnackbarSeverity('error');
             setOpenSnackbar(true);
             return;
         }
         try {
             await userService.login(loginRequest);
-            setSnackbarSeverity('success'); // Set severity to success if login is successful
-            setOpenSnackbar(true); // Show Snackbar after successful login
+            setSnackbarSeverity('success');
+            setOpenSnackbar(true);
             setTimeout(() => navigate('/dashboard'), 2000); // Delay navigation to allow Snackbar to be visible
         } catch (error: unknown) {
             mostrarMensajeError(error as ErrorResponse, setErrorMessage);
-            setSnackbarSeverity('error'); // Set severity to error if login fails
+            setSnackbarSeverity('error');
             setOpenSnackbar(true);
         }
     };
@@ -57,7 +64,7 @@ export const Login = () => {
     };
 
     const handleCloseSnackbar = () => {
-        setOpenSnackbar(false); // Close Snackbar
+        setOpenSnackbar(false);
     };
 
     return (isLoginPage ? <>
@@ -71,46 +78,67 @@ export const Login = () => {
                     <h1>ReadApp</h1>
                 </div>
 
-                <form onSubmit={handleSubmit(customSubmit)} id="loginForm" className="form__inputs borde--iluminado" action="/submit-login" method="post">
+                <Box component="form"
+                    onSubmit={login} 
+                    display="flex"
+                    flexDirection="column"
+                    gap={2} 
+                    width="100%"
+                    maxWidth="400px" 
+                    mx="auto" >
 
-                    <div className="campo">
-                        <input type="text" {...register('username', { required: true, maxLength: 15 })} />
-                        {errors.username?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                        {errors.username?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
+                    <TextField
+                        id="outlined-basic"
+                        label="username"
+                        variant="outlined"
+                        type="text"
+                        required
+                        error={error.error}
+                        helperText={error.message}
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                        />
 
-                        <label>Username</label>
-                    </div>
+                    <TextField
+                        id="outlined-basic"
+                        label="password"
+                        variant="outlined"
+                        type="password"
+                        error={error.error}
+                        helperText={error.message}
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        required />
 
-                    <div className="campo">
-                        <input type="password" {...register('password', { required: true })} />
-                        {errors.password?.type === "required" && <div className="input__required"><span>the field cannot be empty</span></div>}
-                        {errors.password?.type === "maxLength" && <div className="input__required"><span>The maximum number of characters is 15</span></div>}
-                        <label>Password</label>
-                    </div>
+                    <Button
+                        variant='contained'
+                        color='success'
+                        type='submit'
+                        startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
+                        <p>Login</p>
+                    </Button>
 
-                    <div className='actions'>
-                        <Button variant='contained' color='success' type='submit' onClick={login} startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
-                            <p>Login</p>
-                        </Button>
+                    <Button
+                        variant='contained'
+                        onClick={changePage}
+                        startIcon={<AccountCircleOutlinedIcon fontSize='large' />}>
+                        <p>New account</p>
+                    </Button>
 
-                        <Button variant='contained' onClick={changePage} startIcon={<AccountCircleOutlinedIcon fontSize='large' />}>
-                            <p>New account</p>
-                        </Button>
-
-                        <Button variant='contained' color='secondary' startIcon={<KeyOutlinedIcon fontSize='small' />}>
-                            <p>Password Recovery</p>
-                        </Button>
-                    </div>
-
-                </form>
+                    <Button
+                        variant='contained'
+                        color='secondary'
+                        startIcon={<KeyOutlinedIcon fontSize='small' />}>
+                        <p>Password Recovery</p>
+                    </Button>
+                </Box>
 
             </div>
 
-            {/* Snackbar for showing success or error */}
             <Snackbar
                 open={openSnackbar}
-                autoHideDuration={2000} // Duration before it closes
-                onClose={handleCloseSnackbar} // Close when time runs out or the user manually closes
+                autoHideDuration={2000}
+                onClose={handleCloseSnackbar}
             >
                 <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
                     {snackbarSeverity === 'success' ? "Login successful! Redirecting..." : errorMessage || "An error occurred. Please try again."}
