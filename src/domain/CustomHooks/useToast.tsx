@@ -1,6 +1,8 @@
 import { ReactNode, useState } from "react"
 import { Toast, ToastType } from "../../componentes/Toaster/Toast"
 
+
+
 export const useToast = () =>{
     const [toastList, setToasts] = useState<ToastParams[]>([])
 
@@ -20,7 +22,7 @@ export const useToast = () =>{
     )
 
 
-    return [toast, showToast    ]
+    return [toast, showToast]
 }
 
 export type ToastParams = {

@@ -1,4 +1,4 @@
-.MuiCard-root{
+.dashboard-item{
     border-width: 1px;
     border-style: solid;
     background-color: var(--color-celeste-oscuro);
@@ -10,6 +10,7 @@
     color: white;
     height: 9rem;
 }
+
 
 .dashboard-description{
     display: flex;

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './Dashboard.css'
 import { dashboardService } from '../../service/dashboardService'
 import { useToast } from '../../domain/CustomHooks/useToast'
-import { DashboardCard } from './DashboardCard/DashBoardCard'
+import { DashboardCard } from './DashboardCard/DashboardCard'
 import '../../assets/recomendations.svg'
 export const Dashboard = () => {
     const [recomendations, setRecomendations] = useState(0)
@@ -56,8 +56,8 @@ export const Dashboard = () => {
             <DashboardCard title={'Usuarios registrados'} data={users} svg={''}></DashboardCard>
             <DashboardCard title={'Centros de lectura'} data={centers} svg={''}></DashboardCard>
         </section>
+        <h2 className="titulo">Acciones</h2>
         <section className="acciones">
-            <h1 className="">Acciones</h1>
             <button data-testid="delete-users" className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
             <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
         </section>

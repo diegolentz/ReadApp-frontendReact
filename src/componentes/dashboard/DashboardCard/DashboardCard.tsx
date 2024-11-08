@@ -9,10 +9,3 @@ export const DashboardCard = ({ svg, title, data }: { svg: string, title: string
             <h4>{title}</h4>
         </div>
     </Card>
-{/* <article className="dashboard-item">
-                <img src={svg} alt="ICON" />
-                <div className="dashboard-description">
-                <h2>{data}</h2>
-                <h4>{title}</h4>
-                </div>
-        </article> */}
