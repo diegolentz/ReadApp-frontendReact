@@ -1,4 +1,5 @@
-ul {
+/* SIN MATERIAL UI ESTO ES ul */
+.nav-menu {
     height: var(--dimension-md);
     width: 100%;
     display: flex;
@@ -9,7 +10,7 @@ ul {
 
     background-color: var(--color-primary-bright);
 
-    & li {
+    /* & li {
         list-style-type: none;
         padding: var(--space-xs);
 
@@ -17,7 +18,7 @@ ul {
             width: var(--space-xl);
             height: var(--space-xl);
         }
-    }
+    } */
 
     & a {
         border-radius: 1rem;
@@ -28,12 +29,21 @@ ul {
 
         }
 
+        & button {
+            background-color: transparent;
+
+            & svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
     }
 
 }
 
 .active {
-    background-color: var(--color-complementary-1-bright);
+    background-color: var(--color-primary-bright);
 
 }
 
