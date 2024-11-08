@@ -17,7 +17,7 @@ export const AuthorEdit = ({editable }:{  editable: boolean }) => {
     const [author, setAuthor] = useState<AuthorJSON>(new AuthorJSON());
     const [lenguajes, setLenguajes] = useState<string[]>([]);
     
-    const params = useParams<{ id: string }>();
+    const params = useParams();
     const navigate = useNavigate();
 
     const [hasError, setHasError] = useState(false);
@@ -86,53 +86,21 @@ export const AuthorEdit = ({editable }:{  editable: boolean }) => {
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
-            <Box
-                component="form"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                gap={3}
-                width="100%"
-                height="100%"
-                padding={5}
-            >
-                <TextField
-                    label="Name"
-                    variant="outlined"
-                    onChange={editFile}
-                    name="name"
-                    disabled={!editable}
-                    value={author.name || ''}
-                    sx={{ width: '20rem' }}
-                    InputProps={{ style: { fontSize: '1.5rem' } }}
-                    error={nameError}
-                    helperText={nameError ? nameHelperText : ''}
-                />
-                <TextField
-                    label="Last Name"
-                    variant="outlined"
-                    onChange={editFile}
-                    name="lastName"
-                    disabled={!editable}
-                    value={author.lastName || ''}
-                    sx={{ width: '20rem' }}
-                    InputProps={{ style: { fontSize: '1.5rem' } }}
-                    error={lastNameError}
-                    helperText={lastNameError ? lastNameHelperText : ''}
-                />
+            <Box component="form" display="flex" flexDirection="column" alignItems="center" gap={3} width="100%" height="100%" padding={5}>
+                <TextField label="Name" variant="outlined" onChange={editFile} name="name" disabled={!editable} 
+                    value={author.name || ''} sx={{ width: '20rem' }} InputProps={{ style: { fontSize: '1.5rem' } }} 
+                    error={nameError} helperText={nameError ? nameHelperText : ''}/>
+
+                <TextField label="Last Name" variant="outlined" onChange={editFile} name="lastName" disabled={!editable}
+                    value={author.lastName || ''} sx={{ width: '20rem' }} InputProps={{ style: { fontSize: '1.5rem' } }}
+                    error={lastNameError} helperText={lastNameError ? lastNameHelperText : ''}/>
 
                 <FormControl sx={{ width: '20rem' }} error={hasError}>
                     <InputLabel id="nationality-select-label">Language</InputLabel>
-                    <Select
-                        labelId="nationality-select-label"
-                        id="nationality-select"
-                        name="nationality"
-                        disabled={!editable}
-                        value={author.nationality || ''}
-                        label="Language"
-                        onChange={(event: SelectChangeEvent) => editFile(event)}
-                        sx={{ width: '20rem' }}
-                    >
+                    <Select labelId="nationality-select-label" id="nationality-select" name="nationality" 
+                        disabled={!editable} value={author.nationality || ''} label="Language" 
+                        onChange={(event: SelectChangeEvent) => editFile(event)} sx={{ width: '20rem' }}>
+                        
                         {lenguajes?.map((language) => (
                             <MenuItem key={language} value={language}
                             >
@@ -141,9 +109,7 @@ export const AuthorEdit = ({editable }:{  editable: boolean }) => {
                         ))}
 
                     </Select>
-                    {hasError && (
-                        <FormHelperText>Language selection is required.</FormHelperText>
-                    )}
+                    {hasError && (<FormHelperText>Language selection is required.</FormHelperText>)}
                 </FormControl>
             </Box>
 
@@ -151,7 +117,8 @@ export const AuthorEdit = ({editable }:{  editable: boolean }) => {
                 <Button variant="contained" color="error" sx={{ width: '10rem', borderRadius: "4rem"  }}>
                     Cancel
                 </Button>
-                <Button onClick={confirmEdit} variant="contained" color="success" sx={{ width: '10rem', borderRadius: "4rem" }}>
+                <Button onClick={confirmEdit} variant="contained" color="success" sx={{ width: '10rem', 
+                    borderRadius: "4rem" }}>
                     Save
                 </Button>
             </Box>
