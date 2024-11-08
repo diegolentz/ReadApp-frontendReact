@@ -71,7 +71,7 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                         <select
                             {...register("nacionalidad")}
                             name="nacionalidad"
-                            onChange={editFile}
+                            onChange={editFile }
                             defaultValue=""
                         >
                             <option value="" disabled>Select your language</option>
@@ -86,6 +86,8 @@ export const AuthorCreate = ({ idiomas, onCreate }:
                 </form>
                 <button onClick={confirmCreate}>Guardar</button>
             </div>
+
+            
         </>
     );
 };
