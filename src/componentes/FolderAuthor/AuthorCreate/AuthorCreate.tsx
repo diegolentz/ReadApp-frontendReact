@@ -34,7 +34,6 @@ export const AuthorCreate = () => {
             }));
         }
 
-        // Actualizar el autor sin duplicar el estado
         setAuthor((prevAuthor) => ({
             ...prevAuthor,
             [name]: value
@@ -68,10 +67,8 @@ export const AuthorCreate = () => {
                 nationality: { error: !author.nacionalidad, helperText: "Language selection is required." }
             }));
         } else {
-            // const autorCreate = author.toAuthor();
             await authorService.createAuthor(author);
             navigate(`/author/list`);
-            // setErrors(true); 
         }
     };
 
