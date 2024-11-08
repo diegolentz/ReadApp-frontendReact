@@ -19,6 +19,7 @@ export const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoginPage, setLoginPage] = useState(true);
     const [openSnackbar, setOpenSnackbar] = useState(false); // Control state for Snackbar visibility
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success'); // Severity state for Snackbar
 
     const username: string = watch('username');
     const password: string = watch('password');
@@ -29,14 +30,19 @@ export const Login = () => {
     const login = async () => {
         if (validacion()) {
             setErrorMessage("Please fill in both fields.");
+            setSnackbarSeverity('error'); // Set severity to error if validation fails
+            setOpenSnackbar(true);
             return;
         }
         try {
             await userService.login(loginRequest);
+            setSnackbarSeverity('success'); // Set severity to success if login is successful
             setOpenSnackbar(true); // Show Snackbar after successful login
             setTimeout(() => navigate('/dashboard'), 2000); // Delay navigation to allow Snackbar to be visible
         } catch (error: unknown) {
             mostrarMensajeError(error as ErrorResponse, setErrorMessage);
+            setSnackbarSeverity('error'); // Set severity to error if login fails
+            setOpenSnackbar(true);
         }
     };
 
@@ -106,8 +112,8 @@ export const Login = () => {
                 autoHideDuration={2000} // Duration before it closes
                 onClose={handleCloseSnackbar} // Close when time runs out or the user manually closes
             >
-                <Alert onClose={handleCloseSnackbar} severity="success" variant="filled">
-                    Login successful! Redirecting...
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+                    {snackbarSeverity === 'success' ? "Login successful! Redirecting..." : errorMessage || "An error occurred. Please try again."}
                 </Alert>
             </Snackbar>
 
