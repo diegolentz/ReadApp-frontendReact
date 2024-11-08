@@ -7,18 +7,17 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 0.7fr));
-    grid-auto-rows: 15rem;
+    grid-auto-rows: 10rem;
     justify-content: center;
-    gap: 8rem;
+    gap: 1rem;
     padding-top: 1rem;
     padding-bottom: 1.5rem;
-    
 }
 
 
 
 .acciones{
-    margin-top: 5rem;
+    margin-top: 1rem;
     padding-top: 2rem;
     margin-bottom: 5rem;
     width: 100%;
