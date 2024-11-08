@@ -104,7 +104,7 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                         </MenuItem>
 
                         {author.lenguajes?.map((language) => (
-                            <MenuItem key={language} value={language} sx={{display: 'flex', flexDirection:'column'}}>
+                            <MenuItem key={language} value={language} >
                                 {language}
                             </MenuItem>
                         ))}
