@@ -11,10 +11,10 @@ import { Box } from "@mui/material";
 
 
 export const AuthorManager = ({ view }: {view : string}) => {
-    const [selectedAuthor, setSelectedAuthor] = useState<AuthorJSON>(new AuthorJSON());
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
-    const [lenguajes, setLenguajes] = useState<string[]>([]);
     const [editable, setEditable] = useState<boolean>(false);
+    const [selectedAuthor, setSelectedAuthor] = useState<AuthorJSON>(new AuthorJSON());
+    const [lenguajes, setLenguajes] = useState<string[]>([]);
 
     const navigate = useNavigate();
     const params = useParams<{ id: string }>();
@@ -22,12 +22,12 @@ export const AuthorManager = ({ view }: {view : string}) => {
     const fetchData = async () => {
         const autorData = await authorService.getAuthorData();
         setAuthors(autorData);
-        setLenguajes(autorData[0].lenguajes);
+        // setLenguajes(autorData[0].lenguajes);
     };
 
     const toEdit = (id: number) => {
         setEditable(true);
-        setSelectedAuthor(authors.find((a) => a.id === id) || new AuthorJSON());
+        // setSelectedAuthor(authors.find((a) => a.id === id) || new AuthorJSON());
         navigate(`/author/edit/${id}`);
     };
 

@@ -17,7 +17,7 @@ export class AuthorJSON {
     public lastName: string;
     public nationality: string;
     public creator: boolean;
-    public lenguajes: string[];
+    // public lenguajes: string[];
 
     constructor() {
         this.id = 0;
@@ -25,7 +25,7 @@ export class AuthorJSON {
         this.lastName = "";
         this.nationality = "";
         this.creator = true;
-        this.lenguajes = [];
+        // this.lenguajes = [];
     }
 
     fromJson(data: any): AuthorJSON {
@@ -34,7 +34,7 @@ export class AuthorJSON {
         this.lastName = data.apellido;
         this.nationality = data.nacionalidad;
         this.creator = data.creadorLibros;
-        this.lenguajes = data.lenguaje;
+        // this.lenguajes = data.lenguaje;
 
         return Object.assign(new AuthorJSON(), {
             id: data.id,
@@ -42,7 +42,7 @@ export class AuthorJSON {
             lastName: data.apellido,
             nationality: data.nacionalidad,
             creator: data.creadorLibros,
-            lenguajes : data.lenguaje
+            // lenguajes : data.lenguaje
         });
     }
     toAuthor(data: AuthorJSON): AutorEditJSON {

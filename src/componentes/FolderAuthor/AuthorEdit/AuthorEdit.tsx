@@ -11,6 +11,7 @@ import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { Navigate, useParams } from "react-router-dom";
 
+
 export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     { renderAuthor: AuthorJSON, onSelect: (author: AuthorJSON) => void, editable: boolean }) => {
 
@@ -20,6 +21,7 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
     const [hasError, setHasError] = useState(false);
     const [lastNameError, setLastNameError] = useState(false);
     const [nameError, setNameError] = useState(false);
+
     const [lastNameHelperText, setLastNameHelperText] = useState("");
     const [nameHelperText, setNameHelperText] = useState("");
 
@@ -27,6 +29,7 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
         if (!author.nationality || nameError || lastNameError) {
             setHasError(!author.nationality);
         } else {
+            // console.log("hola");
             setHasError(false);
             onSelect(author);
         }
@@ -121,7 +124,7 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                     helperText={lastNameError ? lastNameHelperText : ''}
                 />
 
-                <FormControl sx={{ width: '20rem' }} error={hasError}>
+                {/* <FormControl sx={{ width: '20rem' }} error={hasError}> */}
                     <InputLabel id="nationality-select-label">Language</InputLabel>
                     <Select
                         labelId="nationality-select-label"
@@ -133,16 +136,18 @@ export const AuthorEdit = ({ renderAuthor, onSelect, editable }:
                         onChange={(event: SelectChangeEvent) => editFile(event)}
                         sx={{ width: '20rem' }}
                     >
-                        {author.lenguajes?.map((language) => (
-                            <MenuItem key={language} value={language}>
+                        {/* {author.lenguajes?.map((language) => (
+                            <MenuItem key={language} value={language}
+                            >
                                 {language}
                             </MenuItem>
-                        ))}
+                        ))} */}
+
                     </Select>
                     {hasError && (
                         <FormHelperText>Language selection is required.</FormHelperText>
                     )}
-                </FormControl>
+                {/* </FormControl> */}
             </Box>
 
             <Box display="flex" justifyContent="center" gap="1rem" >

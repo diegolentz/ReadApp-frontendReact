@@ -28,7 +28,7 @@ export const AuthorCreate = ({ idiomas, onCreate }:
 
     const getIdiomas = async () => {
         const idiomas = await authorService.getAuthor(1);
-        setLenguajes(idiomas.lenguajes);
+        // setLenguajes(idiomas.lenguajes);
     };
 
     const validateField = (fieldName: string, value: string) => {
