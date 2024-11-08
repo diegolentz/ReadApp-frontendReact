@@ -7,6 +7,7 @@ import AuthorEdit from "../AuthorEdit/AuthorEdit";
 import { Create } from "../../FolderButtons/CreateButton/Create";
 import { AuthorCreate } from "../AuthorCreate/AuthorCreate";
 import { useNavigate, useParams } from "react-router-dom";
+import { Box } from "@mui/material";
 
 
 export const AuthorManager = ({ view }: {view : string}) => {
@@ -67,10 +68,24 @@ export const AuthorManager = ({ view }: {view : string}) => {
     return (
         <>
             {view === "list" && (
-                <div>
-                    <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} onDetail={showAuthor}/>
-                    <Create onClick={createAuthor} />
-                </div>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    position="relative"
+                    height="auto"
+                >
+                    <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} onDetail={showAuthor} />
+                    <Box
+                        sx={{
+                            position: "fixed",
+                            bottom: "10rem",
+                            right: "0rem",
+                            zIndex: 1000,
+                        }}
+                    >
+                        <Create onClick={createAuthor} />
+                    </Box>
+                </Box>
             )}
             {(view === "edit" || view === "show") && (
                 <div>
@@ -83,6 +98,7 @@ export const AuthorManager = ({ view }: {view : string}) => {
             )}
             {view === "create" && (
                 <div>
+
                     <AuthorCreate idiomas={lenguajes} onCreate={confirmCreate} />
                 </div>
             )}
