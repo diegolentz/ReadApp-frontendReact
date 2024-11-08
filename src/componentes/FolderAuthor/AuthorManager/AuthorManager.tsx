@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { authorService } from "../../../service/authorService";
-import { AuthorJSON, CreateAuthorJSON } from "../../../domain/AuthorJSON";
+import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { Author } from "../Author/Author";
 // import "./AuthorPage.css";
 import AuthorEdit from "../AuthorEdit/AuthorEdit";
@@ -29,21 +29,15 @@ export const AuthorManager = ({ view }: {view : string}) => {
     
     const createAuthor = () => navigate(`/author/create`);
 
-    const deleteAuthor = async (id: number) => {
-        await authorService.deleteAuthor(id);
-        setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
-    };
-    
     const showAuthor = (id: number) => {
         setEditable(false);
         navigate(`/author/show/${id}`);
     };
 
-    const confirmCreate = async (author: CreateAuthorJSON) => {
-        await authorService.createAuthor(author);
-        navigate(`/author/list`);
+    const deleteAuthor = async (id: number) => {
+        await authorService.deleteAuthor(id);
+        setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
     };
-
     
     useEffect(() => {
         if (view === "list") {
@@ -86,7 +80,7 @@ export const AuthorManager = ({ view }: {view : string}) => {
             {view === "create" && (
                 <div>
 
-                    {/* <AuthorCreate  onCreate={confirmCreate} /> */}
+                    <AuthorCreate  /* onCreate={confirmCreate} */ />
                 </div>
             )}
         </>

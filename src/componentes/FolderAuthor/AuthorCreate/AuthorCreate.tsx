@@ -1,17 +1,14 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CreateAuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 
-export const AuthorCreate = ({ idiomas, onCreate }:
-    {
-        idiomas: string[],
-        onCreate: (author: CreateAuthorJSON) => void
-    }
-) => {
+export const AuthorCreate = () => {
 
     const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
-    const [lenguajes, setLenguajes] = useState<string[]>(idiomas);
+    const [lenguajes, setLenguajes] = useState<string[]>([]);
+
     const [hasError, setHasError] = useState(false);
     const [nameError, setNameError] = useState(true);
     const [lastNameError, setLastNameError] = useState(true);
@@ -19,16 +16,12 @@ export const AuthorCreate = ({ idiomas, onCreate }:
     const [lastNameHelperText, setLastNameHelperText] = useState("");
 
     useEffect(() => {
-        if (idiomas.length > 0) {
-            setLenguajes(idiomas);
-        } else {
-            getIdiomas();
-        }
-    }, [idiomas]);
+        getIdiomas();
+    }, [lenguajes]);
 
     const getIdiomas = async () => {
-        const idiomas = await authorService.getAuthor(1);
-        // setLenguajes(idiomas.lenguajes);
+        const idiomas = await authorService.getIdiomas();
+        setLenguajes(idiomas);
     };
 
     const validateField = (fieldName: string, value: string) => {
@@ -68,15 +61,18 @@ export const AuthorCreate = ({ idiomas, onCreate }:
             [name]: value,
         }));
     };
+    const navigate = useNavigate();
 
-    const confirmCreate = () => {
+    const confirmCreate = async () => {
         const isNameValid = !nameError && author.nombre.trim() !== '';
         const isLastNameValid = !lastNameError && author.apellido.trim() !== '';
         const isNationalityValid = author.nacionalidad.trim() !== '';
     
         if (isNameValid && isLastNameValid && isNationalityValid) {
             setHasError(false);
-            onCreate(author);
+                await authorService.createAuthor(author);
+                navigate(`/author/list`);
+            // onCreate(author);
         } else {
             setHasError(true); 
         }
