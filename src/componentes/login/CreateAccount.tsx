@@ -5,6 +5,7 @@ import { ErrorResponse, mostrarMensajeError } from '../../error-handling'
 import { useState } from 'react'
 import { Box, Button, TextField, Snackbar, Alert } from '@mui/material'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
     const [errorMessage, setErrorMessage] = useState('')
@@ -160,7 +161,6 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                             variant="contained"
                             color="success"
                             type="submit"
-                            fullWidth
                             startIcon={ <AccountCircleOutlinedIcon fontSize="large"/>}
                         >
                             Create Account
@@ -170,7 +170,7 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                             variant="contained"
                             color="secondary"
                             onClick={changePage}
-                            fullWidth
+                            startIcon = {<KeyboardBackspaceIcon fontSize="large"/>}    
                         >
                             Back to Login
                         </Button>
