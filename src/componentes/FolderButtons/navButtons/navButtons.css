@@ -1,4 +1,4 @@
-ul {
+.nav-menu {
     height: var(--dimension-md);
     width: 100%;
     display: flex;

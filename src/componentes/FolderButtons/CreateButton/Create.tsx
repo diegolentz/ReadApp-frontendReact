@@ -1,21 +1,19 @@
+import { red } from "@mui/material/colors";
 import "./Create.css";
-import { paths } from "../../../domain/routes";
+import LoupeIcon from '@mui/icons-material/Loupe';
 
 export const Create = ({onClick} : 
     {onClick : () => void
     }) => {
 
     
-    const createAuthor = () => {
+    const createNavigation = () => {
             onClick();
         };
 
 
     return (
-        <>
-            <div >
-                <button className="create" onClick={() => createAuthor()}>+</button>
-            </div>
-        </>
+        
+               <LoupeIcon   sx={{ fontSize: 50, color: '#ffab40'}} onClick={createNavigation}></LoupeIcon>
     );
 }
