@@ -3,7 +3,6 @@ import './Dashboard.css'
 import { dashboardService } from '../../service/dashboardService'
 import { useToast } from '../../domain/CustomHooks/useToast'
 import { DashboardCard } from './DashboardCard/DashboardCard'
-import '../../assets/recomendations.svg'
 export const Dashboard = () => {
     const [recomendations, setRecomendations] = useState(0)
     const[books, setBooks] = useState(0)
@@ -56,10 +55,10 @@ export const Dashboard = () => {
     return <>
         <h1 className='titulo'>Indicadores</h1>
         <section className="indicadores">
-            <DashboardCard title={'Recomendaciones'} data={recomendations} svg={'../../../assets/recomendations.svg'} data-testid="recomendations"></DashboardCard>
-            <DashboardCard title={'Libros totales'} data={books} svg={''} data-testid="books"></DashboardCard>
-            <DashboardCard title={'Usuarios registrados'} data={users} svg={''}></DashboardCard>
-            <DashboardCard title={'Centros de lectura'} data={centers} svg={''}></DashboardCard>
+            <DashboardCard title={'Recomendaciones'} data={recomendations} svg={"recomendations.svg"} data-testid="recomendations"></DashboardCard>
+            <DashboardCard title={'Libros totales'} data={books} svg={'book.svg'} data-testid="books"></DashboardCard>
+            <DashboardCard title={'Usuarios registrados'} data={users} svg={'user-circle.svg'}></DashboardCard>
+            <DashboardCard title={'Centros de lectura'} data={centers} svg={'center.svg'}></DashboardCard>
         </section>
         <h2 className="titulo">Acciones</h2>
         <section className="acciones">
