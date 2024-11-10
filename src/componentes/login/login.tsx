@@ -11,6 +11,7 @@ import { Snackbar, Button, TextField, Box } from '@mui/material'
 import { userService } from '../../service/userService'
 import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -19,39 +20,21 @@ export const Login = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
 
+    const {register,handleSubmit} = useForm()
+    // const {usernameError, setUsernameError} = useState('')
+    // const {passwordError, setPasswordError} = useState('')
+
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
-    const [errors, setErrors] = useState({
-        username: '',
-        password: '',
-    })
 
     const usuario: User = new User('', username, password, '')
     const loginRequest = usuario.buildLoginRequest()
 
     const login = async (event: React.FormEvent) => {
         event.preventDefault()
-
-        let formValid = true
-        const newErrors = {
-            username: '',
-            password: '',
-        }
-
-        if (!username) {
-            formValid = false
-            newErrors.username = 'Username is required'
-        }
-
-        if (!password) {
-            formValid = false
-            newErrors.password = 'Password is required'
-        }
-
-        setErrors(newErrors)
-
-        if (!formValid) {
+        
+        if(validation()){
             setSnackbarSeverity('error')
             setErrorMessage('Please fill in both fields.')
             setOpenSnackbar(true)
@@ -70,6 +53,8 @@ export const Login = () => {
         }
     }
 
+    const validation = () : boolean => !username || !password 
+
     const changePage = () => {
         setLoginPage(!isLoginPage)
     }
@@ -77,6 +62,14 @@ export const Login = () => {
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false)
     }
+
+    // const handleFormSubmit = ( formData:any) => {
+    //     console.log(formData)
+    //     if(!formData.username || formData.username.length ){
+    //         setUsernameError('Username is required')
+    //         return false
+    //     }
+    // }
 
     return (isLoginPage ? <>
         <main className="fondo-background">
@@ -102,11 +95,10 @@ export const Login = () => {
                         label="Username"
                         variant="outlined"
                         type="text"
-                        required
-                        error={!!errors.username}
-                        helperText={errors.username || ''}
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
+                        helperText = {!username? 'Field is required': ""}
+                        error = {!username}
                     />
 
                     <TextField
@@ -114,11 +106,10 @@ export const Login = () => {
                         label="Password"
                         variant="outlined"
                         type="password"
-                        required
-                        error={!!errors.password}
-                        helperText={errors.password || ''}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
+                        helperText = {!password? 'Field is required': ""}
+                        error = {!password}
                     />
 
                     <Button
