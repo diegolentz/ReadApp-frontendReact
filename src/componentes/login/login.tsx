@@ -7,11 +7,12 @@ import { useState } from 'react'
 import { mostrarMensajeError } from '../../error-handling'
 import { ErrorResponse } from '../../error-handling'
 import { CreateAccount } from './CreateAccount'
-import { Snackbar, Button, TextField, Box } from '@mui/material'
+import { Snackbar, Button, TextField, Box , InputAdornment} from '@mui/material'
 import { userService } from '../../service/userService'
 import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -19,6 +20,7 @@ export const Login = () => {
     const [isLoginPage, setLoginPage] = useState(true)
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
+    const [visibility, setVisibility] = useState<'text'| 'password'>('text')
 
     const {register,handleSubmit} = useForm()
 
@@ -54,6 +56,10 @@ export const Login = () => {
 
     const changePage = () => {
         setLoginPage(!isLoginPage)
+    }
+
+    const changeVisibility = () => {
+        setVisibility(visibility === 'password' ? 'text' : 'password')
     }
 
     const handleCloseSnackbar = () => {
@@ -94,11 +100,17 @@ export const Login = () => {
                         id="outlined-basic"
                         label="Password"
                         variant="outlined"
-                        type="password"
+                        type = {visibility}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         helperText = {!password? 'Field is required': ""}
                         error = {!password}
+                        InputProps={
+                            {endAdornment:
+                             <InputAdornment onClick = {changeVisibility} position='end'>
+                                <VisibilityIcon fontSize='large' />
+                            </InputAdornment>}
+                        }
                     />
 
                     <Button
