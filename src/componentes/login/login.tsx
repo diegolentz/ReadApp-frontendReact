@@ -13,6 +13,7 @@ import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -107,9 +108,14 @@ export const Login = () => {
                         error = {!password}
                         InputProps={
                             {endAdornment:
-                             <InputAdornment onClick = {changeVisibility} position='end'>
-                                <VisibilityIcon fontSize='large' />
-                            </InputAdornment>}
+                                <InputAdornment position="end" onClick={changeVisibility}>
+                                {visibility === 'password' ? (
+                                    <VisibilityOffIcon fontSize="large" />
+                                ) : (
+                                    <VisibilityIcon fontSize="large" />
+                                )}
+                            </InputAdornment>
+                            }
                         }
                     />
 
