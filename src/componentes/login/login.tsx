@@ -21,9 +21,6 @@ export const Login = () => {
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
 
     const {register,handleSubmit} = useForm()
-    // const {usernameError, setUsernameError} = useState('')
-    // const {passwordError, setPasswordError} = useState('')
-
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -62,14 +59,6 @@ export const Login = () => {
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false)
     }
-
-    // const handleFormSubmit = ( formData:any) => {
-    //     console.log(formData)
-    //     if(!formData.username || formData.username.length ){
-    //         setUsernameError('Username is required')
-    //         return false
-    //     }
-    // }
 
     return (isLoginPage ? <>
         <main className="fondo-background">
