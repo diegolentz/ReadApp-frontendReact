@@ -67,7 +67,7 @@ export const Login = () => {
         setOpenSnackbar(false)
     }
 
-    return (isLoginPage ? <>
+    return  <>
         <main className="fondo-background">
             <div className="form__container">
                 <div className="encabezado ">
@@ -76,6 +76,7 @@ export const Login = () => {
                     </svg>
                     <h1>ReadApp</h1>
                 </div>
+                {isLoginPage ? (
 
                 <Box component="form"
                     onSubmit={login}
@@ -141,6 +142,7 @@ export const Login = () => {
                         <p>Password Recovery</p>
                     </Button>
                 </Box>
+                ) : (<CreateAccount changePage={changePage}></CreateAccount>)}
             </div>
 
             <Snackbar
@@ -154,5 +156,5 @@ export const Login = () => {
             </Snackbar>
 
         </main>
-    </> : <CreateAccount changePage={changePage} />)
+    </>
 }

@@ -81,17 +81,8 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
         setErrorMessage('')
     }
 
-    return (
-        <main className="fondo-background">
-            <div className="form__container">
-                <div className="encabezado">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
-                        <path d="M208,24H72A32,32,0,0,0,40,56V224a8,8,0,0,0,8,8H192a8,8,0,0,0,0-16H56a16,16,0,0,1,16-16H208a8,8,0,0,0,8-8V32A8,8,0,0,0,208,24Zm-8,160H72a31.82,31.82,0,0,0-16,4.29V56A16,16,0,0,1,72,40H200Z"></path>
-                    </svg>
-                    <h1>ReadApp</h1>
-                </div>
-
-                <Box
+    return <>
+     <Box
                     component="form"
                     onSubmit={(e) => {
                         e.preventDefault()
@@ -182,7 +173,18 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     {snackbarSeverity === 'success' ? "Account create successfully" : errorMessage || "An error occurred. Please try again."}
                     </Alert>
                 </Snackbar>
-            </div>
-        </main>
-    )
+            </>
+        // <main className="fondo-background">
+        //     <div className="form__container">
+        //         <div className="encabezado">
+        //             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
+        //                 <path d="M208,24H72A32,32,0,0,0,40,56V224a8,8,0,0,0,8,8H192a8,8,0,0,0,0-16H56a16,16,0,0,1,16-16H208a8,8,0,0,0,8-8V32A8,8,0,0,0,208,24Zm-8,160H72a31.82,31.82,0,0,0-16,4.29V56A16,16,0,0,1,72,40H200Z"></path>
+        //             </svg>
+        //             <h1>ReadApp</h1>
+        //         </div>
+
+               
+        //     </div>
+        // </main>
+    
 }
