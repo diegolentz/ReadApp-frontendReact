@@ -31,13 +31,6 @@ export const Login = () => {
     const login = async (event: React.FormEvent) => {
         event.preventDefault()
         
-        if(validation()){
-            setSnackbarSeverity('error')
-            setErrorMessage('Please fill in both fields.')
-            setOpenSnackbar(true)
-            return
-        }
-
         try {
             await userService.login(loginRequest)
             setSnackbarSeverity('success')
@@ -49,8 +42,6 @@ export const Login = () => {
             setOpenSnackbar(true)
         }
     }
-
-    const validation = () : boolean => !username || !password 
 
     const changePage = () => {
         setLoginPage(!isLoginPage)
@@ -96,6 +87,7 @@ export const Login = () => {
                         type="text"
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
+                        required
                         helperText = {!username? 'Field is required': ""}
                         error = {!username}
                     />
@@ -107,6 +99,7 @@ export const Login = () => {
                         type = {visibility}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
+                        required
                         helperText = {!password? 'Field is required': ""}
                         error = {!password}
                         InputProps={
