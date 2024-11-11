@@ -24,18 +24,17 @@ export const Login = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [isSubmitted, setIsSubmitted] = useState(false)  // Nuevo estado para controlar el envío del formulario
+    const [isSubmitted, setIsSubmitted] = useState(false)  
 
     const usuario: User = new User('', username, password, '')
     const loginRequest = usuario.buildLoginRequest()
 
     const login = async (event: React.FormEvent) => {
         event.preventDefault()
-        setIsSubmitted(true)  // Marcar que el formulario fue enviado
+        setIsSubmitted(true)  
 
-        // Verificar si los campos están vacíos antes de enviar
         if (!username || !password) {
-            return; // Detener si los campos están vacíos
+            return
         }
         
         try {

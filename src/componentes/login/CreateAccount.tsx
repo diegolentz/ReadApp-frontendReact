@@ -19,9 +19,8 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
 
     const [isSubmitted, setIsSubmitted] = useState(false)  
 
-    const nuevoUsuario: User = new User(email, username, password, name)
-    const createRequest = nuevoUsuario.buildCreateAccountRequest()
-
+    const newUser: User = new User(email, username, password, name)
+    const createRequest = newUser.buildCreateAccountRequest()
 
     const create = async () => {
         setIsSubmitted(true)  
@@ -132,7 +131,10 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
         </Box>
 
         {/* Snackbar para mostrar los mensajes de error o éxito */}
-        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Snackbar 
+            open={openSnackbar} 
+            autoHideDuration={6000} 
+            onClose={handleCloseSnackbar}>
             <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
                 {snackbarSeverity === 'success' ? "Account created successfully" : errorMessage || "An error occurred. Please try again."}
             </Alert>
