@@ -24,43 +24,43 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
         password: '',
         name: ''
     })
-
+// !/^[^@]+@[^@]+\.[^@]+$/.test(email)
     const nuevoUsuario: User = new User(email, username, password, name)
     const createRequest = nuevoUsuario.buildCreateAccountRequest()
 
     // Validación del formulario
-    const validateForm = () => {
-        const errors: any = {}
+    // const validateForm = () => {
+    //     const errors: any = {}
 
-        if (!email) {
-            errors.email = 'Email is required'
-        } else if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-            errors.email = 'Email must be a valid email address'
-        }
+    //     if (!email) {
+    //         errors.email = 'Email is required'
+    //     } else if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+    //         errors.email = 'Email must be a valid email address'
+    //     }
 
-        if (!username) {
-            errors.username = 'Username is required'
-        } else if (username.length > 15) {
-            errors.username = 'Username cannot be longer than 15 characters'
-        }
+    //     if (!username) {
+    //         errors.username = 'Username is required'
+    //     } else if (username.length > 15) {
+    //         errors.username = 'Username cannot be longer than 15 characters'
+    //     }
 
-        if (!password) {
-            errors.password = 'Password is required'
-        }
+    //     if (!password) {
+    //         errors.password = 'Password is required'
+    //     }
 
-        if (!name) {
-            errors.name = 'Name is required'
-        }
+    //     if (!name) {
+    //         errors.name = 'Name is required'
+    //     }
 
-        setFormErrors(errors)
-        return Object.keys(errors).length === 0
-    }
+    //     setFormErrors(errors)
+    //     return Object.keys(errors).length === 0
+    // }
 
     // Crear la cuenta
     const create = async () => {
-        if (!validateForm()) {
-            return
-        }
+        // if (!validateForm()) {
+        //     return
+        // }
 
         try {
             const create = await userService.create(createRequest)
@@ -104,8 +104,8 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     fullWidth
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    error={!!formErrors.email}
-                    helperText={formErrors.email || ''}
+                    helperText = {!email? 'Field is required': 'Email must be a valid email address'}
+                    error = {!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email) }
                 />
 
                 <TextField
@@ -117,8 +117,8 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     fullWidth
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    error={!!formErrors.username}
-                    helperText={formErrors.username || ''}
+                    helperText = {!username? 'Field is required': ""}
+                    error = {!username}
                 />
 
                 <TextField
@@ -130,7 +130,7 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     fullWidth
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    error={!!formErrors.password}
+                    error={!formErrors.password}
                     helperText={formErrors.password || ''}
                 />
 

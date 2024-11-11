@@ -16,8 +16,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export const Login = () => {
     const navigate = useNavigate()
-    const [errorMessage, setErrorMessage] = useState('')
     const [isLoginPage, setLoginPage] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('')
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
     const [visibility, setVisibility] = useState<'text'| 'password'>('text')
