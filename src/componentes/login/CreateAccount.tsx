@@ -17,18 +17,17 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
 
-    const [isSubmitted, setIsSubmitted] = useState(false)  // Estado para controlar si el formulario ha sido enviado
+    const [isSubmitted, setIsSubmitted] = useState(false)  
 
     const nuevoUsuario: User = new User(email, username, password, name)
     const createRequest = nuevoUsuario.buildCreateAccountRequest()
 
-    // Crear la cuenta
-    const create = async () => {
-        setIsSubmitted(true)  // Marcar que el formulario ha sido enviado
 
-        // Validar que todos los campos estén completos antes de enviar
+    const create = async () => {
+        setIsSubmitted(true)  
+
         if (!email || !username || !password || !name) {
-            return;  // Si algún campo está vacío, no enviar la solicitud
+            return
         }
 
         try {
@@ -36,7 +35,7 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
             setErrorMessage('Account created successfully')
             setSnackbarSeverity('success')
             setOpenSnackbar(true)
-            changePage()  // Cambiar a la página de login
+            changePage()  
         } catch (error: unknown) {
             mostrarMensajeError(error as ErrorResponse, setErrorMessage)
             setSnackbarSeverity('error')
