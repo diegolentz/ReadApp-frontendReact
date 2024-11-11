@@ -13,6 +13,11 @@ class AuthorService {
         return AuthorJson.fromJson(data.data);
     }
 
+    async getIdiomas(): Promise<string[]> {
+        const response = await axios.get(REST_SERVER_URL + "/lenguajes");
+        return response.data[0].lenguajes; 
+    }
+
     async deleteAuthor(author : number): Promise<void> {
         await axios.delete(REST_SERVER_URL + "/deleteAutor/" + author);
     }

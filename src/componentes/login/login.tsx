@@ -7,57 +7,36 @@ import { useState } from 'react'
 import { mostrarMensajeError } from '../../error-handling'
 import { ErrorResponse } from '../../error-handling'
 import { CreateAccount } from './CreateAccount'
-import { Snackbar, Button, TextField, Box } from '@mui/material'
+import { Snackbar, Button, TextField, Box , InputAdornment} from '@mui/material'
 import { userService } from '../../service/userService'
 import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export const Login = () => {
     const navigate = useNavigate()
-    const [errorMessage, setErrorMessage] = useState('')
     const [isLoginPage, setLoginPage] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('')
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
+    const [visibility, setVisibility] = useState<'text'| 'password'>('password')
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-
-    const [errors, setErrors] = useState({
-        username: '',
-        password: '',
-    })
+    const [isSubmitted, setIsSubmitted] = useState(false)  
 
     const usuario: User = new User('', username, password, '')
     const loginRequest = usuario.buildLoginRequest()
 
     const login = async (event: React.FormEvent) => {
         event.preventDefault()
+        setIsSubmitted(true)  
 
-        let formValid = true
-        const newErrors = {
-            username: '',
-            password: '',
-        }
-
-        if (!username) {
-            formValid = false
-            newErrors.username = 'Username is required'
-        }
-
-        if (!password) {
-            formValid = false
-            newErrors.password = 'Password is required'
-        }
-
-        setErrors(newErrors)
-
-        if (!formValid) {
-            setSnackbarSeverity('error')
-            setErrorMessage('Please fill in both fields.')
-            setOpenSnackbar(true)
+        if (!username || !password) {
             return
         }
-
+        
         try {
             await userService.login(loginRequest)
             setSnackbarSeverity('success')
@@ -74,20 +53,29 @@ export const Login = () => {
         setLoginPage(!isLoginPage)
     }
 
+    const changeVisibility = () => {
+        setVisibility(visibility === 'password' ? 'text' : 'password')
+    }
+
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false)
     }
 
-    return (isLoginPage ? <>
+    return  <>
         <main className="fondo-background">
             <div className="form__container">
-                <div className="encabezado ">
+                <Box 
+                    display={'flex'}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                    color={'#ffffff'}
+                    mx= 'auto'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#ffffff" viewBox="0 0 256 256">
                         <path d="M208,24H72A32,32,0,0,0,40,56V224a8,8,0,0,0,8,8H192a8,8,0,0,0,0-16H56a16,16,0,0,1,16-16H208a8,8,0,0,0,8-8V32A8,8,0,0,0,208,24Zm-8,160H72a31.82,31.82,0,0,0-16,4.29V56A16,16,0,0,1,72,40H200Z"></path>
                     </svg>
                     <h1>ReadApp</h1>
-                </div>
-
+                </Box>
+                {isLoginPage ? (
                 <Box component="form"
                     onSubmit={login}
                     display="flex"
@@ -102,23 +90,32 @@ export const Login = () => {
                         label="Username"
                         variant="outlined"
                         type="text"
-                        required
-                        error={!!errors.username}
-                        helperText={errors.username || ''}
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
+                        helperText={isSubmitted && !username ? 'Field is required' : ""}
+                        error={isSubmitted && !username}
                     />
 
                     <TextField
                         id="outlined-basic"
                         label="Password"
                         variant="outlined"
-                        type="password"
-                        required
-                        error={!!errors.password}
-                        helperText={errors.password || ''}
+                        type={visibility}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
+                        helperText={isSubmitted && !password ? 'Field is required' : ""}
+                        error={isSubmitted && !password}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end" onClick={changeVisibility}>
+                                    {visibility === 'password' ? (
+                                        <VisibilityOffIcon fontSize="large" />
+                                    ) : (
+                                        <VisibilityIcon fontSize="large" />
+                                    )}
+                                </InputAdornment>
+                            )
+                        }}
                     />
 
                     <Button
@@ -143,6 +140,7 @@ export const Login = () => {
                         <p>Password Recovery</p>
                     </Button>
                 </Box>
+                ) : (<CreateAccount changePage={changePage}></CreateAccount>)}
             </div>
 
             <Snackbar
@@ -154,7 +152,6 @@ export const Login = () => {
                     {snackbarSeverity === 'success' ? "Login successful! Redirecting..." : errorMessage || "An error occurred. Please try again."}
                 </Alert>
             </Snackbar>
-
         </main>
-    </> : <CreateAccount changePage={changePage} />)
+    </>
 }
