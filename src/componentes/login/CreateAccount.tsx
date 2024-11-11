@@ -117,8 +117,8 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     fullWidth
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    helperText = {!username? 'Field is required': ""}
-                    error = {!username}
+                    helperText = {!username? 'Field is required': 'Username cannot be longer than 15 characters'}
+                    error = {!username || username.length > 15}
                 />
 
                 <TextField
