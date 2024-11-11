@@ -20,7 +20,7 @@ export const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
-    const [visibility, setVisibility] = useState<'text'| 'password'>('text')
+    const [visibility, setVisibility] = useState<'text'| 'password'>('password')
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')

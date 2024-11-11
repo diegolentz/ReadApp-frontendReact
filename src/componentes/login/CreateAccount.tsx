@@ -9,7 +9,6 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
     const [errorMessage, setErrorMessage] = useState('')
-   
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
     const [openSnackbar, setOpenSnackbar] = useState(false)
 
@@ -18,63 +17,32 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
 
-    const [formErrors, setFormErrors] = useState({
-        email: '',
-        username: '',
-        password: '',
-        name: ''
-    })
-// !/^[^@]+@[^@]+\.[^@]+$/.test(email)
+    const [isSubmitted, setIsSubmitted] = useState(false)  // Estado para controlar si el formulario ha sido enviado
+
     const nuevoUsuario: User = new User(email, username, password, name)
     const createRequest = nuevoUsuario.buildCreateAccountRequest()
 
-    // Validación del formulario
-    // const validateForm = () => {
-    //     const errors: any = {}
-
-    //     if (!email) {
-    //         errors.email = 'Email is required'
-    //     } else if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-    //         errors.email = 'Email must be a valid email address'
-    //     }
-
-    //     if (!username) {
-    //         errors.username = 'Username is required'
-    //     } else if (username.length > 15) {
-    //         errors.username = 'Username cannot be longer than 15 characters'
-    //     }
-
-    //     if (!password) {
-    //         errors.password = 'Password is required'
-    //     }
-
-    //     if (!name) {
-    //         errors.name = 'Name is required'
-    //     }
-
-    //     setFormErrors(errors)
-    //     return Object.keys(errors).length === 0
-    // }
-
     // Crear la cuenta
     const create = async () => {
-        // if (!validateForm()) {
-        //     return
-        // }
+        setIsSubmitted(true)  // Marcar que el formulario ha sido enviado
+
+        // Validar que todos los campos estén completos antes de enviar
+        if (!email || !username || !password || !name) {
+            return;  // Si algún campo está vacío, no enviar la solicitud
+        }
 
         try {
-            const create = await userService.create(createRequest)
-            setErrorMessage('Account create successfully') 
-            setSnackbarSeverity('success') 
-            setOpenSnackbar(true) 
-            changePage() 
+            await userService.create(createRequest)
+            setErrorMessage('Account created successfully')
+            setSnackbarSeverity('success')
+            setOpenSnackbar(true)
+            changePage()  // Cambiar a la página de login
         } catch (error: unknown) {
             mostrarMensajeError(error as ErrorResponse, setErrorMessage)
-            setSnackbarSeverity('error') 
-            setOpenSnackbar(true) 
+            setSnackbarSeverity('error')
+            setOpenSnackbar(true)
         }
     }
-
 
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false)
@@ -82,97 +50,93 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
     }
 
     return <>
-            <Box
-                component="form"
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    create()
-                }}
-                display="flex"
-                flexDirection="column"
-                gap={2}
-                width="100%"
-                maxWidth="400px"
-                mx="auto"
-            >
-                <TextField
-                    id="email"
-                    label="Email"
-                    variant="outlined"
-                    type="email"
-                    required
-                    fullWidth
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    helperText = {!email? 'Field is required': 'Email must be a valid email address'}
-                    error = {!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email) }
-                />
+        <Box
+            component="form"
+            onSubmit={(e) => {
+                e.preventDefault()
+                create()
+            }}
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            width="100%"
+            maxWidth="400px"
+            mx="auto"
+        >
+            <TextField
+                id="email"
+                label="Email"
+                variant="outlined"
+                type="email"
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                helperText={isSubmitted && !email ? 'Field is required' : (isSubmitted && email && !/^[^@]+@[^@]+\.[^@]+$/.test(email)) ? 'Email must be a valid email address' : ''}
+                error={isSubmitted && (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email))}
+            />
 
-                <TextField
-                    id="username"
-                    label="Username"
-                    variant="outlined"
-                    type="text"
-                    required
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    helperText = {!username? 'Field is required': 'Username cannot be longer than 15 characters'}
-                    error = {!username || username.length > 15}
-                />
+            <TextField
+                id="username"
+                label="Username"
+                variant="outlined"
+                type="text"
+                fullWidth
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                helperText={isSubmitted && !username ? 'Field is required' : (isSubmitted && username && username.length > 15) ? 'Username cannot be longer than 15 characters' : ''}
+                error={isSubmitted && (!username || username.length > 15)}
+            />
 
-                <TextField
-                    id="password"
-                    label="Password"
-                    variant="outlined"
-                    type="password"
-                    required
-                    fullWidth
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    helperText = {!password? 'Field is required': 'password cannot be longer than 15 characters'}
-                    error = {!password || password.length > 15}
-                />
+            <TextField
+                id="password"
+                label="Password"
+                variant="outlined"
+                type="password"
+                fullWidth
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                helperText={isSubmitted && !password ? 'Field is required' : (isSubmitted && password && password.length > 15) ? 'Password cannot be longer than 15 characters' : ''}
+                error={isSubmitted && (!password || password.length > 15)}
+            />
 
-                <TextField
-                    id="name"
-                    label="Name"
-                    variant="outlined"
-                    type="text"
-                    required = {/^[A-Za-zÀ-ÿ\s]+$/.test(name)}
-                    fullWidth
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    helperText = {!name? 'Field is required': 'Email must be a valid email address'}
-                    error = {!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name) }
-                />
+            <TextField
+                id="name"
+                label="Name"
+                variant="outlined"
+                type="text"
+                fullWidth
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                helperText={isSubmitted && !name ? 'Field is required' : (isSubmitted && name && !/^[A-Za-zÀ-ÿ\s]+$/.test(name)) ? 'Name must only contain letters and spaces' : ''}
+                error={isSubmitted && (!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name))}
+            />
 
-                <div className="actions">
-                    <Button
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                        startIcon={ <AccountCircleOutlinedIcon fontSize="large"/>}
-                    >
-                        Create Account
-                    </Button>
+            <div className="actions">
+                <Button
+                    variant="contained"
+                    color="success"
+                    type="submit"
+                    startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
+                >
+                    Create Account
+                </Button>
 
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={changePage}
-                        startIcon = {<KeyboardBackspaceIcon fontSize="large"/>}    
-                    >
-                        Back to Login
-                    </Button>
-                </div>
-                </Box>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={changePage}
+                    startIcon={<KeyboardBackspaceIcon fontSize="large" />}
+                >
+                    Back to Login
+                </Button>
+            </div>
+        </Box>
 
-                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-                    <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
-                    {snackbarSeverity === 'success' ? "Account create successfully" : errorMessage || "An error occurred. Please try again."}
-                    </Alert>
-                </Snackbar>
-            </>
-    
+        {/* Snackbar para mostrar los mensajes de error o éxito */}
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+            <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+                {snackbarSeverity === 'success' ? "Account created successfully" : errorMessage || "An error occurred. Please try again."}
+            </Alert>
+        </Snackbar>
+    </>
 }
