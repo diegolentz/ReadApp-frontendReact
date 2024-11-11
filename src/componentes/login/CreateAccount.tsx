@@ -130,8 +130,8 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     fullWidth
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    error={!formErrors.password}
-                    helperText={formErrors.password || ''}
+                    helperText = {!password? 'Field is required': 'password cannot be longer than 15 characters'}
+                    error = {!password || password.length > 15}
                 />
 
                 <TextField
@@ -139,12 +139,12 @@ export const CreateAccount = ({ changePage }: { changePage: () => void }) => {
                     label="Name"
                     variant="outlined"
                     type="text"
-                    required
+                    required = {/^[A-Za-zÀ-ÿ\s]+$/.test(name)}
                     fullWidth
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    error={!!formErrors.name}
-                    helperText={formErrors.name || ''}
+                    helperText = {!name? 'Field is required': 'Email must be a valid email address'}
+                    error = {!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name) }
                 />
 
                 <div className="actions">

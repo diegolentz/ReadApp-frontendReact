@@ -24,12 +24,19 @@ export const Login = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [isSubmitted, setIsSubmitted] = useState(false)  // Nuevo estado para controlar el envío del formulario
 
     const usuario: User = new User('', username, password, '')
     const loginRequest = usuario.buildLoginRequest()
 
     const login = async (event: React.FormEvent) => {
         event.preventDefault()
+        setIsSubmitted(true)  // Marcar que el formulario fue enviado
+
+        // Verificar si los campos están vacíos antes de enviar
+        if (!username || !password) {
+            return; // Detener si los campos están vacíos
+        }
         
         try {
             await userService.login(loginRequest)
@@ -70,7 +77,6 @@ export const Login = () => {
                     <h1>ReadApp</h1>
                 </Box>
                 {isLoginPage ? (
-
                 <Box component="form"
                     onSubmit={login}
                     display="flex"
@@ -87,32 +93,30 @@ export const Login = () => {
                         type="text"
                         value={username}
                         onChange={(event) => setUsername(event.target.value)}
-                        required
-                        helperText = {!username? 'Field is required': ""}
-                        error = {!username}
+                        helperText={isSubmitted && !username ? 'Field is required' : ""}
+                        error={isSubmitted && !username}
                     />
 
                     <TextField
                         id="outlined-basic"
                         label="Password"
                         variant="outlined"
-                        type = {visibility}
+                        type={visibility}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
-                        required
-                        helperText = {!password? 'Field is required': ""}
-                        error = {!password}
-                        InputProps={
-                            {endAdornment:
+                        helperText={isSubmitted && !password ? 'Field is required' : ""}
+                        error={isSubmitted && !password}
+                        InputProps={{
+                            endAdornment: (
                                 <InputAdornment position="end" onClick={changeVisibility}>
-                                {visibility === 'password' ? (
-                                    <VisibilityOffIcon fontSize="large" />
-                                ) : (
-                                    <VisibilityIcon fontSize="large" />
-                                )}
-                            </InputAdornment>
-                            }
-                        }
+                                    {visibility === 'password' ? (
+                                        <VisibilityOffIcon fontSize="large" />
+                                    ) : (
+                                        <VisibilityIcon fontSize="large" />
+                                    )}
+                                </InputAdornment>
+                            )
+                        }}
                     />
 
                     <Button
