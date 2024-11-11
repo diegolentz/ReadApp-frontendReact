@@ -11,7 +11,6 @@ import { Snackbar, Button, TextField, Box , InputAdornment} from '@mui/material'
 import { userService } from '../../service/userService'
 import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
@@ -22,8 +21,6 @@ export const Login = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
     const [visibility, setVisibility] = useState<'text'| 'password'>('text')
-
-    const {register,handleSubmit} = useForm()
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -159,7 +156,6 @@ export const Login = () => {
                     {snackbarSeverity === 'success' ? "Login successful! Redirecting..." : errorMessage || "An error occurred. Please try again."}
                 </Alert>
             </Snackbar>
-
         </main>
     </>
 }
