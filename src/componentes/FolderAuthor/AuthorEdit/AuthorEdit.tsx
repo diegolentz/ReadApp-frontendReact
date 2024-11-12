@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { useNavigate, useParams } from "react-router-dom";
+import { Snackbar, Alert } from '@mui/material';
 
 export const AuthorEdit = ({ editable }: { editable: boolean }) => {
   const [author, setAuthor] = useState<AuthorJSON>(new AuthorJSON());
@@ -20,15 +21,25 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     nationality: { error: false, helperText: "" }
   });
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
   const params = useParams();
   const navigate = useNavigate();
 
   const getAuthor = async () => {
-    const id = Number(params.id);
-    const fetchedAuthor = await authorService.getAuthor(id);
-    setAuthor(fetchedAuthor);
-    const idiomas = await authorService.getIdiomas();
-    setLenguajes(idiomas);
+    try {
+      const id = Number(params.id);
+      const fetchedAuthor = await authorService.getAuthor(id);
+      setAuthor(fetchedAuthor);
+      const idiomas = await authorService.getIdiomas();
+      setLenguajes(idiomas);
+    } catch (error) {
+      setSnackbarSeverity('error');
+      setSnackbarMessage("Error fetching author data.");
+      setOpenSnackbar(true);
+    }
   };
 
   const confirmEdit = async () => {
@@ -38,10 +49,22 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
         ...prevErrors,
         nationality: { error: !author.nationality, helperText: "Language selection is required." }
       }));
+      setSnackbarSeverity('error');
+      setSnackbarMessage("Please correct the errors before saving.");
+      setOpenSnackbar(true);
     } else {
       const autorEdit = author.toAuthor(author);
-      await authorService.editAuthor(autorEdit);
-      navigate(`/author/list`);
+      try {
+        await authorService.editAuthor(autorEdit);
+        setSnackbarSeverity('success');
+        setSnackbarMessage("Author updated successfully.");
+        setOpenSnackbar(true);
+        setTimeout(() => navigate(`/author/list`), 2000);
+      } catch (error) {
+        setSnackbarSeverity('error');
+        setSnackbarMessage("Error updating author.");
+        setOpenSnackbar(true);
+      }
     }
   };
 
@@ -78,8 +101,19 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     getAuthor();
   }, [params.id]);
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
+      {/* Mostrar los errores o mensajes de éxito */}
+      <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
       <Box component="form" display="flex" flexDirection="column" alignItems="center" gap={3} width="100%" height="100%" padding={5}>
         <TextField
           label="Name"
