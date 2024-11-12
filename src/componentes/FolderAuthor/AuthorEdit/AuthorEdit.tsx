@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { useNavigate, useParams } from "react-router-dom";
+import { Snackbar, Alert } from '@mui/material';
 
 export const AuthorEdit = ({ editable }: { editable: boolean }) => {
   const [author, setAuthor] = useState<AuthorJSON>(new AuthorJSON());
@@ -20,15 +21,25 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     nationality: { error: false, helperText: "" }
   });
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
   const params = useParams();
   const navigate = useNavigate();
 
   const getAuthor = async () => {
-    const id = Number(params.id);
-    const fetchedAuthor = await authorService.getAuthor(id);
-    setAuthor(fetchedAuthor);
-    const idiomas = await authorService.getIdiomas();
-    setLenguajes(idiomas);
+    try {
+      const id = Number(params.id);
+      const fetchedAuthor = await authorService.getAuthor(id);
+      setAuthor(fetchedAuthor);
+      const idiomas = await authorService.getIdiomas();
+      setLenguajes(idiomas);
+    } catch (error) {
+      setSnackbarSeverity('error');
+      setSnackbarMessage("Error fetching author data.");
+      setOpenSnackbar(true);
+    }
   };
 
   const confirmEdit = async () => {
@@ -38,10 +49,22 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
         ...prevErrors,
         nationality: { error: !author.nationality, helperText: "Language selection is required." }
       }));
+      setSnackbarSeverity('error');
+      setSnackbarMessage("Please correct the errors before saving.");
+      setOpenSnackbar(true);
     } else {
       const autorEdit = author.toAuthor(author);
-      await authorService.editAuthor(autorEdit);
-      navigate(`/author/list`);
+      try {
+        await authorService.editAuthor(autorEdit);
+        setSnackbarSeverity('success');
+        setSnackbarMessage("Author updated successfully.");
+        setOpenSnackbar(true);
+        setTimeout(() => navigate(`/author/list`), 2000);
+      } catch (error) {
+        setSnackbarSeverity('error');
+        setSnackbarMessage("Error updating author.");
+        setOpenSnackbar(true);
+      }
     }
   };
 
@@ -78,66 +101,80 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     getAuthor();
   }, [params.id]);
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
+      <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
       <Box component="form" display="flex" flexDirection="column" alignItems="center" gap={3} width="100%" height="100%" padding={5}>
-        <TextField
-          label="Name"
-          variant="outlined"
-          onChange={editFile}
-          name="name"
-          disabled={!editable}
-          value={author.name || ''}
-          sx={{ width: '20rem' }}
-          InputProps={{ style: { fontSize: '1.5rem' } }}
-          error={errors.name.error}
-          helperText={errors.name.error ? errors.name.helperText : ''}
-        />
+      <TextField
+  label="Name"
+  variant="outlined"
+  onChange={editFile}
+  name="name"
+  disabled={!editable}
+  value={author.name || ''}
+  sx={{ width: '20rem' }}
+  InputProps={{ style: { fontSize: '1.5rem' } }}
+  error={errors.name.error}
+  helperText={errors.name.error ? errors.name.helperText : ''}
+  data-testid="name-input"
+/>
 
-        <TextField
-          label="Last Name"
-          variant="outlined"
-          onChange={editFile}
-          name="lastName"
-          disabled={!editable}
-          value={author.lastName || ''}
-          sx={{ width: '20rem' }}
-          InputProps={{ style: { fontSize: '1.5rem' } }}
-          error={errors.lastName.error}
-          helperText={errors.lastName.error ? errors.lastName.helperText : ''}
-        />
+<TextField
+  label="Last Name"
+  variant="outlined"
+  onChange={editFile}
+  name="lastName"
+  disabled={!editable}
+  value={author.lastName || ''}
+  sx={{ width: '20rem' }}
+  InputProps={{ style: { fontSize: '1.5rem' } }}
+  error={errors.lastName.error}
+  helperText={errors.lastName.error ? errors.lastName.helperText : ''}
+  data-testid="last-name-input"
+/>
 
-        <FormControl sx={{ width: '20rem' }} error={errors.nationality.error}>
-          <InputLabel id="nationality-select-label">Language</InputLabel>
-          <Select
-            labelId="nationality-select-label"
-            id="nationality-select"
-            name="nationality"
-            disabled={!editable}
-            value={author.nationality || ''}
-            label="Language"
-            onChange={(event: SelectChangeEvent) => editFile(event)}
-            sx={{ width: '20rem' }}
-          >
-            {lenguajes?.map((language) => (
-              <MenuItem key={language} value={language}>
-                {language}
-              </MenuItem>
-            ))}
-          </Select>
-          {errors.nationality.error && (
-            <FormHelperText>{errors.nationality.helperText}</FormHelperText>
-          )}
-        </FormControl>
-      </Box>
+<FormControl sx={{ width: '20rem' }} error={errors.nationality.error} data-testid="language-select">
+  <InputLabel id="nationality-select-label">Language</InputLabel>
+  <Select
+    labelId="nationality-select-label"
+    id="nationality-select"
+    name="nationality"
+    disabled={!editable}
+    value={author.nationality || ''}
+    label="Language"
+    onChange={(event: SelectChangeEvent) => editFile(event)}
+    sx={{ width: '20rem' }}
+    data-testid="language-select-input"
+  >
+    {lenguajes?.map((language) => (
+      <MenuItem key={language} value={language}>
+        {language}
+      </MenuItem>
+    ))}
+  </Select>
+  {errors.nationality.error && (
+    <FormHelperText>{errors.nationality.helperText}</FormHelperText>
+  )}
+</FormControl>
 
-      <Box display="flex" justifyContent="center" gap="1rem">
-        <Button variant="contained" color="error" sx={{ width: '10rem', borderRadius: "4rem" }}>
-          Cancel
-        </Button>
-        <Button onClick={confirmEdit} variant="contained" color="success" sx={{ width: '10rem', borderRadius: "4rem" }}>
-          Save
-        </Button>
+<Button
+  onClick={confirmEdit}
+  variant="contained"
+  color="success"
+  sx={{ width: '10rem', borderRadius: "4rem" }}
+  data-testid="save-button"
+>
+  Save
+</Button>
       </Box>
     </Box>
   );
