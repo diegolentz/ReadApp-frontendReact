@@ -17,7 +17,6 @@ export const AuthorManager = ({ view }: {view : string}) => {
 
     const navigate = useNavigate();
 
-    // Fetch all authors
     const fetchData = async () => {
         try {
             const autorData = await authorService.getAuthorData();
@@ -29,24 +28,20 @@ export const AuthorManager = ({ view }: {view : string}) => {
         }
     };
 
-    // Navigate to the edit page
     const toEdit = (id: number) => {
         setEditable(true);
         navigate(`/author/edit/${id}`);
     };
     
-    // Navigate to the create page
     const createAuthor = () => {
         navigate(`/author/create`);
     };
 
-    // Show author details
     const showAuthor = (id: number) => {
         setEditable(false);
         navigate(`/author/show/${id}`);
     };
 
-    // Delete an author
     const deleteAuthor = async (id: number) => {
         try {
             await authorService.deleteAuthor(id);
@@ -96,7 +91,6 @@ export const AuthorManager = ({ view }: {view : string}) => {
                 </div>
             )}
 
-            {/* Snackbar for feedback */}
             <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
                     {snackbarMessage}

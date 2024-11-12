@@ -2,20 +2,22 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CreateAuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
-import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, TextField, Alert } from "@mui/material";
 
 export const AuthorCreate = () => {
-
     const [author, setAuthor] = useState<CreateAuthorJSON>(new CreateAuthorJSON());
     const [lenguajes, setLenguajes] = useState<string[]>([]);
-
-    const navigate = useNavigate();
-
     const [errors, setErrors] = useState({
         name: { error: false, helperText: "" },
         lastName: { error: false, helperText: "" },
         nationality: { error: false, helperText: "" }
     });
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+    const navigate = useNavigate();
 
     const getIdiomas = async () => {
         const idiomas = await authorService.getIdiomas();
@@ -25,7 +27,6 @@ export const AuthorCreate = () => {
     const editFile = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement> | SelectChangeEvent<string>) => {
         const { name, value } = event.target;
         
-        // Validar solo los campos 'nombre' y 'apellido'
         if (name === "nombre" || name === "apellido") {
             const { error, helperText } = validateField(name, value);
             setErrors((prevErrors) => ({
@@ -67,27 +68,40 @@ export const AuthorCreate = () => {
                 nationality: { error: !author.nacionalidad, helperText: "Language selection is required." }
             }));
         } else {
-            await authorService.createAuthor(author);
-            navigate(`/author/list`);
+            try {
+                await authorService.createAuthor(author);
+                setSnackbarSeverity('success');
+                setSnackbarMessage('Author created successfully!');
+                setOpenSnackbar(true);
+
+                setTimeout(() => {
+                    navigate(`/author/list`);
+                }, 2000);
+            } catch (error) {
+                setSnackbarSeverity('error');
+                setSnackbarMessage('Failed to create author. Please try again.');
+                setOpenSnackbar(true);
+            }
         }
     };
 
     useEffect(() => {
         getIdiomas();
-    }, [lenguajes]);
+    }, []);
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
+    };
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
-            <Box
-                component="form"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                gap={3}
-                width="100%"
-                height="100%"
-                padding={5}
-            >
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
+            <Box component="form" display="flex" flexDirection="column" alignItems="center" gap={3} width="100%" height="100%" padding={5}>
                 <TextField
                     label="Name"
                     variant="outlined"
@@ -132,6 +146,7 @@ export const AuthorCreate = () => {
                     )}
                 </FormControl>
             </Box>
+
             <Box display="flex" justifyContent="center" gap="1rem">
                 <Button variant="contained" color="error" sx={{ width: '10rem', borderRadius: "4rem" }}>
                     Cancel

@@ -107,7 +107,6 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
 
   return (
     <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
-      {/* Mostrar los errores o mensajes de éxito */}
       <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
           {snackbarMessage}
@@ -115,63 +114,67 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
       </Snackbar>
 
       <Box component="form" display="flex" flexDirection="column" alignItems="center" gap={3} width="100%" height="100%" padding={5}>
-        <TextField
-          label="Name"
-          variant="outlined"
-          onChange={editFile}
-          name="name"
-          disabled={!editable}
-          value={author.name || ''}
-          sx={{ width: '20rem' }}
-          InputProps={{ style: { fontSize: '1.5rem' } }}
-          error={errors.name.error}
-          helperText={errors.name.error ? errors.name.helperText : ''}
-        />
+      <TextField
+  label="Name"
+  variant="outlined"
+  onChange={editFile}
+  name="name"
+  disabled={!editable}
+  value={author.name || ''}
+  sx={{ width: '20rem' }}
+  InputProps={{ style: { fontSize: '1.5rem' } }}
+  error={errors.name.error}
+  helperText={errors.name.error ? errors.name.helperText : ''}
+  data-testid="name-input"
+/>
 
-        <TextField
-          label="Last Name"
-          variant="outlined"
-          onChange={editFile}
-          name="lastName"
-          disabled={!editable}
-          value={author.lastName || ''}
-          sx={{ width: '20rem' }}
-          InputProps={{ style: { fontSize: '1.5rem' } }}
-          error={errors.lastName.error}
-          helperText={errors.lastName.error ? errors.lastName.helperText : ''}
-        />
+<TextField
+  label="Last Name"
+  variant="outlined"
+  onChange={editFile}
+  name="lastName"
+  disabled={!editable}
+  value={author.lastName || ''}
+  sx={{ width: '20rem' }}
+  InputProps={{ style: { fontSize: '1.5rem' } }}
+  error={errors.lastName.error}
+  helperText={errors.lastName.error ? errors.lastName.helperText : ''}
+  data-testid="last-name-input"
+/>
 
-        <FormControl sx={{ width: '20rem' }} error={errors.nationality.error}>
-          <InputLabel id="nationality-select-label">Language</InputLabel>
-          <Select
-            labelId="nationality-select-label"
-            id="nationality-select"
-            name="nationality"
-            disabled={!editable}
-            value={author.nationality || ''}
-            label="Language"
-            onChange={(event: SelectChangeEvent) => editFile(event)}
-            sx={{ width: '20rem' }}
-          >
-            {lenguajes?.map((language) => (
-              <MenuItem key={language} value={language}>
-                {language}
-              </MenuItem>
-            ))}
-          </Select>
-          {errors.nationality.error && (
-            <FormHelperText>{errors.nationality.helperText}</FormHelperText>
-          )}
-        </FormControl>
-      </Box>
+<FormControl sx={{ width: '20rem' }} error={errors.nationality.error} data-testid="language-select">
+  <InputLabel id="nationality-select-label">Language</InputLabel>
+  <Select
+    labelId="nationality-select-label"
+    id="nationality-select"
+    name="nationality"
+    disabled={!editable}
+    value={author.nationality || ''}
+    label="Language"
+    onChange={(event: SelectChangeEvent) => editFile(event)}
+    sx={{ width: '20rem' }}
+    data-testid="language-select-input"
+  >
+    {lenguajes?.map((language) => (
+      <MenuItem key={language} value={language}>
+        {language}
+      </MenuItem>
+    ))}
+  </Select>
+  {errors.nationality.error && (
+    <FormHelperText>{errors.nationality.helperText}</FormHelperText>
+  )}
+</FormControl>
 
-      <Box display="flex" justifyContent="center" gap="1rem">
-        <Button variant="contained" color="error" sx={{ width: '10rem', borderRadius: "4rem" }}>
-          Cancel
-        </Button>
-        <Button onClick={confirmEdit} variant="contained" color="success" sx={{ width: '10rem', borderRadius: "4rem" }}>
-          Save
-        </Button>
+<Button
+  onClick={confirmEdit}
+  variant="contained"
+  color="success"
+  sx={{ width: '10rem', borderRadius: "4rem" }}
+  data-testid="save-button"
+>
+  Save
+</Button>
       </Box>
     </Box>
   );
