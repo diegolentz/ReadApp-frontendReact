@@ -5,6 +5,7 @@ import { Login } from './componentes/login/login';
 import { AuthorManager } from './componentes/FolderAuthor/AuthorManager/AuthorManager';
 import { paths } from './domain/routes';
 import { BooksView } from './componentes/Book/BooksView';
+import BookDetail from './componentes/BookCreation/BookDetail';
 
 export const AppRouter = () => (
     <Router>
@@ -17,7 +18,11 @@ export const AppRouter = () => (
                 <Route path={`${paths.author}/create`} element={<AuthorManager view="create" />} />
                 <Route path={`${paths.author}/edit/:id`} element={<AuthorManager view="edit" />} />
                 <Route path={`${paths.author}/show/:id`} element={<AuthorManager view="show" />} />
-                <Route path={`${paths.books}`} element={<BooksView />} />
+                <Route path={`${paths.books}`} element={<BooksView/>} />
+                <Route path={`${paths.books}/creation`} element={<BookDetail editable= {true} emptyForm={true}/>} />
+                <Route path={`${paths.books}/display/:id`} element={<BookDetail editable= {false} emptyForm={false}/>} />
+                <Route path={`${paths.books}/edit/:id`} element={<BookDetail editable= {true} emptyForm={false}/>} />
+
             </Route>
 
             <Route path="*" element={<Navigate to={`${paths.login}`} replace />} />
