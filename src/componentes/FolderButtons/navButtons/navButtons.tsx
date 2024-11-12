@@ -14,7 +14,7 @@ const StyledBottomNavigation = styled(BottomNavigation)(() => ({
 }));
 
 const StyledNavLink = styled(NavLink)(() => ({
-    backgroundColor: deepPurple[200],
+    backgroundColor: deepPurple[400],
     borderRadius: 10,
     transition:'0.5s',
     boxShadow: shadows[2]
@@ -31,22 +31,22 @@ export const NavButtonsComponent = () => {
                 <StyledNavLink to={`${paths.dashboard}`} data-testid={`link-${paths.dashboard}`}>
                     <BottomNavigationAction
                         label="Dashboard"
-                        icon={<AdminPanelSettingsRounded />}
+                        icon={<AdminPanelSettingsRounded sx={{color:'white'}}/>}
                     >
                     </BottomNavigationAction>
                 </StyledNavLink>
 
                 <StyledNavLink to={`${paths.author}/list`} data-testid={`link-${paths.author}`}>
-                    <BottomNavigationAction label="Recents" icon={<PeopleAltTwoTone />}>
+                    <BottomNavigationAction label="Recents" icon={<PeopleAltTwoTone sx={{color:'white'}}/>}>
                     </BottomNavigationAction>
                 </StyledNavLink>
                 <StyledNavLink to={`${paths.books}`} data-testid={`link-${paths.books}`}>
-                    <BottomNavigationAction label="Recents" icon={<BookOnlineTwoTone />}>
+                    <BottomNavigationAction label="Recents" icon={<BookOnlineTwoTone sx={{color:'white'}}/>}>
                     </BottomNavigationAction>
                 </StyledNavLink>
 
                 <StyledNavLink to={`${paths.login}`} data-testid={`link-${paths.login}`}>
-                    <BottomNavigationAction label="Recents" icon={<LogoutOutlined />}>
+                    <BottomNavigationAction label="Recents" icon={<LogoutOutlined sx={{color:'white'}}/>}>
                     </BottomNavigationAction>
                 </StyledNavLink>
             </StyledBottomNavigation>
