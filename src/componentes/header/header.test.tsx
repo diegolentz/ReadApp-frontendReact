@@ -1,29 +1,45 @@
-
-import { beforeEach, vi } from 'vitest'
-import { DashboardJSON } from '../../domain/DashboardJSON'
-import axios from 'axios'
-
-
+import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { paths } from "../../domain/routes";
+import { HeaderComponent } from "./header";
 
 
+function renderWithBrowserRouter(){
+    render(
+        <>
+        <BrowserRouter>
+            <HeaderComponent></HeaderComponent>
+        </BrowserRouter>
+        </>
+    );
+}
+describe('bottom-menu-navigation', ()=>{
 
-describe('Los datos del dashboard se muestran por pantalla', async () => {
-    const mockDashboard = new DashboardJSON(10, 5, 3, 8)
-    beforeEach(() => {
-        vi.mock("axios")
-        const spyGetAxios = vi.spyOn(axios, 'get')
+    it('Component rendering - ViewLayout child components truthy', async () => {
+        renderWithBrowserRouter()
+        
+        expect(screen.findByTestId(`header`)).toBeTruthy()
+    });
 
-        spyGetAxios.mockResolvedValueOnce({
-            data: mockDashboard
-        })
-    })
+    it('Child component navigation. Button navigates on click', async () => {
+        renderWithBrowserRouter()
+        
+        expect(screen.findByTestId(`link-${paths.dashboard}`)).toBeTruthy()
+        expect(screen.findByTestId(`link-${paths.author}`)).toBeTruthy()
+        expect(screen.findByTestId(`link-${paths.books}`)).toBeTruthy()
+        expect(screen.findByTestId(`link-${paths.login}`)).toBeTruthy()
 
-    afterEach(() => {
-        vi.clearAllMocks()
-    })
+        ;(await screen.findByTestId(`link-${paths.dashboard}`)).click()
+        expect(window.location.pathname).toBe(`/${paths.dashboard}`)
 
+        ;(await screen.findByTestId(`link-${paths.author}`)).click()
+        expect(window.location.pathname).toBe(`/${paths.author}/list`)
+
+        ;(await screen.findByTestId(`link-${paths.books}`)).click()
+        expect(window.location.pathname).toBe(`/${paths.books}`)
+
+        ;(await screen.findByTestId(`link-${paths.login}`)).click()
+        expect(window.location.pathname).toBe(`/${paths.login}`)
+    });
 
 })
-
-
-

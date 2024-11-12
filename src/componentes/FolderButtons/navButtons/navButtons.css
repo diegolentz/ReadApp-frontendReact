@@ -1,42 +1,8 @@
 .nav-menu {
-    height: var(--dimension-md);
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-
-    justify-content: space-around;
     align-items: center;
 
-    background-color: var(--color-primary-bright);
-
-    & li {
-        list-style-type: none;
-        padding: var(--space-xs);
-
-        & img {
-            width: var(--space-xl);
-            height: var(--space-xl);
-        }
+    & a button svg {
+        width: 100%;
+        height: 100%;
     }
-
-    & a {
-        border-radius: 1rem;
-        transition: 0.25s;
-
-        &:hover {
-            box-shadow: var(--shadow-elevation-high);
-
-        }
-
-    }
-
-}
-
-.active {
-    background-color: var(--color-complementary-1-bright);
-
-}
-
-.pending {
-    background-color: var(--color-complementary-1-mate);
 }
