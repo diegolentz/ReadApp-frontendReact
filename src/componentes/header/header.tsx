@@ -30,6 +30,12 @@ export const HeaderComponent = () => {
     };
     
     const firstToUpperCase = (string:string) => {
+        if (!string || typeof string !== 'string') {
+            // Necesario para los test, sino insulta por 
+            // <undefined>.toUpperCase()
+            return '';
+    
+        }
         return string[0].toUpperCase().concat(string.slice(1))
     };
 

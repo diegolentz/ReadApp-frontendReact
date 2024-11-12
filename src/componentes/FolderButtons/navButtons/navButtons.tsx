@@ -1,111 +1,56 @@
 import './navButtons.css'
 import { NavLink } from 'react-router-dom';
 import { paths } from '../../../domain/routes';
-import { BottomNavigation, BottomNavigationAction, Box, createTheme } from '@mui/material';
-import { useState } from 'react';
+import { BottomNavigation, BottomNavigationAction, Box, styled, ThemeProvider } from '@mui/material';
 import { AdminPanelSettingsRounded, BookOnlineTwoTone, LogoutOutlined, PeopleAltTwoTone } from '@mui/icons-material';
-import { deepOrange } from '@mui/material/colors';
+import { deepOrange, deepPurple } from '@mui/material/colors';
+import shadows from '@mui/material/styles/shadows';
 
-const theme = createTheme({
-    palette: {
-      primary: {
-        main: deepOrange[600],
-      },
-    },
-});
 
+const StyledBottomNavigation = styled(BottomNavigation)(() => ({
+    backgroundColor: deepOrange[400],
+    height: 70,
+    justifyContent: 'space-evenly'
+}));
+
+const StyledNavLink = styled(NavLink)(() => ({
+    backgroundColor: deepPurple[200],
+    borderRadius: 10,
+    transition:'0.5s',
+    boxShadow: shadows[2]
+    
+}));
 
 export const NavButtonsComponent = () => {
-    const [value, setValue] = useState('recent');
-
-    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-        setValue(newValue);
-      };
 
     return <>
-
-        <BottomNavigation
-            value={value}
-            onChange={handleChange}
+        <StyledBottomNavigation
             className='nav-menu'
-            sx={{
-                bgcolor: deepOrange[500]
-            }}
-        >  
-            <NavLink to={`${paths.dashboard}`}>
-                <BottomNavigationAction
-                label="Dashboard"
-                icon={<AdminPanelSettingsRounded />}
-                >
-                </BottomNavigationAction>
-            </NavLink>
-            
-            <NavLink to={`${paths.author}`}>
-                <BottomNavigationAction label="Recents" icon={<PeopleAltTwoTone />}>
-                </BottomNavigationAction>
-            </NavLink>
-            <NavLink to={`${paths.books}`}>
-                <BottomNavigationAction label="Recents" icon={<BookOnlineTwoTone />}>
-                </BottomNavigationAction>
-            </NavLink>
-            
-            <NavLink to={`${paths.login}`}>
-                <BottomNavigationAction label="Recents" icon={<LogoutOutlined />}>
-                </BottomNavigationAction>
-            </NavLink>
-        </BottomNavigation>
+            data-testid='bottom-nav-menu'
+        >
+                <StyledNavLink to={`${paths.dashboard}`} data-testid={`link-${paths.dashboard}`}>
+                    <BottomNavigationAction
+                        label="Dashboard"
+                        icon={<AdminPanelSettingsRounded />}
+                    >
+                    </BottomNavigationAction>
+                </StyledNavLink>
 
-        {/* <ul className="nav-menu">
+                <StyledNavLink to={`${paths.author}/list`} data-testid={`link-${paths.author}`}>
+                    <BottomNavigationAction label="Recents" icon={<PeopleAltTwoTone />}>
+                    </BottomNavigationAction>
+                </StyledNavLink>
+                <StyledNavLink to={`${paths.books}`} data-testid={`link-${paths.books}`}>
+                    <BottomNavigationAction label="Recents" icon={<BookOnlineTwoTone />}>
+                    </BottomNavigationAction>
+                </StyledNavLink>
 
-            <NavLink
-                to={`${paths.dashboard}`}
-                className={({ isActive }) =>
-                    isActive ? "active" : "pending"
-                }
-            >
-                <li className="nav-menu__option">
-                    <img src="/src/assets/gauge.svg" alt="FOTO" />
-                </li>
-            </NavLink>
+                <StyledNavLink to={`${paths.login}`} data-testid={`link-${paths.login}`}>
+                    <BottomNavigationAction label="Recents" icon={<LogoutOutlined />}>
+                    </BottomNavigationAction>
+                </StyledNavLink>
+            </StyledBottomNavigation>
 
-            <NavLink
-                to={`${paths.author}/list`}
-                className={({ isActive }) =>
-                    isActive ? "active" : "pending"
-                }
-            >
-                <li className="nav-menu__option" >
-                    <img src="/src/assets/authors.svg" alt="FOTO" />
-                </li>
-
-            </NavLink>
-
-            <NavLink
-                to={`${paths.books}`}
-                className={({ isActive }) =>
-                    isActive ? "active" : "pending"
-                }
-            >
-                <li className="nav-menu__option" >
-                    <img src="/src/assets/book.svg" alt="FOTO" />
-                </li>
-
-            </NavLink>
-
-            <NavLink
-                to={`${paths.login}`}
-                className={({ isActive }) =>
-                    isActive ? "active" : "pending"
-                }
-            >
-                <li className="nav-menu__option">
-                    <img src="/src/assets/log-out.svg" alt="FOTO" />
-                </li>
-
-            </NavLink>
-
-
-        </ul> */}
 
     </>
 }

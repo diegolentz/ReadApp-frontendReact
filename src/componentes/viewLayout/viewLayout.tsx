@@ -5,11 +5,11 @@ import { Outlet } from 'react-router-dom'
 
 export const ViewLayoutComponent = () => (
     <>
-        <HeaderComponent></HeaderComponent>
-        <div className='content'>
+        <HeaderComponent data-testid={"header"}></HeaderComponent>
+        <div className='content' data-testid={"content"}>
             <Outlet></Outlet>
         </div>
-        <NavButtonsComponent></NavButtonsComponent>
+        <NavButtonsComponent data-testid={"nav-buttons"}></NavButtonsComponent>
 
     </>
 )
