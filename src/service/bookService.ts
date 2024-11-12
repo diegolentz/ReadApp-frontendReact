@@ -10,6 +10,13 @@ class BookService {
         console.log(books2)
         return books.data.map((item: BookJSON) => Book.prototype.fromJson(item));
     }
+
+    async getBook(id: number): Promise<Book> {
+        const data = await axios.get(REST_SERVER_URL + "/getBookReact/" + id);
+        return Book.prototype.fromJson(data.data);
+    }
+
+
 }
 
 export const bookService = new BookService();

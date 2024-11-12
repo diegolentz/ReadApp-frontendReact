@@ -1,9 +1,32 @@
+import { IconButton } from '@mui/material';
 import { Book } from '../../domain/BookJSON';
 import './Book.css';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
 
-export const BookComponent = ({book}: {book: Book}) => {
+export const BookComponent = ({
+    book,
+    // onEdition,
+    // onDetail,
+}: {
+    book: Book;
+    // onEdition: (id: number) => void;
+    // onDetail: (id: number) => void;
+    }) => {
 
-    return (
+    const navigate = useNavigate();
+
+    const editBook = (id: number) => {
+        // onEdition(id);
+        navigate(`/books/edit/${id}`)
+        };
+    
+    const displayBook = (id: number) => {
+        // onDetail(id);
+        navigate(`/books/display/${id}`)};    
+    
+        return (
 
     <article key = {book.id} className ="libro"> 
             {/* /* <img class="libro__portada" [src]="book.imagen" alt="FOTO"> */ }
@@ -13,6 +36,23 @@ export const BookComponent = ({book}: {book: Book}) => {
                     {/* aca van los tres SVG */}
                 </div>
             </div>
+            <IconButton
+                            onClick={() => editBook(book.id)}
+                            color="success"
+                            sx={{
+                                height: "33%",
+                                padding: 0,
+                            }}
+                        >
+                            <EditIcon sx={{ width: "100%", height: "100%" }} />
+                        </IconButton>
+            <IconButton
+                            onClick={() => displayBook(book.id)}
+                            color="default"
+                            sx={{ height: "33%", padding: 0 }}
+                        >
+                            <MoreVertIcon sx={{ width: "100%", height: "100%" }} />
+                        </IconButton>
             <div className="libro__contenido ">
                 <h4>{book.title}</h4>
                 <p>Por <strong>{book.author}</strong></p>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { bookService } from '../../service/bookService';
 import { Book, BookComponent } from './Book';
+import { useNavigate } from 'react-router-dom';
+import { Create } from '../FolderButtons/CreateButton/Create';
 
 export const BooksView = () => {
 
@@ -11,35 +13,26 @@ export const BooksView = () => {
         setBooks(books);
     };
 
+    const navigate = useNavigate();
+
+    const createBook = () => {
+        navigate(`/books/creation`);
+    }
+
     useEffect(() => {
         fetchData();
-    }, []);
+    });
     
     return (
-        books.map((book: Book) => <BookComponent book={book} key={book.id}></BookComponent>)
-    )
+        <>
+            {(
+                books.map((book: Book) => <BookComponent book={book} key={book.id}></BookComponent>)
+            )}
+            {(
+                <Create onClick={createBook}></Create>
+            )}
+        </>
+    );
+
 }
 
-// export default function MyApp() {
-//   return (
-//     <div>
-//       <h1>Counters that update separately</h1>
-//       <MyButton />
-//       <MyButton />
-//     </div>
-//   );
-// }
-
-// function MyButton() {
-//   const [count, setCount] = useState(0);
-
-//   function handleClick() {
-//     setCount(count + 1);
-//   }
-
-//   return (
-//     <button onClick={handleClick}>
-//       Clicked {count} times
-//     </button>
-//   );
-// }
