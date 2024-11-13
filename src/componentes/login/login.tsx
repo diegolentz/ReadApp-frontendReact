@@ -132,13 +132,7 @@ export const Login = () => {
                         startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
                         <p>New account</p>
                     </Button>
-
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<KeyOutlinedIcon fontSize="small" />}>
-                        <p>Password Recovery</p>
-                    </Button>
+                        
                 </Box>
                 ) : (<CreateAccount changePage={changePage}></CreateAccount>)}
             </div>
