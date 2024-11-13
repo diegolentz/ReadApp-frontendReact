@@ -50,6 +50,8 @@ export const AuthorList = () => {
             setOpenSnackbar(true);
         }
     };
+
+    
     
     useEffect(() => {
         fetchData();

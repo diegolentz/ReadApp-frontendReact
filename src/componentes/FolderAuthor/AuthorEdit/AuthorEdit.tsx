@@ -42,6 +42,12 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     }
   };
 
+  const getIdiomas = async () => {
+    const idiomas = await authorService.getIdiomas();
+    setLenguajes(idiomas);
+};
+
+
   const confirmEdit = async () => {
     const hasErrors = Object.values(errors).some((field) => field.error);
     if (!author.nationality || hasErrors) {
@@ -97,8 +103,14 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     setAuthor(Object.assign(new AuthorJSON(), updatedAuthor));
   };
 
+  
+
   useEffect(() => {
-    getAuthor();
+    if (params.id) {
+      getAuthor();
+    } else {
+      getIdiomas();
+    }
   }, [params.id]);
 
   const handleCloseSnackbar = () => {
