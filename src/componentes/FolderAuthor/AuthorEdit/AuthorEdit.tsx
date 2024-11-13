@@ -7,7 +7,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import { AuthorJSON } from "../../../domain/AuthorJSON";
+import { AuthorJson, AuthorJSON } from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { useNavigate, useParams } from "react-router-dom";
 import { Snackbar, Alert } from '@mui/material';
@@ -61,6 +61,7 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     } else {
       const autorEdit = author.toAuthor(author);
       try {
+        console.log(autorEdit);
         await authorService.editAuthor(autorEdit);
         setSnackbarSeverity('success');
         setSnackbarMessage("Author updated successfully.");
@@ -73,6 +74,34 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
       }
     }
   };
+
+  const confirmCreate = async () => {
+    const hasErrors = Object.values(errors).some((field) => field.error);
+
+    if (!author.nationality || hasErrors) {
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            nationality: { error: !author.nationality, helperText: "Language selection is required." }
+        }));
+    } else {
+        try {
+            const newAuthor = AuthorJson.toCreateAuthor(author);
+            console.log(newAuthor);
+            await authorService.createAuthor(newAuthor);
+            setSnackbarSeverity('success');
+            setSnackbarMessage('Author created successfully!');
+            setOpenSnackbar(true);
+
+            setTimeout(() => {
+                navigate(`/author/list`);
+            }, 2000);
+        } catch (error) {
+            setSnackbarSeverity('error');
+            setSnackbarMessage('Failed to create author. Please try again.');
+            setOpenSnackbar(true);
+        }
+    }
+};
 
   const validateField = (fieldName: string, value: string) => {
     const lettersAndSpacesRegex = /^[a-zA-Z\s]+$/;
@@ -179,7 +208,7 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
 </FormControl>
 
 <Button
-  onClick={confirmEdit}
+  onClick={params.id ? confirmEdit : confirmCreate}
   variant="contained"
   color="success"
   sx={{ width: '10rem', borderRadius: "4rem" }}
