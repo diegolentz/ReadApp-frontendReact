@@ -13,6 +13,7 @@ import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Actions } from './actions'
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -117,8 +118,8 @@ export const Login = () => {
                             )
                         }}
                     />
-
-                    <Button
+                    <Actions isLoginPage= {isLoginPage} changePage={changePage}></Actions>
+                    {/* <Button
                         variant="contained"
                         color="success"
                         type="submit"
@@ -131,8 +132,8 @@ export const Login = () => {
                         onClick={changePage}
                         startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
                         <p>New account</p>
-                    </Button>
-                        
+                    </Button> */}
+
                 </Box>
                 ) : (<CreateAccount changePage={changePage}></CreateAccount>)}
             </div>
