@@ -1,11 +1,13 @@
 import { Button } from "@mui/material"
 import LoginIcon from '@mui/icons-material/Login'
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+
 
 
 export const Actions = ({ isLoginPage, changePage }: { isLoginPage: boolean,changePage: () => void }) => {
 
-    return (<>
+    return (isLoginPage ? <>
         <Button
             variant="contained"
             color="success"
@@ -20,5 +22,24 @@ export const Actions = ({ isLoginPage, changePage }: { isLoginPage: boolean,chan
             startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
                 <p>New account</p>
         </Button>
-    </>)
+    </>: <>
+    <Button
+            variant="contained"
+            color="success"
+            type="submit"
+            startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
+            >
+            Create Account
+        </Button>
+
+        <Button
+            variant="contained"
+            color="secondary"
+            onClick={changePage}
+            startIcon={<KeyboardBackspaceIcon fontSize="large" />}
+            >
+                Back to Login
+        </Button>
+        </>
+        )
 } 
