@@ -1,15 +1,3 @@
-export class CreateAuthorJSON {
-    public nombre: string;
-    public apellido: string;
-    public nacionalidad: string;
-
-    constructor() {
-        this.nombre = "";
-        this.apellido = "";
-        this.nacionalidad = "";
-    }
-
-}
 
 export class AuthorJSON {
     public id: number;
@@ -52,7 +40,11 @@ export class AuthorJSON {
             apellido: data.lastName,
             nacionalidad: data.nationality
         });
-}
+    }
+    toCreateAuthor(data: AuthorJSON): CreateAuthorJSON {
+        return new CreateAuthorJSON(data.name, data.lastName, data.nationality)
+    }
+
 }
 
 export class AutorEditJSON {
@@ -64,6 +56,20 @@ export class AutorEditJSON {
     ) {
     }
 }
+
+export class CreateAuthorJSON {
+    public nombre: string;
+    public apellido: string;
+    public nacionalidad: string;
+
+    constructor(name: string = "", lastName: string = "", nationality: string = "") {
+        this.nombre = name;
+        this.apellido = lastName;
+        this.nacionalidad = nationality;
+    }
+
+}
+
 
 export const AuthorJson = new AuthorJSON()
 export const CreateAuthorJson = new CreateAuthorJSON()
