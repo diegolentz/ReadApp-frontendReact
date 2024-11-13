@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Actions } from './actions'
+import { FormsComponent } from './FormsComponent'
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -76,7 +77,7 @@ export const Login = () => {
                     </svg>
                     <h1>ReadApp</h1>
                 </Box>
-                {isLoginPage ? (
+                {/* {isLoginPage ? ( */}
                 <Box component="form"
                     onSubmit={login}
                     display="flex"
@@ -86,7 +87,7 @@ export const Login = () => {
                     maxWidth="400px"
                     mx="auto">
                     
-                    <TextField
+                    {/* <TextField
                         id="outlined-basic"
                         label="Username"
                         variant="outlined"
@@ -117,25 +118,10 @@ export const Login = () => {
                                 </InputAdornment>
                             )
                         }}
-                    />
-                    <Actions isLoginPage= {isLoginPage} changePage={changePage}></Actions>
-                    {/* <Button
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                        startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
-                        <p>Login</p>
-                    </Button>
-
-                    <Button
-                        variant="contained"
-                        onClick={changePage}
-                        startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
-                        <p>New account</p>
-                    </Button> */}
-
+                    />  */}
+                    <FormsComponent isLoginPage = {isLoginPage} usuario={usuario} isSubmitted = {isSubmitted}></FormsComponent>
+                    <Actions isLoginPage= {isLoginPage} changePage={changePage} login={login}></Actions>
                 </Box>
-                ) : (<CreateAccount changePage={changePage}></CreateAccount>)}
             </div>
 
             <Snackbar
