@@ -2,12 +2,12 @@ const INTERNAL_SERVER_ERROR = 500
 
 export const mostrarMensajeError = (error: ErrorResponse, setearMensaje: (mensaje: string) => void) => {
 const status = error.response?.status
-const mensajeError = status >= INTERNAL_SERVER_ERROR ? 'Ocurrió un error. Consulte al administrador del sistema' :
-    !status ? 'Ocurrió un error al conectarse al backend. Consulte al administrador del sistema' : error.response.data.message
+const errorMessage = status >= INTERNAL_SERVER_ERROR ? 'An error occurred, please try again' :
+  !status ? 'An error occurred while connecting to the backend. Please contact the system administrator' : error.response.data.message
   if (status >= INTERNAL_SERVER_ERROR) {
-    console.error(error)
+    console.error(error.message)
   }
-  setearMensaje(mensajeError)
+  setearMensaje(errorMessage)
 }
 
 export type ErrorResponse = {
@@ -16,5 +16,6 @@ export type ErrorResponse = {
     data: {
       message: string
     }
-  }
+  },
+  message: string
 }
