@@ -42,44 +42,32 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
       setOpenSnackbar(true);
     }
   };
-  
-  
-  
 
-  const confirmEdit = async (autorEdit : AuthorJSON) => {
-   
-      try {
-        const autor = AuthorJson.toAuthor(autorEdit);
-        // console.log(autor);
-        await authorService.editAuthor(autor);
-        setSnackbarSeverity('success');
-        setSnackbarMessage("Author updated successfully.");
-        setOpenSnackbar(true);
-        setTimeout(() => navigate(`/author/list`), 2000);
-      } catch (error: any) {
-        setSnackbarSeverity('error');
-        mostrarMensajeError(error, setSnackbarMessage);
-        setOpenSnackbar(true);
-      }
+  const confirmEdit = async (autorEdit: AuthorJSON) => {
+
+    const autor = AuthorJson.toAuthor(autorEdit);
+    try {
+      await authorService.editAuthor(autor);
+      setTimeout(() => navigate(`/author/list`), 1000);
+    } catch (error: any) {
+      setSnackbarSeverity('error');
+      mostrarMensajeError(error, setSnackbarMessage);
+      setOpenSnackbar(true);
     }
+  }
 
-  const confirmCreate = async (autorCreate : AuthorJSON) => {
+  const confirmCreate = async (autorCreate: AuthorJSON) => {
     const autor = AuthorJson.toCreateAuthor(autorCreate);
     try {
       await authorService.createAuthor(autor);
-      setSnackbarSeverity('success');
-      setSnackbarMessage('Author created successfully!');
-      setOpenSnackbar(true);
-      setTimeout(() => navigate(`/author/list`), 2000);
+      setTimeout(() => navigate(`/author/list`), 1000);
     } catch (error: any) {
       setSnackbarSeverity('error');
       mostrarMensajeError(error, setSnackbarMessage);
       setOpenSnackbar(true);
     }
   };
-  
-  
-  
+
   useEffect(() => {
     if (params.id) {
       getAuthor();
@@ -87,16 +75,14 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
       getIdiomas();
     }
   }, [params.id]);
-  
-  
-  
+
   return (
     <Formulario
-        autor={author}
-        idiomas={lenguajes}
-        onSelect={(updatedAuthor) => (params.id ? confirmEdit(updatedAuthor) : confirmCreate(updatedAuthor))}
-        isEdit={editable}
+      autor={author}
+      idiomas={lenguajes}
+      onSelect={(updatedAuthor) => (params.id ? confirmEdit(updatedAuthor) : confirmCreate(updatedAuthor))}
+      isEdit={editable}
     />
-);
+  );
 }
-  export default AuthorEdit;
+export default AuthorEdit;

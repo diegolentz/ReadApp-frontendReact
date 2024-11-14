@@ -4,7 +4,9 @@ import { Alert, Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, 
 
 export const Formulario = ({ autor, idiomas, onSelect, isEdit }: 
     { autor: AuthorJSON, idiomas: string[], onSelect: (updatedAuthor: AuthorJSON) => void, isEdit: boolean }) => {
+
     const [lenguajes, setLenguajes] = useState<string[]>(idiomas);
+    const [autorFormulario, setAutorFormulario] = useState<AuthorJSON>(autor);
     const [errors, setErrors] = useState({
         name: { error: false, helperText: "" },
         lastName: { error: false, helperText: "" },
@@ -13,11 +15,6 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-
-    // Sincroniza el estado con las props cuando `autor` o `idiomas` cambian
-    useEffect(() => {
-        setLenguajes(idiomas);
-    }, [idiomas]);
 
     const validateField = (fieldName: string, value: string) => {
         const lettersAndSpacesRegex = /^[a-zA-Z\s]+$/;
@@ -43,8 +40,8 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
                 [name]: { error, helperText }
             }));
         }
-        // Actualiza `autor` directamente usando `Object.assign`
-        Object.assign(autor, { [name]: value });
+        const updatedAuthor = { ...autorFormulario, [name]: value };
+        setAutorFormulario(Object.assign(new AuthorJSON(), updatedAuthor));
     };
 
     const handleCloseSnackbar = () => {
@@ -62,10 +59,17 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
             setSnackbarMessage("Please correct the errors before saving.");
             setOpenSnackbar(true);
         } else {
-            console.log(autor);
-            onSelect(autor);
+            onSelect(autorFormulario);
+            setSnackbarSeverity('success');
+            setSnackbarMessage('Operation successful!');
+            setOpenSnackbar(true);
         }
     };
+
+    useEffect(() => {
+        setLenguajes(idiomas);
+        setAutorFormulario(autor);
+    }, [idiomas, autor]);
 
     return (
         <Box display="flex" flexDirection="column" justifyContent="space-between" height="70vh">
@@ -76,57 +80,44 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
             </Snackbar>
 
             <Box component="form" display="flex" flexDirection="column" alignItems="center" gap={3} width="100%" height="100%" padding={5}>
-                <TextField
-                    label="Name"
-                    variant="outlined"
-                    onChange={editFile}
-                    name="name"
-                    disabled={!isEdit}
-                    value={autor.name || ''}
-                    sx={{ width: '20rem' }}
-                    InputProps={{ style: { fontSize: '1.5rem' } }}
-                    error={errors.name.error}
+                <TextField label="Name" variant="outlined" onChange={editFile} name="name" disabled={!isEdit}
+                    value={autorFormulario.name || ''} sx={{ width: '20rem' }} InputProps={{ style: { fontSize: '1.5rem' } }}
+                    error={errors.name.error} 
                     helperText={errors.name.error ? errors.name.helperText : ''}
                     data-testid="name-input"
                 />
 
                 <TextField
-                    label="Last Name"
-                    variant="outlined"
-                    onChange={editFile}
-                    name="lastName"
-                    disabled={!isEdit}
-                    value={autor.lastName || ''}
-                    sx={{ width: '20rem' }}
-                    InputProps={{ style: { fontSize: '1.5rem' } }}
+                    label="Last Name" variant="outlined" onChange={editFile} name="lastName" disabled={!isEdit} 
+                    value={autorFormulario.lastName || ''} sx={{ width: '20rem' }} InputProps={{ style: { fontSize: '1.5rem' } }}
                     error={errors.lastName.error}
                     helperText={errors.lastName.error ? errors.lastName.helperText : ''}
                     data-testid="last-name-input"
                 />
 
-                <FormControl sx={{ width: '20rem' }} error={errors.nationality.error} data-testid="language-select">
-                    <InputLabel id="nationality-select-label">Language</InputLabel>
-                    <Select
-                        labelId="nationality-select-label"
-                        id="nationality-select"
-                        name="nationality"
-                        disabled={!isEdit}
-                        value={autor.nationality || ''}
-                        label="Language"
-                        onChange={(event: SelectChangeEvent) => editFile(event)}
-                        sx={{ width: '20rem' }}
-                        data-testid="language-select-input"
-                    >
-                        {lenguajes?.map((language) => (
-                            <MenuItem key={language} value={language}>
-                                {language}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                    {errors.nationality.error && (
-                        <FormHelperText>{errors.nationality.helperText}</FormHelperText>
-                    )}
-                </FormControl>
+<FormControl sx={{ width: '20rem' }} error={errors.nationality.error} data-testid="language-select">
+          <InputLabel id="nationality-select-label">Language</InputLabel>
+          <Select
+            labelId="nationality-select-label"
+            id="nationality-select"
+            name="nationality"
+            disabled={!isEdit}
+            value={autorFormulario.nationality || ''}
+            label="Language"
+            onChange={(event: SelectChangeEvent) => editFile(event)}
+            sx={{ width: '20rem' }}
+            data-testid="language-select-input"
+          >
+            {lenguajes?.map((language) => (
+              <MenuItem key={language} value={language}>
+                {language}
+              </MenuItem>
+            ))}
+          </Select>
+          {errors.nationality.error && (
+            <FormHelperText>{errors.nationality.helperText}</FormHelperText>
+          )}
+        </FormControl>
 
                 <Button
                     onClick={confirm}
