@@ -50,10 +50,10 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
 
     const confirm = () => {
         const hasErrors = Object.values(errors).some((field) => field.error);
-        if (!autor.nationality || hasErrors) {
+        if (!autorFormulario.nationality || hasErrors) {
             setErrors((prevErrors) => ({
                 ...prevErrors,
-                nationality: { error: !autor.nationality, helperText: "Language selection is required." }
+                nationality: { error: !autorFormulario.nationality, helperText: "Language selection is required." }
             }));
             setSnackbarSeverity('error');
             setSnackbarMessage("Please correct the errors before saving.");
@@ -83,7 +83,7 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
                 <TextField label="Name" variant="outlined" onChange={editFile} name="name" disabled={!isEdit}
                     value={autorFormulario.name || ''} sx={{ width: '20rem' }} InputProps={{ style: { fontSize: '1.5rem' } }}
                     error={errors.name.error} 
-                    helperText={errors.name.error ? errors.name.helperText : ''}
+                    helperText={errors.name.error ? errors.name.helperText : ''} 
                     data-testid="name-input"
                 />
 
@@ -91,33 +91,33 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
                     label="Last Name" variant="outlined" onChange={editFile} name="lastName" disabled={!isEdit} 
                     value={autorFormulario.lastName || ''} sx={{ width: '20rem' }} InputProps={{ style: { fontSize: '1.5rem' } }}
                     error={errors.lastName.error}
-                    helperText={errors.lastName.error ? errors.lastName.helperText : ''}
+                    helperText={errors.lastName.error ? errors.lastName.helperText : ''} 
                     data-testid="last-name-input"
                 />
 
-<FormControl sx={{ width: '20rem' }} error={errors.nationality.error} data-testid="language-select">
-          <InputLabel id="nationality-select-label">Language</InputLabel>
-          <Select
-            labelId="nationality-select-label"
-            id="nationality-select"
-            name="nationality"
-            disabled={!isEdit}
-            value={autorFormulario.nationality || ''}
-            label="Language"
-            onChange={(event: SelectChangeEvent) => editFile(event)}
-            sx={{ width: '20rem' }}
-            data-testid="language-select-input"
-          >
-            {lenguajes?.map((language) => (
-              <MenuItem key={language} value={language}>
-                {language}
-              </MenuItem>
-            ))}
-          </Select>
-          {errors.nationality.error && (
-            <FormHelperText>{errors.nationality.helperText}</FormHelperText>
-          )}
-        </FormControl>
+                <FormControl sx={{ width: '20rem' }} error={errors.nationality.error} data-testid="language-select">
+                    <InputLabel id="nationality-select-label">Language</InputLabel>
+                    <Select
+                        labelId="nationality-select-label"
+                        id="nationality-select"
+                        name="nationality"
+                        disabled={!isEdit}
+                        value={autorFormulario.nationality || ''}
+                        label="Language"
+                        onChange={(event: SelectChangeEvent) => editFile(event)}
+                        sx={{ width: '20rem' }}
+                        data-testid="language-select-input"
+                    >
+                        {lenguajes?.map((language) => (
+                            <MenuItem key={language} value={language}>
+                                {language}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    {errors.nationality.error && (
+                        <FormHelperText>{errors.nationality.helperText}</FormHelperText>
+                    )}
+                </FormControl>
 
                 <Button
                     onClick={confirm}
