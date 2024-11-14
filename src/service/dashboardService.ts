@@ -15,7 +15,6 @@ class DashboardService{
 
     async deleteUsers(){
         await axios.post(REST_SERVER_URL + "/borrarUsuariosInactivos");
-        
     }
 
 }
