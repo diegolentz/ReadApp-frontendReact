@@ -61,6 +61,7 @@ export const Login = () => {
 
     const changePage = () => {
         setLoginPage(!isLoginPage)
+        setIsSubmitted(false)  
     }
 
     const handleCloseSnackbar = () => {
