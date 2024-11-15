@@ -128,7 +128,7 @@
                         type="submit"
                         startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
                         >
-                        Create Account
+                        <p>Create Account</p>
                     </Button>
 
                     <Button
@@ -137,7 +137,7 @@
                         onClick={changePage}
                         startIcon={<KeyboardBackspaceIcon fontSize="large" />}
                         >
-                            Back to Login
+                            <p>Back to Login</p>
                     </Button>
                 </>
                 }
