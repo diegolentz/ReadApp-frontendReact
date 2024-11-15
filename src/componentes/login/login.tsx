@@ -1,37 +1,23 @@
 import './login.css'
-import LoginIcon from '@mui/icons-material/Login'
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined'
 import Alert from '@mui/material/Alert'
 import { useState } from 'react'
 import { mostrarMensajeError } from '../../error-handling'
 import { ErrorResponse } from '../../error-handling'
-import { CreateAccount } from './CreateAccount'
-import { Snackbar, Button, TextField, Box , InputAdornment} from '@mui/material'
+import { Snackbar, Box } from '@mui/material'
 import { userService } from '../../service/userService'
-import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Actions } from './actions'
 import { FormsComponent } from './FormsComponent'
 
 export const Login = () => {
     const navigate = useNavigate()
     const [isLoginPage, setLoginPage] = useState(true)
-    const [errorMessage, setErrorMessage] = useState('')
+    const [message, setMessage] = useState('')
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
 
-    // const [username, setUsername] = useState('')
-    // const [password, setPassword] = useState('')
     const [isSubmitted, setIsSubmitted] = useState(false)  
 
-    // const usuario: User = new User('', username, password, '')
-    // const loginRequest = usuario.buildLoginRequest()
-
     const login = async (username:string,password:string) => {
-        // event.preventDefault()
         const loginRequest = {username,password}
         setIsSubmitted(true)  
 
@@ -41,11 +27,12 @@ export const Login = () => {
         
         try {
             await userService.login(loginRequest)
+            setMessage('Login successful! Redirecting...')
             setSnackbarSeverity('success')
             setOpenSnackbar(true)
             setTimeout(() => navigate('/dashboard'), 2000)
         } catch (error: unknown) {
-            mostrarMensajeError(error as ErrorResponse, setErrorMessage)
+            mostrarMensajeError(error as ErrorResponse, setMessage)
             setSnackbarSeverity('error')
             setOpenSnackbar(true)
         }
@@ -61,12 +48,12 @@ export const Login = () => {
 
         try {
             await userService.create(createRequest)
-            setErrorMessage('Account created successfully')
+            setMessage('Account created successfully')
             setSnackbarSeverity('success')
             setOpenSnackbar(true)
             changePage()  
         } catch (error: unknown) {
-            mostrarMensajeError(error as ErrorResponse, setErrorMessage)
+            mostrarMensajeError(error as ErrorResponse, setMessage)
             setSnackbarSeverity('error')
             setOpenSnackbar(true)
         }
@@ -94,18 +81,16 @@ export const Login = () => {
                     </svg>
                     <h1>ReadApp</h1>
                 </Box>
-                
-                    <FormsComponent 
-                        isLoginPage = {isLoginPage}
-                        isSubmitted = {isSubmitted} 
-                        login       = {login}
-                        changePage  = {changePage}
-                        create      = {create} 
-                        >                    
-                    </FormsComponent>
+            
+                <FormsComponent 
+                    isLoginPage = {isLoginPage}
+                    isSubmitted = {isSubmitted} 
+                    login       = {login}
+                    changePage  = {changePage}
+                    create      = {create} 
+                    >                    
+                </FormsComponent>
 
-                    {/* <Actions isLoginPage= {isLoginPage} changePage={changePage} login={login}></Actions> */}
-                
             </div>
 
             <Snackbar
@@ -114,7 +99,7 @@ export const Login = () => {
                 onClose={handleCloseSnackbar}
             >
                 <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
-                    {snackbarSeverity === 'success' ? "Login successful! Redirecting..." : errorMessage || "An error occurred. Please try again."}
+                    {snackbarSeverity === 'success' ? message : message || "An error occurred. Please try again."}
                 </Alert>
             </Snackbar>
         </main>

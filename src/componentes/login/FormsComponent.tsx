@@ -2,7 +2,6 @@
     import { useState } from "react"
     import VisibilityIcon from '@mui/icons-material/Visibility';
     import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-    import { User } from "../../domain/loginJSON";
     import LoginIcon from '@mui/icons-material/Login'
     import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
     import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
@@ -141,7 +140,7 @@
                             Back to Login
                     </Button>
                 </>
-    }
+                }
             </Box>
             </>
         )
