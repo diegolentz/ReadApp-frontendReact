@@ -22,17 +22,17 @@ export const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
-    const [visibility, setVisibility] = useState<'text'| 'password'>('password')
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    // const [username, setUsername] = useState('')
+    // const [password, setPassword] = useState('')
     const [isSubmitted, setIsSubmitted] = useState(false)  
 
-    const usuario: User = new User('', username, password, '')
-    const loginRequest = usuario.buildLoginRequest()
+    // const usuario: User = new User('', username, password, '')
+    // const loginRequest = usuario.buildLoginRequest()
 
-    const login = async (event: React.FormEvent) => {
-        event.preventDefault()
+    const login = async (username:string,password:string) => {
+        // event.preventDefault()
+        const loginRequest = {username,password}
         setIsSubmitted(true)  
 
         if (!username || !password) {
@@ -55,10 +55,6 @@ export const Login = () => {
         setLoginPage(!isLoginPage)
     }
 
-    const changeVisibility = () => {
-        setVisibility(visibility === 'password' ? 'text' : 'password')
-    }
-
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false)
     }
@@ -77,51 +73,17 @@ export const Login = () => {
                     </svg>
                     <h1>ReadApp</h1>
                 </Box>
-                {/* {isLoginPage ? ( */}
-                <Box component="form"
-                    onSubmit={login}
-                    display="flex"
-                    flexDirection="column"
-                    gap={2}
-                    width="100%"
-                    maxWidth="400px"
-                    mx="auto">
-                    
-                    {/* <TextField
-                        id="outlined-basic"
-                        label="Username"
-                        variant="outlined"
-                        type="text"
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        helperText={isSubmitted && !username ? 'Field is required' : ""}
-                        error={isSubmitted && !username}
-                    />
+                
+                    <FormsComponent 
+                        isLoginPage = {isLoginPage}
+                        isSubmitted = {isSubmitted} 
+                        login       = {login}
+                        changePage  = {changePage} 
+                        >                    
+                    </FormsComponent>
 
-                    <TextField
-                        id="outlined-basic"
-                        label="Password"
-                        variant="outlined"
-                        type={visibility}
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        helperText={isSubmitted && !password ? 'Field is required' : ""}
-                        error={isSubmitted && !password}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end" onClick={changeVisibility}>
-                                    {visibility === 'password' ? (
-                                        <VisibilityOffIcon fontSize="large" />
-                                    ) : (
-                                        <VisibilityIcon fontSize="large" />
-                                    )}
-                                </InputAdornment>
-                            )
-                        }}
-                    />  */}
-                    <FormsComponent isLoginPage = {isLoginPage} usuario={usuario} isSubmitted = {isSubmitted}></FormsComponent>
-                    <Actions isLoginPage= {isLoginPage} changePage={changePage} login={login}></Actions>
-                </Box>
+                    {/* <Actions isLoginPage= {isLoginPage} changePage={changePage} login={login}></Actions> */}
+                
             </div>
 
             <Snackbar

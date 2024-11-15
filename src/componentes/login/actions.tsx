@@ -5,14 +5,13 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 
 
-export const Actions = ({ isLoginPage, changePage,login }: { isLoginPage: boolean,changePage: () => void, login: (event: React.FormEvent) => void }) => {
+export const Actions = ({ isLoginPage, changePage,login }: { isLoginPage: boolean,changePage: () => void, login: (username:string,password:string) => void }) => {
 
     return (isLoginPage ? <>
         <Button
             variant="contained"
             color="success"
             type="submit"
-            onClick={login}
             startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
                 <p>Login</p>
         </Button>
