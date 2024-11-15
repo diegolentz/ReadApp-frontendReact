@@ -41,7 +41,7 @@ export const Author = ({
             {renderAuthor.map((author) => (
 
                 <Card
-                    key={author.id} variant="outlined" sx={{
+                    key={author.id} variant="outlined"   data-testid="card" sx={{
                         display: "flex",
                         alignItems: "center",
                         padding: 1,
@@ -50,9 +50,10 @@ export const Author = ({
                         borderRadius: 2,
                         borderColor: '#212121',
                         backgroundColor: "#ff8a80",
+                      
                     }}>
 
-                    <CardContent onClick={() => showAuthor(author.id)} sx={{
+                    <CardContent onClick={() => showAuthor(author.id)} data-testid="cardContent" sx={{
                         flexGrow: 1,
                         cursor: "pointer",
                         display: "flex",
@@ -64,6 +65,7 @@ export const Author = ({
                         <Typography
                             variant="h5"
                             color="text.primary"
+                            data-testid="authorName"
                             sx={{ fontWeight: 'bold' }}
                         >
                             {author.name} {author.lastName}
@@ -72,6 +74,7 @@ export const Author = ({
                         <Typography
                             variant="h6"
                             color="text.primary"
+                            data-testid="authorNationality"
                             sx={{ fontStyle: 'oblique' }}
                         >
                             {author.nationality}
@@ -90,6 +93,7 @@ export const Author = ({
                         <IconButton
                             onClick={() => showAuthor(author.id)}
                             color="default"
+                            data-testid="showAuthor"
                             sx={{ height: "33%", padding: 0 }}
                         >
                             <MoreVertIcon sx={{ width: "100%", height: "100%" }} />
@@ -98,6 +102,7 @@ export const Author = ({
                         <IconButton
                             onClick={() => editAuthor(author.id)}
                             color="success"
+                            data-testid="editAuthor"
                             sx={{
                                 height: "33%",
                                 padding: 0,
@@ -111,6 +116,7 @@ export const Author = ({
                                 sx={{ height: "33%", padding: 0 }}
                                 onClick={() => deleteAuthor(author.id)}
                                 color="error"
+                                data-testid="deleteAuthor"
                             >
                                 <DeleteIcon sx={{ width: "100%", height: "100%" }} />
                             </IconButton>
