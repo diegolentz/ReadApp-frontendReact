@@ -10,11 +10,11 @@ class DashboardService{
     }
 
     async deleteCenters(){
-        await axios.post(REST_SERVER_URL + "/borrarCentrosInactivos")
+        await axios.delete(REST_SERVER_URL + "/borrarCentrosInactivos")
     }
 
     async deleteUsers(){
-        await axios.post(REST_SERVER_URL + "/borrarUsuariosInactivos");
+        await axios.delete(REST_SERVER_URL + "/borrarUsuariosInactivos");
     }
 
 }
