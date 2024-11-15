@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import './Dashboard.css'
 import { dashboardService } from '../../service/dashboardService'
 import { DashboardCard } from './DashboardCard/DashboardCard'
 import { Alert, Snackbar } from '@mui/material'
+import { useOnInit } from '../../domain/CustomHooks/useOnInit'
 export const Dashboard = () => {
   const [recomendations, setRecomendations] = useState(0)
   const [books, setBooks] = useState(0)
@@ -73,9 +74,8 @@ export const Dashboard = () => {
   }
 
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useOnInit(fetchData);
+
   return <>
     <h1 className='titulo'>Indicadores</h1>
     <section className="indicadores">
