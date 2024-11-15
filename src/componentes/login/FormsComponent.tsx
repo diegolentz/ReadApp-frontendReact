@@ -7,7 +7,8 @@
     import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
     import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
-    export const FormsComponent = ({isLoginPage,isSubmitted,login,changePage} : {isLoginPage:boolean,isSubmitted:boolean,login:(username:string,password:string)=>void,changePage: () => void}) => {
+    export const FormsComponent = ({isLoginPage,isSubmitted,login,changePage,create} :
+         {isLoginPage:boolean,isSubmitted:boolean,login:(username:string,password:string)=>void,changePage: () => void,create:(email:string,username:string,password:string,name:string)=>void}) => {
         
         const [email, setEmail] = useState('')
         const [username, setUsername] = useState('')
@@ -21,7 +22,12 @@
         }
         const handleSubmit = (e: React.FormEvent) => {
             e.preventDefault()
-            login(username, password) // Llamar al callback con los datos
+            
+            if(isLoginPage){
+                login(username, password) // Llamar al callback con los datos
+            }else{
+                create(email,username, password,name)
+            }
         }
 
         return ( 
@@ -48,7 +54,8 @@
                         helperText={isSubmitted && !email ? 'Field is required' : (isSubmitted && email && !/^[^@]+@[^@]+\.[^@]+$/.test(email)) ? 'Email must be a valid email address' : ''}
                         error={isSubmitted && (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email))}
                     />
-                </>:<></>}   
+                    </>:<></>
+                }   
                 <TextField
                     id="outlined-basic"
                     label="Username"
@@ -81,7 +88,7 @@
                                 )
                             }}
                     />
-                    {!isLoginPage ? 
+                {!isLoginPage ? 
                     <>
                     <TextField
                         id="name"
@@ -94,7 +101,10 @@
                         helperText={isSubmitted && !name ? 'Field is required' : (isSubmitted && name && !/^[A-Za-zÀ-ÿ\s]+$/.test(name)) ? 'Name must only contain letters and spaces' : ''}
                         error={isSubmitted && (!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name))}
                     />
-                </>:<></>} 
+                    </>:<></>
+                } 
+                
+                {/* BOTONES*/}
                 {isLoginPage ? 
                 <>
                     <Button

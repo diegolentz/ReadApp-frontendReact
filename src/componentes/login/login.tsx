@@ -51,6 +51,27 @@ export const Login = () => {
         }
     }
 
+    const create = async (email:string,username:string,password:string,name:string) => {
+        setIsSubmitted(true)  
+        const createRequest = {email,username,password,name}
+
+        if (!email || !username || !password || !name) {
+            return
+        }
+
+        try {
+            await userService.create(createRequest)
+            setErrorMessage('Account created successfully')
+            setSnackbarSeverity('success')
+            setOpenSnackbar(true)
+            changePage()  
+        } catch (error: unknown) {
+            mostrarMensajeError(error as ErrorResponse, setErrorMessage)
+            setSnackbarSeverity('error')
+            setOpenSnackbar(true)
+        }
+    }
+
     const changePage = () => {
         setLoginPage(!isLoginPage)
     }
@@ -78,7 +99,8 @@ export const Login = () => {
                         isLoginPage = {isLoginPage}
                         isSubmitted = {isSubmitted} 
                         login       = {login}
-                        changePage  = {changePage} 
+                        changePage  = {changePage}
+                        create      = {create} 
                         >                    
                     </FormsComponent>
 
