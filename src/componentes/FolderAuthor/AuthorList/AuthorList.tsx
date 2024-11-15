@@ -63,15 +63,21 @@ export const AuthorList = () => {
     
     return (
         <>
-            <Box display="flex" flexDirection="column" position="relative" height="auto">
-                <Author renderAuthor={authors} onDelete={deleteAuthor} onSelect={toEdit} onDetail={showAuthor} />
-                <Box sx={{position: "fixed", bottom: "13rem", right: "1rem", zIndex: 1000}}>
-                    <Create onClick={createAuthor} />
+            <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">
+                <Author 
+                    renderAuthor={authors} 
+                    onDelete={deleteAuthor} 
+                    onSelect={toEdit} 
+                    onDetail={showAuthor} 
+                    data-testid="authors-list" 
+                />
+                <Box sx={{position: "fixed", bottom: "13rem", right: "1rem", zIndex: 1000}} data-testid="create-author-button">
+                    <Create onClick={createAuthor} data-testid="create"/>
                 </Box>
             </Box>
 
             <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
-                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled" data-testid="snackbar-message">
                     {snackbarMessage}
                 </Alert>
             </Snackbar>
