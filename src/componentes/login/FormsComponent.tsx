@@ -53,6 +53,17 @@
                         helperText={isSubmitted && !email ? 'Field is required' : (isSubmitted && email && !/^[^@]+@[^@]+\.[^@]+$/.test(email)) ? 'Email must be a valid email address' : ''}
                         error={isSubmitted && (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email))}
                     />
+                    <TextField
+                        id="name"
+                        label="Name"
+                        variant="outlined"
+                        type="text"
+                        fullWidth
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        helperText={isSubmitted && !name ? 'Field is required' : (isSubmitted && name && !/^[A-Za-zÀ-ÿ\s]+$/.test(name)) ? 'Name must only contain letters and spaces' : ''}
+                        error={isSubmitted && (!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name))}
+                    />
                     </>:<></>
                 }   
                 <TextField
@@ -87,21 +98,6 @@
                                 )
                             }}
                     />
-                {!isLoginPage ? 
-                    <>
-                    <TextField
-                        id="name"
-                        label="Name"
-                        variant="outlined"
-                        type="text"
-                        fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        helperText={isSubmitted && !name ? 'Field is required' : (isSubmitted && name && !/^[A-Za-zÀ-ÿ\s]+$/.test(name)) ? 'Name must only contain letters and spaces' : ''}
-                        error={isSubmitted && (!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name))}
-                    />
-                    </>:<></>
-                } 
                 
                 {/* BOTONES*/}
                 {isLoginPage ? 
