@@ -28,37 +28,37 @@ export const Login = () => {
         try {
             await userService.login(loginRequest)
             setMessage('Login successful! Redirecting...')
-            setSnackbarSeverity('success')
-            setOpenSnackbar(true)
+            showSnackbar('success')  
             setTimeout(() => navigate('/dashboard'), 2000)
         } catch (error: unknown) {
             mostrarMensajeError(error as ErrorResponse, setMessage)
-            setSnackbarSeverity('error')
-            setOpenSnackbar(true)
+            showSnackbar('error')
         }
     }
-
     const create = async (email:string,username:string,password:string,name:string) => {
         setIsSubmitted(true)  
         const createRequest = {email,username,password,name}
-
+        
         if (!email || !username || !password || !name) {
             return
         }
-
+        
         try {
             await userService.create(createRequest)
             setMessage('Account created successfully')
-            setSnackbarSeverity('success')
-            setOpenSnackbar(true)
+            showSnackbar('success')
             changePage()  
         } catch (error: unknown) {
             mostrarMensajeError(error as ErrorResponse, setMessage)
-            setSnackbarSeverity('error')
-            setOpenSnackbar(true)
+            showSnackbar('error')
         }
     }
-
+    
+    const showSnackbar = (typeToast: 'success' | 'error') : void =>{
+        setSnackbarSeverity(typeToast)
+        setOpenSnackbar(true)
+    }
+    
     const changePage = () => {
         setLoginPage(!isLoginPage)
         setIsSubmitted(false)  
