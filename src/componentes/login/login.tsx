@@ -1,36 +1,24 @@
 import './login.css'
-import LoginIcon from '@mui/icons-material/Login'
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined'
 import Alert from '@mui/material/Alert'
 import { useState } from 'react'
 import { mostrarMensajeError } from '../../error-handling'
 import { ErrorResponse } from '../../error-handling'
-import { CreateAccount } from './CreateAccount'
-import { Snackbar, Button, TextField, Box , InputAdornment} from '@mui/material'
+import { Snackbar, Box } from '@mui/material'
 import { userService } from '../../service/userService'
-import { User } from '../../domain/loginJSON'
 import { useNavigate } from 'react-router-dom'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { FormsComponent } from './FormsComponent'
 
 export const Login = () => {
     const navigate = useNavigate()
     const [isLoginPage, setLoginPage] = useState(true)
-    const [errorMessage, setErrorMessage] = useState('')
+    const [message, setMessage] = useState('')
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
-    const [visibility, setVisibility] = useState<'text'| 'password'>('password')
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
     const [isSubmitted, setIsSubmitted] = useState(false)  
 
-    const usuario: User = new User('', username, password, '')
-    const loginRequest = usuario.buildLoginRequest()
-
-    const login = async (event: React.FormEvent) => {
-        event.preventDefault()
+    const login = async (username:string,password:string) => {
+        const loginRequest = {username,password}
         setIsSubmitted(true)  
 
         if (!username || !password) {
@@ -39,11 +27,33 @@ export const Login = () => {
         
         try {
             await userService.login(loginRequest)
+            setMessage('Login successful! Redirecting...')
             setSnackbarSeverity('success')
             setOpenSnackbar(true)
             setTimeout(() => navigate('/dashboard'), 2000)
         } catch (error: unknown) {
-            mostrarMensajeError(error as ErrorResponse, setErrorMessage)
+            mostrarMensajeError(error as ErrorResponse, setMessage)
+            setSnackbarSeverity('error')
+            setOpenSnackbar(true)
+        }
+    }
+
+    const create = async (email:string,username:string,password:string,name:string) => {
+        setIsSubmitted(true)  
+        const createRequest = {email,username,password,name}
+
+        if (!email || !username || !password || !name) {
+            return
+        }
+
+        try {
+            await userService.create(createRequest)
+            setMessage('Account created successfully')
+            setSnackbarSeverity('success')
+            setOpenSnackbar(true)
+            changePage()  
+        } catch (error: unknown) {
+            mostrarMensajeError(error as ErrorResponse, setMessage)
             setSnackbarSeverity('error')
             setOpenSnackbar(true)
         }
@@ -51,10 +61,7 @@ export const Login = () => {
 
     const changePage = () => {
         setLoginPage(!isLoginPage)
-    }
-
-    const changeVisibility = () => {
-        setVisibility(visibility === 'password' ? 'text' : 'password')
+        setIsSubmitted(false)  
     }
 
     const handleCloseSnackbar = () => {
@@ -75,72 +82,16 @@ export const Login = () => {
                     </svg>
                     <h1>ReadApp</h1>
                 </Box>
-                {isLoginPage ? (
-                <Box component="form"
-                    onSubmit={login}
-                    display="flex"
-                    flexDirection="column"
-                    gap={2}
-                    width="100%"
-                    maxWidth="400px"
-                    mx="auto">
-                    
-                    <TextField
-                        id="outlined-basic"
-                        label="Username"
-                        variant="outlined"
-                        type="text"
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        helperText={isSubmitted && !username ? 'Field is required' : ""}
-                        error={isSubmitted && !username}
-                    />
+            
+                <FormsComponent 
+                    isLoginPage = {isLoginPage}
+                    isSubmitted = {isSubmitted} 
+                    login       = {login}
+                    changePage  = {changePage}
+                    create      = {create} 
+                    >                    
+                </FormsComponent>
 
-                    <TextField
-                        id="outlined-basic"
-                        label="Password"
-                        variant="outlined"
-                        type={visibility}
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        helperText={isSubmitted && !password ? 'Field is required' : ""}
-                        error={isSubmitted && !password}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end" onClick={changeVisibility}>
-                                    {visibility === 'password' ? (
-                                        <VisibilityOffIcon fontSize="large" />
-                                    ) : (
-                                        <VisibilityIcon fontSize="large" />
-                                    )}
-                                </InputAdornment>
-                            )
-                        }}
-                    />
-
-                    <Button
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                        startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
-                        <p>Login</p>
-                    </Button>
-
-                    <Button
-                        variant="contained"
-                        onClick={changePage}
-                        startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
-                        <p>New account</p>
-                    </Button>
-
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<KeyOutlinedIcon fontSize="small" />}>
-                        <p>Password Recovery</p>
-                    </Button>
-                </Box>
-                ) : (<CreateAccount changePage={changePage}></CreateAccount>)}
             </div>
 
             <Snackbar
@@ -149,7 +100,7 @@ export const Login = () => {
                 onClose={handleCloseSnackbar}
             >
                 <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
-                    {snackbarSeverity === 'success' ? "Login successful! Redirecting..." : errorMessage || "An error occurred. Please try again."}
+                    {snackbarSeverity === 'success' ? message : message || "An error occurred. Please try again."}
                 </Alert>
             </Snackbar>
         </main>
