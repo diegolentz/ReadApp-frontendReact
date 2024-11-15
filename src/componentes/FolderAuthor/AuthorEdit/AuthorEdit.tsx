@@ -82,6 +82,7 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
       idiomas={lenguajes}
       onSelect={(updatedAuthor) => (params.id ? confirmEdit(updatedAuthor) : confirmCreate(updatedAuthor))}
       isEdit={editable}
+      data-testid="authorCrear"
     />
   );
 }

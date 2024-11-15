@@ -4,7 +4,7 @@ import axios from 'axios';
 import { REST_SERVER_URL } from '../../../constants';
 import { AuthorJSON } from '../../../domain/AuthorJSON';
 import { AuthorList } from './AuthorList';
-import { MemoryRouter, useNavigate } from 'react-router-dom';  // No moquees MemoryRouter
+import { MemoryRouter} from 'react-router-dom'; 
 import { expect } from 'vitest';
 
 // Mocks de autores
