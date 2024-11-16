@@ -6,10 +6,6 @@ import { Alert, Snackbar } from '@mui/material'
 import { useOnInit } from '../../domain/CustomHooks/useOnInit'
 
 
-
-
-
-
 export const Dashboard = () => {
   
   const dashboardItemsMap = new Map<string, DashboardItem>([
@@ -47,7 +43,7 @@ export const Dashboard = () => {
       changeState = totalNow != totalOld ? true : false
       console.log(changeState)
     } catch (error) {
-      errorResponse(error)
+      snackbarRespone(`${error}`, "error")
     }
   };
 
@@ -55,16 +51,10 @@ export const Dashboard = () => {
     setOpenSnackbar(false)
   }
 
-  const successResponse = () => {
-    setSnackbarSeverity('success')
+  const snackbarRespone = (message : string, status: "error" | "success" | "info") => {
+    setSnackbarSeverity(status)
     setOpenSnackbar(true)
-    setErrorMessage("Operación realizada correctamente")
-  }
-
-  const errorResponse = (errorMessage:unknown) =>{
-    setSnackbarSeverity('error')
-    setOpenSnackbar(true)
-    setErrorMessage(`${errorMessage}`)
+    setErrorMessage(message)
   }
 
   const deleteUsers = async () => {
@@ -72,15 +62,13 @@ export const Dashboard = () => {
       totalOld = totalObjects(dashboardMap)
       await dashboardService.deleteUsers()
       await fetchData()
-      if (changeState) {
-        setSnackbarSeverity('info')
-        setOpenSnackbar(true)
-        setErrorMessage("No hay usuarios para eliminar")
+      if (!changeState) {
+        snackbarRespone("All inactive users are already deleted", "info")
       } else {
-        successResponse()
+        snackbarRespone("Operation succesfully executed", "success")
       }
     } catch (error: unknown) {
-      errorResponse(error)
+      snackbarRespone(`${error}`, "error")
     }
   }
 
@@ -89,9 +77,13 @@ export const Dashboard = () => {
       totalOld = totalObjects(dashboardMap)
       await dashboardService.deleteCenters()
       await fetchData()
-      successResponse()
+      if (!changeState) {
+        snackbarRespone("All inactive centers are already deleted", "info")
+      } else {
+        snackbarRespone("Operation succesfully executed", "success")
+      }
     } catch (error: unknown) {
-      errorResponse(error)
+      snackbarRespone(`${error}`, "error")
     }
   }
 
