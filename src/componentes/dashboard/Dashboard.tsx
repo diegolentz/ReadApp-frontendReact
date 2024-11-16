@@ -4,14 +4,26 @@ import { dashboardService } from '../../service/dashboardService'
 import { DashboardCard } from './DashboardCard/DashboardCard'
 import { Alert, Snackbar } from '@mui/material'
 import { useOnInit } from '../../domain/CustomHooks/useOnInit'
+
+
+
+
+
+
 export const Dashboard = () => {
-  const [recomendations, setRecomendations] = useState(0)
-  const [books, setBooks] = useState(0)
-  const [users, setUsers] = useState(0)
-  const [centers, setCenters] = useState(0)
+  
+  const dashboardItemsMap = new Map<string, DashboardItem>([
+    ["recomendations", new DashboardItem("Recomendations",0, "recomendations.svg")],
+    ["books", new DashboardItem("Total number of books", 0, "book.svg")],
+    ["centers", new DashboardItem("Active Read Centers", 0, "center.svg")],
+    ["users", new DashboardItem("Active Users", 0, "user-circle.svg")]
+    ])
+
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info'>('success')
   const [errorMessage, setErrorMessage] = useState('')
+  const [dashboardMap, useDashboardMap] = useState<Map<string, DashboardItem>>({...dashboardItemsMap})
+
 
 
   let changeState = false
@@ -19,13 +31,17 @@ export const Dashboard = () => {
   const fetchData = async () => {
     try {
       const total = await dashboardService.getDashboardData();
-      if (total.totalRecomendaciones != recomendations || total.totalLibros != books || total.totalUsuarios != users || total.totalCentros != centers) {
-        changeState = true
-      }
-      setRecomendations(total.totalRecomendaciones);
-      setBooks(total.totalLibros)
-      setUsers(total.totalUsuarios)
-      setCenters(total.totalCentros)
+      const recomendations = dashboardItemsMap!.get("recomendations")!
+      const books = dashboardItemsMap!.get("books")!
+      const centers = dashboardItemsMap!.get("centers")!
+      const users = dashboardItemsMap!.get("users")!
+
+      recomendations.setData(total.totalRecomendaciones)
+      books.setData(total.totalLibros)
+      centers.setData(total.totalCentros)
+      users.setData(total.totalUsuarios)
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useDashboardMap(dashboardItemsMap)
     } catch (error) {
       errorResponse(error)
     }
@@ -74,15 +90,15 @@ export const Dashboard = () => {
   }
 
 
+
   useOnInit(fetchData);
 
   return <>
     <h1 className='titulo'>Indicadores</h1>
     <section className="indicadores">
-      <DashboardCard title={'Recomendaciones'} data={recomendations} svg={"recomendations.svg"} data-testid="recomendations"></DashboardCard>
-      <DashboardCard title={'Libros totales'} data={books} svg={'book.svg'} data-testid="books"></DashboardCard>
-      <DashboardCard title={'Usuarios registrados'} data={users} svg={'user-circle.svg'}></DashboardCard>
-      <DashboardCard title={'Centros de lectura'} data={centers} svg={'center.svg'}></DashboardCard>
+      {Array.from(dashboardMap).map(([, value]) => {
+        return <DashboardCard title={value.title} data={value.data} svg={value.svg} data-testid={value.title}></DashboardCard>
+      })}
     </section>
     <h2 className="titulo">Acciones</h2>
     <section className="acciones">
@@ -99,4 +115,16 @@ export const Dashboard = () => {
                 </Alert>
     </Snackbar>
   </>
+}
+
+class DashboardItem{
+  constructor(
+    public title : string,
+    public data : number,
+    public svg : string
+  ){}
+
+  setData(number:number){
+    this.data = number
+  }
 }
