@@ -17,6 +17,10 @@ export class DashboardJSON {
 
         return Object.assign(new DashboardJSON(data.totalRecomendaciones,data.totalLibros,data.totalUsuarios,data.totalCentros))
     }
+
+    getTotalObjects(){
+        return this.totalCentros + this.totalLibros + this.totalRecomendaciones + this.totalUsuarios
+    }
 }
 
 export const DashboardJson = new DashboardJSON()

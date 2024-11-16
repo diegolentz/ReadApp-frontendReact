@@ -25,23 +25,27 @@ export const Dashboard = () => {
   const [dashboardMap, useDashboardMap] = useState<Map<string, DashboardItem>>({...dashboardItemsMap})
 
 
-
+  let totalOld! : number
   let changeState = false
 
   const fetchData = async () => {
     try {
+      //const totalOld = totalObjects(dashboardMap)
       const total = await dashboardService.getDashboardData();
       const recomendations = dashboardItemsMap!.get("recomendations")!
       const books = dashboardItemsMap!.get("books")!
       const centers = dashboardItemsMap!.get("centers")!
       const users = dashboardItemsMap!.get("users")!
 
+      const totalNow = total.getTotalObjects()
       recomendations.setData(total.totalRecomendaciones)
       books.setData(total.totalLibros)
       centers.setData(total.totalCentros)
       users.setData(total.totalUsuarios)
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useDashboardMap(dashboardItemsMap)
+      changeState = totalNow != totalOld ? true : false
+      console.log(changeState)
     } catch (error) {
       errorResponse(error)
     }
@@ -65,6 +69,7 @@ export const Dashboard = () => {
 
   const deleteUsers = async () => {
     try {
+      totalOld = totalObjects(dashboardMap)
       await dashboardService.deleteUsers()
       await fetchData()
       if (changeState) {
@@ -81,6 +86,7 @@ export const Dashboard = () => {
 
   const deleteCenters = async () => {
     try {
+      totalOld = totalObjects(dashboardMap)
       await dashboardService.deleteCenters()
       await fetchData()
       successResponse()
@@ -89,10 +95,18 @@ export const Dashboard = () => {
     }
   }
 
+  const totalObjects = (map : Map<string, DashboardItem>) => {
+    let contador = 0
+    map.forEach((item) => {
+      contador += item.data
+    })
+    return contador
+  }
+
 
 
   useOnInit(fetchData);
-
+  
   return <>
     <h1 className='titulo'>Indicadores</h1>
     <section className="indicadores">
