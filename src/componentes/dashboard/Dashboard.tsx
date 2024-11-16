@@ -25,14 +25,10 @@ export const Dashboard = () => {
     try {
       //const totalOld = totalObjects(dashboardMap)
       const total = await dashboardService.getDashboardData();
-      const recomendations = dashboardItemsMap!.get("recomendations")!
-      const books = dashboardItemsMap!.get("books")!
-      const centers = dashboardItemsMap!.get("centers")!
-      const users = dashboardItemsMap!.get("users")!
-      recomendations.setData(total.totalRecomendaciones)
-      books.setData(total.totalLibros)
-      centers.setData(total.totalCentros)
-      users.setData(total.totalUsuarios)
+      dashboardItemsMap!.get("recomendations")!.setData(total.totalRecomendaciones)
+      dashboardItemsMap!.get("books")!.setData(total.totalLibros)
+      dashboardItemsMap!.get("centers")!.setData(total.totalCentros)
+      dashboardItemsMap!.get("users")!.setData(total.totalUsuarios)
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useDashboardMap(dashboardItemsMap)
     } catch (error) {
