@@ -21,9 +21,6 @@ export const Dashboard = () => {
   const [dashboardMap, useDashboardMap] = useState<Map<string, DashboardItem>>({...dashboardItemsMap})
 
 
-  let totalOld! : number
-  let changeState = false
-
   const fetchData = async () => {
     try {
       //const totalOld = totalObjects(dashboardMap)
@@ -32,16 +29,12 @@ export const Dashboard = () => {
       const books = dashboardItemsMap!.get("books")!
       const centers = dashboardItemsMap!.get("centers")!
       const users = dashboardItemsMap!.get("users")!
-
-      const totalNow = total.getTotalObjects()
       recomendations.setData(total.totalRecomendaciones)
       books.setData(total.totalLibros)
       centers.setData(total.totalCentros)
       users.setData(total.totalUsuarios)
       // eslint-disable-next-line react-hooks/rules-of-hooks
       useDashboardMap(dashboardItemsMap)
-      changeState = totalNow != totalOld ? true : false
-      console.log(changeState)
     } catch (error) {
       snackbarRespone(`${error}`, "error")
     }
@@ -59,14 +52,9 @@ export const Dashboard = () => {
 
   const deleteUsers = async () => {
     try {
-      totalOld = totalObjects(dashboardMap)
-      await dashboardService.deleteUsers()
+      const updatedElements = await dashboardService.deleteUsers()
       await fetchData()
-      if (!changeState) {
-        snackbarRespone("All inactive users are already deleted", "info")
-      } else {
-        snackbarRespone("Operation succesfully executed", "success")
-      }
+      checkUpdated(updatedElements)
     } catch (error: unknown) {
       snackbarRespone(`${error}`, "error")
     }
@@ -74,28 +62,22 @@ export const Dashboard = () => {
 
   const deleteCenters = async () => {
     try {
-      totalOld = totalObjects(dashboardMap)
-      await dashboardService.deleteCenters()
+      const updatedElements = await dashboardService.deleteCenters()
       await fetchData()
-      if (!changeState) {
-        snackbarRespone("All inactive centers are already deleted", "info")
-      } else {
-        snackbarRespone("Operation succesfully executed", "success")
-      }
+      checkUpdated(updatedElements)
     } catch (error: unknown) {
       snackbarRespone(`${error}`, "error")
     }
   }
 
-  const totalObjects = (map : Map<string, DashboardItem>) => {
-    let contador = 0
-    map.forEach((item) => {
-      contador += item.data
-    })
-    return contador
+
+  const checkUpdated = (updatedElements:number) => {
+    if (!(updatedElements > 0)) {
+      snackbarRespone("All inactive elemnts have benn already deleted", "info")
+    } else {
+      snackbarRespone("Operation succesfully executed", "success")
+    }
   }
-
-
 
   useOnInit(fetchData);
   
