@@ -9,8 +9,8 @@ import { useOnInit } from '../../domain/CustomHooks/useOnInit'
 export const Dashboard = () => {
   
   const dashboardItemsMap = new Map<string, DashboardItem>([
-    ["recomendations", new DashboardItem("Recomendations",0, "recomendations.svg")],
-    ["books", new DashboardItem("Total number of books", 0, "book.svg")],
+    ["recomendations", new DashboardItem("Recomendations",0, "recomendations.svg", "recomendations")],
+    ["books", new DashboardItem("Total number of books", 0, "book.svg", "books")],
     ["centers", new DashboardItem("Active Read Centers", 0, "center.svg")],
     ["users", new DashboardItem("Active Users", 0, "user-circle.svg")]
     ])
@@ -81,7 +81,7 @@ export const Dashboard = () => {
     <h1 className='titulo'>Indicadores</h1>
     <section className="indicadores">
       {Array.from(dashboardMap).map(([, value]) => {
-        return <DashboardCard title={value.title} data={value.data} svg={value.svg} data-testid={value.title}></DashboardCard>
+        return <DashboardCard title={value.title} data={value.data} svg={value.svg} test={value.testId}></DashboardCard>
       })}
     </section>
     <h2 className="titulo">Acciones</h2>
@@ -105,7 +105,8 @@ class DashboardItem{
   constructor(
     public title : string,
     public data : number,
-    public svg : string
+    public svg : string,
+    public testId : string = ""
   ){}
 
   setData(number:number){
