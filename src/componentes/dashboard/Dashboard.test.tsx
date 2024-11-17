@@ -5,16 +5,16 @@ import { DashboardJSON } from '../../domain/DashboardJSON'
 import axios from 'axios'
 import { REST_SERVER_URL } from '../../constants'
 
-
+const mockDashboard = new DashboardJSON(10, 5, 3, 8)
 
 
 describe('Los datos del dashboard se muestran por pantalla', async () => {
-    const mockDashboard = new DashboardJSON(10, 5, 3, 8)
+    
     beforeEach(() => {
         vi.mock("axios")
         const spyGetAxios = vi.spyOn(axios, 'get')
 
-        spyGetAxios.mockResolvedValueOnce({
+        spyGetAxios.mockResolvedValue({
             data: mockDashboard
         })
     })
@@ -41,7 +41,7 @@ describe("Los botones llaman al backend", async () => {
 
     beforeEach(() => {
         vi.mock("axios")
-        spyGetAxios = vi.spyOn(axios, 'post')
+        spyGetAxios = vi.spyOn(axios, 'delete')
     })
 
     afterEach(() => {

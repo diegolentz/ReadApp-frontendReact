@@ -1,6 +1,6 @@
 import axios from "axios"
 import { REST_SERVER_URL } from "../constants"
-import {  DashboardJSON, DashboardJson } from "../domain/DashboardJSON"
+import {  DashboardJSON, DashboardJson, DeleteResp } from "../domain/DashboardJSON"
 
 class DashboardService{
 
@@ -10,12 +10,14 @@ class DashboardService{
     }
 
     async deleteCenters(){
-        await axios.post(REST_SERVER_URL + "/borrarCentrosInactivos")
+        const response = await axios.delete(REST_SERVER_URL + "/borrarCentrosInactivos")
+        console.warn(response.data)
+        return DeleteResp.fromJson(response.data)
     }
 
     async deleteUsers(){
-        await axios.post(REST_SERVER_URL + "/borrarUsuariosInactivos");
-        
+        const response = await axios.delete(REST_SERVER_URL + "/borrarUsuariosInactivos");
+        return DeleteResp.fromJson(response.data)
     }
 
 }
