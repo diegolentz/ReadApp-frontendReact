@@ -89,13 +89,13 @@ export const Dashboard = () => {
   useOnInit(fetchData);
   
   return <>
-    <h1 className='titulo'>Indicadores</h1>
+    <h1 className='titulo'>Indicators</h1>
     <section className="indicadores">
       {Array.from(dashboardMap).map(([, value]) => {
         return <DashboardCard title={value.title} data={value.data} svg={value.svg} test={value.testId}></DashboardCard>
       })}
     </section>
-    <h2 className="titulo">Acciones</h2>
+    <h2 className="titulo">Actions</h2>
     <section className="acciones">
       <button data-testid="delete-users" className="btn-admin" onClick={changeDialogState(setConfirmDialogUsers)}>Delete inactive users</button>
       {confirmDialogUsers && <DialogComponent state={confirmDialogUsers} modifyState={setConfirmDialogUsers} msg={"Are you soure you want to delete all inactive users?"} deleteFun={deleteUsers}></DialogComponent>}

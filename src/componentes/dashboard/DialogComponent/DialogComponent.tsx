@@ -1,12 +1,12 @@
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material"
-import { useState } from "react"
+
 
 export const DialogComponent = ({state ,msg ,deleteFun, modifyState} : {state:boolean, msg:string, deleteFun : () => Promise<void>, modifyState : React.Dispatch<React.SetStateAction<boolean>>}) =>{
     
-    const [open, setOpen] = useState(state)
+
       const cerrarDialogo = () => {
         modifyState(false)
-        setOpen(false)
+
       }
 
       const realizarAccion = () =>{
@@ -14,7 +14,7 @@ export const DialogComponent = ({state ,msg ,deleteFun, modifyState} : {state:bo
         cerrarDialogo()
       }
 
-    return <Dialog open={open} onClose={cerrarDialogo}>
+    return <Dialog open={state} onClose={cerrarDialogo}>
     <DialogTitle>{msg}</DialogTitle>
     <DialogActions>
       <Button onClick={cerrarDialogo} autoFocus>Close</Button>
