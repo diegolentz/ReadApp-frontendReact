@@ -4,6 +4,7 @@ import { dashboardService } from '../../service/dashboardService'
 import { DashboardCard } from './DashboardCard/DashboardCard'
 import { Alert, Snackbar } from '@mui/material'
 import { useOnInit } from '../../domain/CustomHooks/useOnInit'
+import { DialogComponent } from './DialogComponent/DialogComponent'
 
 
 export const Dashboard = () => {
@@ -18,6 +19,7 @@ export const Dashboard = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info'>('success')
   const [errorMessage, setErrorMessage] = useState('')
+  const [confirmDialog, setConfirmDialog] = useState(false)
   const [dashboardMap, useDashboardMap] = useState<Map<string, DashboardItem>>({...dashboardItemsMap})
 
 
@@ -75,6 +77,10 @@ export const Dashboard = () => {
     }
   }
 
+
+  const changeDialogState = () => {setConfirmDialog(true)}
+
+
   useOnInit(fetchData);
   
   return <>
@@ -86,7 +92,8 @@ export const Dashboard = () => {
     </section>
     <h2 className="titulo">Acciones</h2>
     <section className="acciones">
-      <button data-testid="delete-users" className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
+      <button data-testid="delete-users" className="btn-admin" onClick={changeDialogState}>Delete Active users</button>
+      {confirmDialog && <DialogComponent state={confirmDialog} modifyState={setConfirmDialog} msg={'R u sure about that?'} deleteFun={deleteCenters}></DialogComponent>}
       <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
     </section>
     <Snackbar
