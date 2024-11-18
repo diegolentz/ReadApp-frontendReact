@@ -19,7 +19,8 @@ export const Dashboard = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info'>('success')
   const [errorMessage, setErrorMessage] = useState('')
-  const [confirmDialog, setConfirmDialog] = useState(false)
+  const [confirmDialogUsers, setConfirmDialogUsers] = useState(false)
+  const [confirmDialogCenters, setConfirmDialogCenters] = useState(false)
   const [dashboardMap, useDashboardMap] = useState<Map<string, DashboardItem>>({...dashboardItemsMap})
 
 
@@ -78,7 +79,11 @@ export const Dashboard = () => {
   }
 
 
-  const changeDialogState = () => {setConfirmDialog(true)}
+
+  const changeDialogState = (dialogType : React.Dispatch<React.SetStateAction<boolean>>) => () => {
+    dialogType(true)
+  }
+
 
 
   useOnInit(fetchData);
@@ -92,9 +97,11 @@ export const Dashboard = () => {
     </section>
     <h2 className="titulo">Acciones</h2>
     <section className="acciones">
-      <button data-testid="delete-users" className="btn-admin" onClick={changeDialogState}>Delete Active users</button>
-      {confirmDialog && <DialogComponent state={confirmDialog} modifyState={setConfirmDialog} msg={'R u sure about that?'} deleteFun={deleteCenters}></DialogComponent>}
-      <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
+      <button data-testid="delete-users" className="btn-admin" onClick={changeDialogState(setConfirmDialogUsers)}>Delete inactive users</button>
+      {confirmDialogUsers && <DialogComponent state={confirmDialogUsers} modifyState={setConfirmDialogUsers} msg={"Are you soure you want to delete all inactive users?"} deleteFun={deleteUsers}></DialogComponent>}
+      <button data-testid="delete-centers" className="btn-admin" onClick={changeDialogState(setConfirmDialogCenters)}>Delete inactive centers</button>
+      {confirmDialogCenters && <DialogComponent state={confirmDialogCenters} modifyState={setConfirmDialogCenters} msg={"Are you soure you want to delete all inactive centers?"} deleteFun={deleteCenters}></DialogComponent>}
+      
     </section>
     <Snackbar
       open={openSnackbar}

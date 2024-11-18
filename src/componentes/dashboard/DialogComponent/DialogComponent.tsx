@@ -17,8 +17,8 @@ export const DialogComponent = ({state ,msg ,deleteFun, modifyState} : {state:bo
     return <Dialog open={open} onClose={cerrarDialogo}>
     <DialogTitle>{msg}</DialogTitle>
     <DialogActions>
-      <Button onClick={cerrarDialogo}>Close</Button>
-      <Button onClick={realizarAccion}>Accept</Button>
+      <Button onClick={cerrarDialogo} autoFocus>Close</Button>
+      <Button onClick={realizarAccion} variant="contained" color="error">Accept</Button>
     </DialogActions>
   </Dialog>
 }
