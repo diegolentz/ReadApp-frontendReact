@@ -29,7 +29,7 @@ const StyledSvg = styled(LibraryBooksOutlinedIcon)(() => ({
 }));
 
 const StyledBoxHeader = styled(Box)(() => ({
-    backgroundColor:'primary.main',
+    backgroundColor: 'primary.main',
     height: 70,
     display: 'flex',
     padding: 10,
@@ -37,52 +37,20 @@ const StyledBoxHeader = styled(Box)(() => ({
 }));
 
 
-export const HeaderComponent = () => {
-    const location = useLocation()
-
-    useEffect(() => { }, [location.pathname]);
-
-    const resolveSubName = (string: string) => {
-        const match = string.match(regex.routeSlash)
-        if (match == null) {
-            //ESTO ES SOLO PARA EVITAR tener <array || undefined>
-            return [""]
-        }
-        return match
-    };
-
-    const concatName = (string: string) => {
-        const list = resolveSubName(string)
-        if (list.length == 1) {
-            return firstToUpperCase(list[0])
-        } else if (list.length > 1) {
-            return firstToUpperCase(list[0]).concat(" " + list[1])
-        }
-
-    };
-
-    const firstToUpperCase = (string: string) => {
-        if (!string || typeof string !== 'string') {
-            // Necesario para los test, sino insulta por 
-            // <undefined>.toUpperCase()
-            return '';
-
-        }
-        return string[0].toUpperCase().concat(string.slice(1))
-    };
+export const HeaderComponent = ({ currentOption }: { currentOption: string }) => {
 
     return <>
-            <StyledBoxHeader
-            sx={{bgcolor:'primary.main'}}
+        <StyledBoxHeader
+            sx={{ bgcolor: 'primary.main' }}
             data-testid="header">
-                <StyledSvg></StyledSvg>
-                <StyledPaper className='styled-paper' sx={{bgcolor:'secondary.main'}}>
-                    <Link to={`${paths.dashboard}`}>
-                        <h2>ReadApp/</h2>
-                    </Link>
-                    <h2>{concatName(location.pathname)}</h2>
-                </StyledPaper>
-            </StyledBoxHeader>
+            <StyledSvg></StyledSvg>
+            <StyledPaper sx={{ bgcolor: 'secondary.main' }}>
+                <Link to={`${paths.dashboard}`}>
+                    <h2>ReadApp</h2>
+                </Link>
+                <h2>/{currentOption}</h2>
+            </StyledPaper>
+        </StyledBoxHeader>
 
 
 

@@ -3,6 +3,7 @@ import { bookService } from '../../service/bookService';
 import { Book, BookComponent } from './Book';
 import { useNavigate } from 'react-router-dom';
 import { Create } from '../FolderButtons/CreateButton/Create';
+import { paths } from '../../domain/routes';
 
 export const BooksView = () => {
 
@@ -16,13 +17,13 @@ export const BooksView = () => {
     const navigate = useNavigate();
 
     const createBook = () => {
-        navigate(`/books/creation`);
+        navigate(`${paths.books.create.path}`);
     }
 
     useEffect(() => {
         fetchData();
     }, []);
-    
+
     return (
         <>
             {(
