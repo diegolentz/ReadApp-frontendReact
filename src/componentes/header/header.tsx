@@ -37,23 +37,18 @@ const StyledBoxHeader = styled(Box)(() => ({
 }));
 
 
-export const HeaderComponent = ({ selectedOption }: { selectedOption: string }) => {
-    const location = useLocation()
-
-    useEffect(() => { }, [location.pathname]);
-
-
+export const HeaderComponent = ({ currentOption }: { currentOption: string }) => {
 
     return <>
         <StyledBoxHeader
             sx={{ bgcolor: 'primary.main' }}
             data-testid="header">
             <StyledSvg></StyledSvg>
-            <StyledPaper className='styled-paper' sx={{ bgcolor: 'secondary.main' }}>
+            <StyledPaper sx={{ bgcolor: 'secondary.main' }}>
                 <Link to={`${paths.dashboard}`}>
                     <h2>ReadApp</h2>
                 </Link>
-                <h2>/{selectedOption}</h2>
+                <h2>/{currentOption}</h2>
             </StyledPaper>
         </StyledBoxHeader>
 

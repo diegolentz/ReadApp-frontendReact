@@ -5,16 +5,15 @@ import { useState } from 'react';
 import { blue, deepOrange, grey, red } from '@mui/material/colors';
 
 
-const StyledSwitchToggle = styled(Switch)(({theme}) => ({
-  position:'absolute',
+const StyledSwitchToggle = styled(Switch)(({ theme }) => ({
+  position: 'absolute',
   top: 10,
   right: 5
 }));
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 function App() {
-  const [ mode, setMode ] = useState(false);
+  const [mode, setMode] = useState(false);
 
   const appTheme = createTheme({
     palette: {
@@ -23,9 +22,10 @@ function App() {
     },
   });
 
-  function handleChange(){
-    return mode ? setMode(!mode) : setMode(!mode)
+  function handleChange() {
+    setMode(!mode)
   }
+
   return (
     <>
       <ThemeProvider theme={appTheme}>
@@ -33,7 +33,7 @@ function App() {
           <AppRouter />
         </CssBaseline>
       </ThemeProvider>
-      <SwitchToggleThemeMode checked={mode} onChange={handleChange}/>
+      <SwitchToggleThemeMode checked={mode} onChange={handleChange} />
     </>
   );
 
@@ -46,15 +46,15 @@ interface SwitchToggleThemeModeProps {
 
   checked: boolean;
 
-  onChange: () => void; // Define the type for the onChange function
+  onChange: () => void;
 
 }
 
 function SwitchToggleThemeMode(props: SwitchToggleThemeModeProps) {
-  if(window.location.pathname != '/login'){
+  if (window.location.pathname != '/login') {
     return (
       <>
-        <StyledSwitchToggle {...label} checked={props.checked} onChange={props.onChange}/>
+        <StyledSwitchToggle checked={props.checked} onChange={props.onChange} />
       </>
     );
   }

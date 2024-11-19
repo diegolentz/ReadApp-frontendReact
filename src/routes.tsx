@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 import { Dashboard } from './componentes/dashboard/Dashboard';
 import { ViewLayoutComponent } from './componentes/viewLayout/viewLayout';
 import { Login } from './componentes/login/login';
-import { mainPaths, paths } from './domain/routes';
+import { mainPaths, paths, pathToLabelMap } from './domain/routes';
 import { BooksView } from './componentes/Book/BooksView';
 import BookDetail from './componentes/BookCreation/BookDetail';
 import { AuthorList } from './componentes/FolderAuthor/AuthorList/AuthorList';
@@ -18,30 +18,18 @@ interface HeaderOptionProps {
 export const AppRoutes = (props: HeaderOptionProps) => {
     const location = useLocation()
     useEffect(() => {
-        const path = location.pathname;
-        console.log(path)
-        if (path === '/dashboard') {
-            props.stateDispatcher(paths.dashboard.label);
-
-        } else if (path == paths.author.list.path) {
-
-            props.stateDispatcher(paths.author.list.label);
-
-        } else if (path == paths.books.display.path) {
-
-            props.stateDispatcher(paths.books.display.label);
-
-        } else {
-
-            props.stateDispatcher(paths.login.label); // or any default option
-
-        }
-
+        handleTitle()
     }, [location]);
 
     function handleTitle() {
+        const currentPath = location.pathname;
+        const matchedLabel = Object.keys(pathToLabelMap).find(path => {
 
+            return currentPath === path || currentPath.startsWith(path.replace(/:id/, ''));
+        });
+        props.stateDispatcher(matchedLabel ? pathToLabelMap[matchedLabel] : paths.login.label);
     }
+
     return <>
         <Routes>
             <Route path={`${paths.login.path}`} element={<Login />} />
@@ -54,7 +42,7 @@ export const AppRoutes = (props: HeaderOptionProps) => {
                 <Route path={`${paths.author.edit.path}/:id`} element={<AuthorEdit editable={true} />} />
                 <Route path={`${paths.author.show.path}/:id`} element={<AuthorEdit editable={false} />} />
 
-                <Route path={`${mainPaths.books}`} element={<BooksView />} />
+                <Route path={`${paths.books.list.path}`} element={<BooksView />} />
                 <Route path={`${paths.books.create.path}`} element={<BookDetail editable={true} emptyForm={true} />} />
                 <Route path={`${paths.books.display.path}/:id`} element={<BookDetail editable={false} emptyForm={false} />} />
                 <Route path={`${paths.books.edit.path}/:id`} element={<BookDetail editable={true} emptyForm={false} />} />
@@ -76,6 +64,3 @@ export const AppRouter = () => {
     </>
 };
 
-function handleTitle() {
-    throw new Error('Function not implemented.');
-}

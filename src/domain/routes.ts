@@ -1,5 +1,4 @@
 
-
 export const PathTestId = {
     login: 'login',
     dashboard: 'dashboard',
@@ -42,11 +41,15 @@ export const paths = {
         }
     },
     books: {
-        create:{
-            path:`${mainPaths.books}/display`,
-            label: `List of books`
+        list: {
+            path: `${mainPaths.books}/list`,
+            label:'List of books',
         },
         display:{
+            path:`${mainPaths.books}/display`,
+            label: `Book details`
+        },
+        create:{
             path:`${mainPaths.books}/creation`,
             label: `Create book`
         },
@@ -59,26 +62,23 @@ export const paths = {
 
 
 
-// export const PathToLabelMap = {
+export const pathToLabelMap = {
 
-//     [paths.dashboard.path]: paths.dashboard.label,
+    [paths.dashboard.path]: paths.dashboard.label,
 
-//     [paths.author.list.path]: paths.author.list.label,
+    [paths.author.list.path]: paths.author.list.label,
 
-//     [paths.author.create.path]: paths.author.label,
+    [paths.author.create.path]: paths.author.create.label,
 
-//     [paths.author.edit.path]: paths.author.label,
+    [paths.author.edit.path]: paths.author.edit.label,
 
-//     [paths.author.show.path]: paths.author.label,
+    [paths.author.show.path]: paths.author.show.label,
 
-//     [`${paths.author}/show/:id`]: paths.author.label,
+    [paths.books.list.path]: paths.books.list.label,
 
-//     [paths.books]: paths.books.label,
+    [paths.books.create.path]: paths.books.create.label,
 
-//     [`${paths.books}/creation`]: paths.books.label,
+    [paths.books.display.path]: paths.books.display.label,
 
-//     [`${paths.books}/display/:id`]: paths.books.label,
-
-//     [`${paths.books}/edit/:id`]: paths.books.label,
-
-// };
+    [paths.books.edit.path]: paths.books.edit.label,
+};

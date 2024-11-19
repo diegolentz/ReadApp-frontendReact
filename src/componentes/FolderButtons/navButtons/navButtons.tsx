@@ -5,6 +5,7 @@ import { BottomNavigation, BottomNavigationAction, Box, styled, ThemeProvider } 
 import { AdminPanelSettingsRounded, BookOnlineTwoTone, LogoutOutlined, PeopleAltTwoTone } from '@mui/icons-material';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import shadows from '@mui/material/styles/shadows';
+import { useState } from 'react';
 
 
 const StyledBottomNavigation = styled(BottomNavigation)(() => ({
@@ -22,31 +23,38 @@ const StyledNavLink = styled(NavLink)(() => ({
 }));
 
 export const NavButtonsComponent = () => {
+    const [value, setValue] = useState('dashboard');
 
+    const handleChange = (_: React.SyntheticEvent, newValue: string) => {
+        setValue(newValue);
+    };
     return <>
         <StyledBottomNavigation
+            value={value}
+            onChange={handleChange}
             className='nav-menu'
             data-testid='bottom-nav-menu'
         >
             <StyledNavLink to={`${paths.dashboard.path}`} data-testid={`link-${PathTestId.dashboard}`}>
                 <BottomNavigationAction
                     label="Dashboard"
-                    icon={<AdminPanelSettingsRounded sx={{ color: 'white' }} />}
+                    value='dashboard'
+                    icon={<AdminPanelSettingsRounded />}
                 >
                 </BottomNavigationAction>
             </StyledNavLink>
 
             <StyledNavLink to={`${paths.author.list.path}`} data-testid={`link-${PathTestId.author}`}>
-                <BottomNavigationAction label="Recents" icon={<PeopleAltTwoTone sx={{ color: 'white' }} />}>
+                <BottomNavigationAction label="Author" value='author' icon={<PeopleAltTwoTone />}>
                 </BottomNavigationAction>
             </StyledNavLink>
-            <StyledNavLink to={`${mainPaths.books}`} data-testid={`link-${PathTestId.books}`}>
-                <BottomNavigationAction label="Recents" icon={<BookOnlineTwoTone sx={{ color: 'white' }} />}>
+            <StyledNavLink to={`${paths.books.list.path}`} data-testid={`link-${PathTestId.books}`}>
+                <BottomNavigationAction label="Book" value='book' icon={<BookOnlineTwoTone />}>
                 </BottomNavigationAction>
             </StyledNavLink>
 
             <StyledNavLink to={`${paths.login.path}`} data-testid={`link-${PathTestId.login}`}>
-                <BottomNavigationAction label="Recents" icon={<LogoutOutlined sx={{ color: 'white' }} />}>
+                <BottomNavigationAction label="Log out" value='log out' icon={<LogoutOutlined />}>
                 </BottomNavigationAction>
             </StyledNavLink>
         </StyledBottomNavigation>
