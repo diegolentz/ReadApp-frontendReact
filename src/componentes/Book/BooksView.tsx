@@ -21,7 +21,7 @@ export const BooksView = () => {
 
     useEffect(() => {
         fetchData();
-    });
+    }, []);
     
     return (
         <>
