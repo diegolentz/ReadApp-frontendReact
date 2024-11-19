@@ -1,6 +1,6 @@
 import axios from "axios";
 import { REST_SERVER_URL } from "../constants";
-import { AuthorJSON,AuthorJson, AutorEditJSON, CreateAuthorJSON} from "../domain/AuthorJSON";
+import { AuthorBook, AuthorBookJSON, AuthorJSON,AuthorJson, AutorEditJSON, CreateAuthorJSON} from "../domain/AuthorJSON";
 
 class AuthorService {
     async getAuthorData(): Promise<AuthorJSON[]> {
@@ -29,6 +29,13 @@ class AuthorService {
     async createAuthor(author: CreateAuthorJSON): Promise<void> {
         await axios.post(REST_SERVER_URL + "/createAuthor", author);
     }
+
+    async getAuthorDataForBooks(): Promise<AuthorBook[]> {
+        const data = await axios.get(REST_SERVER_URL + "/allAuthorsForBooks");
+        return data.data.map((item: AuthorBookJSON) => AuthorBookJSON.fromJson(item));
+        
+    }
+
 }
 
 export const authorService = new AuthorService();

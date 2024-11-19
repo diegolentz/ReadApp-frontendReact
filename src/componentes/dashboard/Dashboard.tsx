@@ -4,6 +4,7 @@ import { dashboardService } from '../../service/dashboardService'
 import { DashboardCard } from './DashboardCard/DashboardCard'
 import { Alert, Snackbar } from '@mui/material'
 import { useOnInit } from '../../domain/CustomHooks/useOnInit'
+import { DialogComponent } from './DialogComponent/DialogComponent'
 
 
 export const Dashboard = () => {
@@ -18,6 +19,8 @@ export const Dashboard = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info'>('success')
   const [errorMessage, setErrorMessage] = useState('')
+  const [confirmDialogUsers, setConfirmDialogUsers] = useState(false)
+  const [confirmDialogCenters, setConfirmDialogCenters] = useState(false)
   const [dashboardMap, useDashboardMap] = useState<Map<string, DashboardItem>>({...dashboardItemsMap})
 
 
@@ -75,19 +78,30 @@ export const Dashboard = () => {
     }
   }
 
+
+
+  const changeDialogState = (dialogType : React.Dispatch<React.SetStateAction<boolean>>) => () => {
+    dialogType(true)
+  }
+
+
+
   useOnInit(fetchData);
   
   return <>
-    <h1 className='titulo'>Indicadores</h1>
+    <h1 className='titulo'>Indicators</h1>
     <section className="indicadores">
       {Array.from(dashboardMap).map(([, value]) => {
         return <DashboardCard title={value.title} data={value.data} svg={value.svg} test={value.testId}></DashboardCard>
       })}
     </section>
-    <h2 className="titulo">Acciones</h2>
+    <h2 className="titulo">Actions</h2>
     <section className="acciones">
-      <button data-testid="delete-users" className="btn-admin" onClick={deleteUsers}>Borrar usuarios inactivos</button>
-      <button data-testid="delete-centers" className="btn-admin" onClick={deleteCenters}>Borrar centros inactivos</button>
+      <button data-testid="delete-users" className="btn-admin" onClick={changeDialogState(setConfirmDialogUsers)}>Delete inactive users</button>
+      {confirmDialogUsers && <DialogComponent state={confirmDialogUsers} modifyState={setConfirmDialogUsers} msg={"Are you soure you want to delete all inactive users?"} deleteFun={deleteUsers}></DialogComponent>}
+      <button data-testid="delete-centers" className="btn-admin" onClick={changeDialogState(setConfirmDialogCenters)}>Delete inactive centers</button>
+      {confirmDialogCenters && <DialogComponent state={confirmDialogCenters} modifyState={setConfirmDialogCenters} msg={"Are you soure you want to delete all inactive centers?"} deleteFun={deleteCenters}></DialogComponent>}
+      
     </section>
     <Snackbar
       open={openSnackbar}

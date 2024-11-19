@@ -73,3 +73,28 @@ export class CreateAuthorJSON {
 
 export const AuthorJson = new AuthorJSON()
 export const CreateAuthorJson = new CreateAuthorJSON()
+
+/////////////////////////////////////// implementacion para libros
+
+export type AuthorBookJSON = {
+    id: number;
+    nombre: string;
+    apellido: string;
+    nacionalidad: string;
+}
+
+export class AuthorBook {
+
+    constructor(        
+        public id : number = 0,
+        public nombre : string = "",
+        public apellido : string = "",
+        public nacionalidad: string = ""){}
+        
+    
+fromJson(data: AuthorBookJSON): AuthorBook {
+        return Object.assign(new AuthorBook(), data);
+    }
+}
+
+export const AuthorBookJSON = new AuthorBook()
