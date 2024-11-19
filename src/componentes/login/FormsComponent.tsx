@@ -1,37 +1,37 @@
-    import { Box, Button, InputAdornment, TextField } from "@mui/material"
-    import { useState } from "react"
-    import VisibilityIcon from '@mui/icons-material/Visibility';
-    import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-    import LoginIcon from '@mui/icons-material/Login'
-    import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-    import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import { Box, Button, InputAdornment, TextField } from "@mui/material"
+import { useState } from "react"
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import LoginIcon from '@mui/icons-material/Login'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
-    export const FormsComponent = ({isLoginPage,isSubmitted,login,changePage,create} :
-         {isLoginPage:boolean,isSubmitted:boolean,login:(username:string,password:string)=>void,changePage: () => void,create:(email:string,username:string,password:string,name:string)=>void}) => {
-        
-        const [email, setEmail] = useState('')
-        const [username, setUsername] = useState('')
-        const [password, setPassword] = useState('')
-        const [name, setName] = useState('')
-        const [visibility, setVisibility] = useState<'text'| 'password'>('password')
+export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, create }:
+    { isLoginPage: boolean, isSubmitted: boolean, login: (username: string, password: string) => void, changePage: () => void, create: (email: string, username: string, password: string, name: string) => void }) => {
 
-        
-        const changeVisibility = () => {
-            setVisibility(visibility === 'password' ? 'text' : 'password')
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
+    const [visibility, setVisibility] = useState<'text' | 'password'>('password')
+
+
+    const changeVisibility = () => {
+        setVisibility(visibility === 'password' ? 'text' : 'password')
+    }
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        if (isLoginPage) {
+            login(username, password) // Llamar al callback con los datos
+        } else {
+            create(email, username, password, name)
         }
-        const handleSubmit = (e: React.FormEvent) => {
-            e.preventDefault()
-            
-            if(isLoginPage){
-                login(username, password) // Llamar al callback con los datos
-            }else{
-                create(email,username, password,name)
-            }
-        }
+    }
 
-        return ( 
-            <>
-            <Box 
+    return (
+        <>
+            <Box
                 component="form"
                 onSubmit={handleSubmit}
                 display="flex"
@@ -40,37 +40,38 @@
                 width="100%"
                 maxWidth="400px"
                 mx="auto">
-                {!isLoginPage ? 
+                {!isLoginPage ?
                     <>
-                    <TextField
-                        id="email"
-                        label="Email"
-                        variant="outlined"
-                        type="email"
-                        fullWidth
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        helperText={isSubmitted && !email ? 'Field is required' : (isSubmitted && email && !/^[^@]+@[^@]+\.[^@]+$/.test(email)) ? 'Email must be a valid email address' : ''}
-                        error={isSubmitted && (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email))}
-                    />
-                    <TextField
-                        id="name"
-                        label="Name"
-                        variant="outlined"
-                        type="text"
-                        fullWidth
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        helperText={isSubmitted && !name ? 'Field is required' : (isSubmitted && name && !/^[A-Za-zÀ-ÿ\s]+$/.test(name)) ? 'Name must only contain letters and spaces' : ''}
-                        error={isSubmitted && (!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name))}
-                    />
-                    </>:<></>
-                }   
+                        <TextField
+                            id="email"
+                            label="Email"
+                            variant="outlined"
+                            type="email"
+                            fullWidth
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            helperText={isSubmitted && !email ? 'Field is required' : (isSubmitted && email && !/^[^@]+@[^@]+\.[^@]+$/.test(email)) ? 'Email must be a valid email address' : ''}
+                            error={isSubmitted && (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email))}
+                        />
+                        <TextField
+                            id="name"
+                            label="Name"
+                            variant="outlined"
+                            type="text"
+                            fullWidth
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            helperText={isSubmitted && !name ? 'Field is required' : (isSubmitted && name && !/^[A-Za-zÀ-ÿ\s]+$/.test(name)) ? 'Name must only contain letters and spaces' : ''}
+                            error={isSubmitted && (!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name))}
+                        />
+                    </> : <></>
+                }
                 <TextField
                     id="outlined-basic"
                     label="Username"
                     variant="outlined"
                     type="text"
+                    data-testid='input-username'
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
                     helperText={isSubmitted && !username ? 'Field is required' : ""}
@@ -82,6 +83,7 @@
                     label="Password"
                     variant="outlined"
                     type={visibility}
+                    data-testid='input-password'
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     helperText={isSubmitted && !password ? 'Field is required' : ""}
@@ -94,51 +96,52 @@
                                 ) : (
                                     <VisibilityIcon fontSize="large" />
                                 )}
-                                </InputAdornment>
-                                )
-                            }}
-                    />
-                
+                            </InputAdornment>
+                        )
+                    }}
+                />
+
                 {/* BOTONES*/}
-                {isLoginPage ? 
-                <>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                        startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
+                {isLoginPage ?
+                    <>
+                        <Button
+                            variant="contained"
+                            color="success"
+                            type="submit"
+                            data-testid='try-login'
+                            startIcon={<LoginIcon sx={{ fontSize: '70px' }} />}>
                             <p>Login</p>
-                    </Button>
+                        </Button>
 
-                    <Button
-                        variant="contained"
-                        onClick={changePage}
-                        startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
+                        <Button
+                            variant="contained"
+                            onClick={changePage}
+                            startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
                             <p>New account</p>
-                    </Button>
-                </>: 
-                <>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        type="submit"
-                        startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
+                        </Button>
+                    </> :
+                    <>
+                        <Button
+                            variant="contained"
+                            color="success"
+                            type="submit"
+                            startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
                         >
-                        <p>Create Account</p>
-                    </Button>
+                            <p>Create Account</p>
+                        </Button>
 
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={changePage}
-                        startIcon={<KeyboardBackspaceIcon fontSize="large" />}
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={changePage}
+                            startIcon={<KeyboardBackspaceIcon fontSize="large" />}
                         >
                             <p>Back to Login</p>
-                    </Button>
-                </>
+                        </Button>
+                    </>
                 }
             </Box>
-            </>
-        )
+        </>
+    )
 
-    }
+}
