@@ -36,3 +36,7 @@
     border-width: 2px;
     background-color: var(--color-card-libro-gradiente);
 }
+
+.btn-admin:hover {
+    background-color: #ff0000; 
+  }
