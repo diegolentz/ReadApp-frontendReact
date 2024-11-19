@@ -80,7 +80,7 @@ main.fondo-background {
 }
 
 /* Etiqueta del campo */
-/* label {
+label {
     font-size: var(--text-xs);
     font-weight: normal;
     padding: 0.15rem;
@@ -98,7 +98,7 @@ main.fondo-background {
 label:after {
     content: " *";
     color: var(--color-cancel);
-} */
+}
 
 /* Input */
 input {
