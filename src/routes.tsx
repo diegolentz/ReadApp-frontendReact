@@ -43,9 +43,9 @@ export const AppRoutes = (props: HeaderOptionProps) => {
                 <Route path={`${paths.author.show.path}/:id`} element={<AuthorEdit editable={false} />} />
 
                 <Route path={`${paths.books.list.path}`} element={<BooksView />} />
-                <Route path={`${paths.books.create.path}`} element={<BookDetail editable={true} emptyForm={true} />} />
-                <Route path={`${paths.books.display.path}/:id`} element={<BookDetail editable={false} emptyForm={false} />} />
-                <Route path={`${paths.books.edit.path}/:id`} element={<BookDetail editable={true} emptyForm={false} />} />
+                <Route path={`${paths.books.create.path}`} element={<BookDetail editable={true}  />} />
+                <Route path={`${paths.books.display.path}/:id`} element={<BookDetail editable={false} />} />
+                <Route path={`${paths.books.edit.path}/:id`} element={<BookDetail editable={true}  />} />
 
             </Route>
 
