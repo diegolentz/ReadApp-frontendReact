@@ -49,7 +49,7 @@ export const AppRoutes = (props: HeaderOptionProps) => {
 
             </Route>
 
-            <Route path="*" element={<Navigate to={`${paths.login}`} replace />} />
+            <Route path="*" element={<Navigate to={`${paths.login.path}`} replace />} />
         </Routes>
     </>
 };
