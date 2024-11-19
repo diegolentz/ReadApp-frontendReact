@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent} from '@testing-library/react';
 import { vi, expect } from 'vitest';
 import axios from 'axios';
 import { REST_SERVER_URL } from '../../../constants';
@@ -51,10 +51,7 @@ describe('renders component correctly', () => {
         act(() => {
             fireEvent.click(saveButton);
         });
-    
-        await waitFor(() => {
             expect(axios.post).not.toHaveBeenCalled();
-        });
     
     });
 
