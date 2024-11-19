@@ -1,25 +1,28 @@
 import './navButtons.css'
 import { NavLink } from 'react-router-dom';
-import { mainPaths, paths, PathTestId } from '../../../domain/routes';
-import { BottomNavigation, BottomNavigationAction, Box, styled, ThemeProvider } from '@mui/material';
+import { paths, PathTestId } from '../../../domain/routes';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import { AdminPanelSettingsRounded, BookOnlineTwoTone, LogoutOutlined, PeopleAltTwoTone } from '@mui/icons-material';
+import { styled } from "@mui/material/styles";
 import { blue, deepOrange, deepPurple } from '@mui/material/colors';
 import shadows from '@mui/material/styles/shadows';
 import { useState } from 'react';
 
 
-const StyledBottomNavigation = styled(BottomNavigation)(() => ({
-    backgroundColor: deepOrange[400],
+const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
+    backgroundColor: theme.palette.primary.main,
     height: 70,
     justifyContent: 'space-evenly'
 }));
 
-const StyledNavLink = styled(NavLink)(() => ({
-    backgroundColor: deepPurple[400],
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.main,
     borderRadius: 10,
     transition: '0.5s',
     boxShadow: shadows[2],
-    border: '2px solid red'
+    borderColor: theme.palette.success.main,
+    borderWidth: '3px',
+    borderStyle: 'solid'
 
 }));
 

@@ -1,45 +1,33 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { paths } from "../../domain/routes";
+import { paths, PathTestId } from "../../domain/routes";
 import { HeaderComponent } from "./header";
 
-
-function renderWithBrowserRouter(){
+function renderWithBrowserRouter() {
     render(
         <>
-        <BrowserRouter>
-            <HeaderComponent></HeaderComponent>
-        </BrowserRouter>
+            <BrowserRouter>
+                <HeaderComponent currentOption="Mock title"></HeaderComponent>
+            </BrowserRouter>
         </>
     );
 }
-describe('bottom-menu-navigation', ()=>{
+describe('Header shortcut navigation', () => {
 
     it('Component rendering - ViewLayout child components truthy', async () => {
         renderWithBrowserRouter()
-        
-        expect(screen.findByTestId(`header`)).toBeTruthy()
+
+        expect(screen.findByTestId(`dashboard-shortcut`)).toBeTruthy()
     });
 
-    it('Child component navigation. Button navigates on click', async () => {
+    it('Navigation - Click on AppName, navigates to Dashboard ', async () => {
         renderWithBrowserRouter()
-        
-        expect(screen.findByTestId(`link-${paths.dashboard}`)).toBeTruthy()
-        expect(screen.findByTestId(`link-${paths.author}`)).toBeTruthy()
-        expect(screen.findByTestId(`link-${paths.books}`)).toBeTruthy()
-        expect(screen.findByTestId(`link-${paths.login}`)).toBeTruthy()
 
-        ;(await screen.findByTestId(`link-${paths.dashboard}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.dashboard}`)
+        expect(screen.findByTestId("dashboard-shortcut")).toBeTruthy()
 
-        ;(await screen.findByTestId(`link-${paths.author}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.author}/list`)
+            ; (await screen.findByTestId("dashboard-shortcut")).click()
+        expect(window.location.pathname).toBe(`${paths.dashboard.path}`)
 
-        ;(await screen.findByTestId(`link-${paths.books}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.books}`)
-
-        ;(await screen.findByTestId(`link-${paths.login}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.login}`)
     });
 
 })

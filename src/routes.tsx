@@ -15,7 +15,6 @@ interface HeaderOptionProps {
     title: string;
     stateDispatcher: React.Dispatch<React.SetStateAction<string>>
 }
-
 export const AppRoutes = (props: HeaderOptionProps) => {
     const location = useLocation()
     useEffect(() => {

@@ -1,20 +1,16 @@
-import { useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { paths } from '../../domain/routes'
-import { regex } from '../../domain/regex'
-import styled from '@emotion/styled'
-import { Box, createTheme, ThemeProvider, Typography, useColorScheme } from '@mui/material'
-import { deepOrange, deepPurple, grey, teal } from '@mui/material/colors'
+import { styled } from "@mui/material/styles";
+import { Box, ThemeProvider, useTheme } from '@mui/material'
 import LibraryBooksOutlinedIcon from '@mui/icons-material/LibraryBooksOutlined';
 import Paper from '@mui/material/Paper';
-import { appTheme, componentsTheme } from '../../AppTheme'
-import { Theme, useTheme } from '@emotion/react'
+import { common } from '@mui/material/colors';
 
 
 
 
-const StyledPaper = styled(Paper)(({ theme }: { theme: Theme }) => ({
-    backgroundColor: theme.palette.primary.main,
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.main,
     height: '100%',
     width: 'fit-content',
     display: 'flex',
@@ -22,17 +18,20 @@ const StyledPaper = styled(Paper)(({ theme }: { theme: Theme }) => ({
     gap: 5,
     '& a, & h2': {
         height: 35,
-    }
+    },
+    borderColor: theme.palette.success.main,
+    borderWidth: '3px',
+    borderStyle: 'solid'
 }));
 
-const StyledSvg = styled(LibraryBooksOutlinedIcon)(() => ({
+const StyledSvg = styled(LibraryBooksOutlinedIcon)(({ theme }) => ({
     height: 40,
     width: 40,
-    color: grey[100]
+
 }));
 
-const StyledBoxHeader = styled(Box)(() => ({
-    backgroundColor: 'primary.main',
+const StyledBoxHeader = styled(Box)(({ theme }) => ({
+    backgroundColor: theme.palette.primary.main,
     height: 70,
     display: 'flex',
     padding: 10,
@@ -48,7 +47,7 @@ export const HeaderComponent = ({ currentOption }: { currentOption: string }) =>
                 data-testid="header">
                 <StyledSvg></StyledSvg>
                 <StyledPaper>
-                    <Link to={`${paths.dashboard}`}>
+                    <Link to={`${paths.dashboard.path}`} data-testid="dashboard-shortcut">
                         <h2>ReadApp</h2>
                     </Link>
                     <h2>/{currentOption}</h2>
