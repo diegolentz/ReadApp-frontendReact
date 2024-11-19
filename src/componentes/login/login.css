@@ -1,4 +1,4 @@
-/* Fondo del formulario y layout general */
+Fondo del formulario y layout general
 main.fondo-background {
     background-image: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     background-size: cover;
@@ -80,7 +80,7 @@ main.fondo-background {
 }
 
 /* Etiqueta del campo */
-label {
+/* label {
     font-size: var(--text-xs);
     font-weight: normal;
     padding: 0.15rem;
@@ -98,7 +98,7 @@ label {
 label:after {
     content: " *";
     color: var(--color-cancel);
-}
+} */
 
 /* Input */
 input {
