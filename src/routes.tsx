@@ -8,6 +8,7 @@ import BookDetail from './componentes/BookCreation/BookDetail';
 import { AuthorList } from './componentes/FolderAuthor/AuthorList/AuthorList';
 import AuthorEdit from './componentes/FolderAuthor/AuthorEdit/AuthorEdit';
 import { useEffect, useState } from 'react';
+import { ThemeProvider, useTheme } from '@emotion/react';
 
 
 interface HeaderOptionProps {
@@ -57,10 +58,14 @@ export const AppRoutes = (props: HeaderOptionProps) => {
 
 export const AppRouter = () => {
     const [currentOption, setCurrentOption] = useState(paths.dashboard.label)
+    const theme = useTheme()
     return <>
-        <Router>
-            <AppRoutes title={currentOption} stateDispatcher={setCurrentOption}></AppRoutes>
-        </Router>
+        <ThemeProvider theme={theme}>
+            <Router>
+                <AppRoutes title={currentOption} stateDispatcher={setCurrentOption}></AppRoutes>
+            </Router>
+        </ThemeProvider>
+
     </>
 };
 
