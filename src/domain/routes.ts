@@ -25,7 +25,7 @@ export const paths = {
     author: {
         list:{
             path:`${mainPaths.author}/list`,
-            label: `List of authors`
+            label: `Author list`
         },
         create:{
             path:`${mainPaths.author}/create`,
@@ -43,7 +43,7 @@ export const paths = {
     books: {
         list: {
             path: `${mainPaths.books}/list`,
-            label:'List of books',
+            label:'Book list',
         },
         display:{
             path:`${mainPaths.books}/display`,

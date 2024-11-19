@@ -1,23 +1,23 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ViewLayoutComponent } from "./viewLayout";
-import { paths } from "../../domain/routes";
+import { paths, PathTestId } from "../../domain/routes";
 
 
-function renderWithBrowserRouter(){
+function renderWithBrowserRouter() {
     render(
         <>
-        <BrowserRouter>
-            <ViewLayoutComponent></ViewLayoutComponent>
-        </BrowserRouter>
+            <BrowserRouter>
+                <ViewLayoutComponent selectedOption="Mock title"></ViewLayoutComponent>
+            </BrowserRouter>
         </>
     );
 }
-describe('bottom-menu-navigation', ()=>{
+describe('bottom-menu-navigation', () => {
 
     it('Component rendering - ViewLayout child components truthy', async () => {
         renderWithBrowserRouter()
-        
+
         expect(screen.findByTestId(`header`)).toBeTruthy()
         expect(screen.findByTestId(`content`)).toBeTruthy()
         expect(screen.findByTestId(`nav-buttons`)).toBeTruthy()
@@ -25,23 +25,23 @@ describe('bottom-menu-navigation', ()=>{
 
     it('Child component navigation. Button navigates on click', async () => {
         renderWithBrowserRouter()
-        
-        expect(screen.findByTestId(`link-${paths.dashboard}`)).toBeTruthy()
-        expect(screen.findByTestId(`link-${paths.author}`)).toBeTruthy()
-        expect(screen.findByTestId(`link-${paths.books}`)).toBeTruthy()
-        expect(screen.findByTestId(`link-${paths.login}`)).toBeTruthy()
 
-        ;(await screen.findByTestId(`link-${paths.dashboard}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.dashboard}`)
+        expect(screen.findByTestId(`link-${PathTestId.dashboard}`)).toBeTruthy()
+        expect(screen.findByTestId(`link-${PathTestId.author}`)).toBeTruthy()
+        expect(screen.findByTestId(`link-${PathTestId.books}`)).toBeTruthy()
+        expect(screen.findByTestId(`link-${PathTestId.login}`)).toBeTruthy()
 
-        ;(await screen.findByTestId(`link-${paths.author}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.author}/list`)
+            ; (await screen.findByTestId(`link-${PathTestId.dashboard}`)).click()
+        expect(window.location.pathname).toBe(`${paths.dashboard.path}`)
 
-        ;(await screen.findByTestId(`link-${paths.books}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.books}`)
+            ; (await screen.findByTestId(`link-${PathTestId.author}`)).click()
+        expect(window.location.pathname).toBe(`${paths.author.list.path}`)
 
-        ;(await screen.findByTestId(`link-${paths.login}`)).click()
-        expect(window.location.pathname).toBe(`/${paths.login}`)
+            ; (await screen.findByTestId(`link-${PathTestId.books}`)).click()
+        expect(window.location.pathname).toBe(`${paths.books.list.path}`)
+
+            ; (await screen.findByTestId(`link-${PathTestId.login}`)).click()
+        expect(window.location.pathname).toBe(`${paths.login.path}`)
     });
 
 })
