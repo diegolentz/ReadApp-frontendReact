@@ -116,6 +116,7 @@ export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, cr
                         <Button
                             variant="contained"
                             onClick={changePage}
+                            color="secondary"
                             startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
                             <p>New account</p>
                         </Button>
