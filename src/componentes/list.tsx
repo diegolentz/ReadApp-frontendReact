@@ -6,10 +6,14 @@ import { mostrarMensajeError } from '../error-handling';
 import Author from './FolderAuthor/Author/Author';
 import { Alert, Box, Snackbar } from '@mui/material';
 import { Create } from './FolderButtons/CreateButton/Create';
+import { Book } from '../domain/BookJSON';
+import { bookService } from '../service/bookService';
+import { BookComponent } from './Book/Book';
 
 export const List = ({ selectedOption }: { selectedOption: string }) => {
     const [isBook, setIsBook] = useState<boolean | null>(null);
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
+    const [books, setBooks] = useState<Array<Book>>([]);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -26,8 +30,13 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
 
     const fetchData = async () => {
         try {
-            const autorData = await authorService.getAuthorData();
-            setAuthors(autorData);
+            if(isBook){
+                const books = await bookService.getBooksShortData();
+                setBooks(books);
+            }else{
+                const autorData = await authorService.getAuthorData();
+                setAuthors(autorData);
+            }
         } catch (error: any) {
             setSnackbarSeverity('error');
             mostrarMensajeError(error, setSnackbarMessage);
@@ -51,24 +60,22 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
     useEffect(() => {
         if (selectedOption === 'book') {
             setIsBook(true);
-            fetchData();
         } else if (selectedOption === 'autor') {
             setIsBook(false);
-            fetchData();
-        } else {
-            setIsBook(null);
-            // navigate('/dashboard');
         }
-    }, [selectedOption]);
-
+        fetchData();
+      
+    }, [selectedOption, isBook]);
     return (
         <>
             <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">
+                
                 {!isBook ? (
                     authors.map((autor) => (<Author renderAuthor={autor} onDelete={deleteAuthor}/>))
                 ) : (
-                    <p>te la comes</p>
+                    books.map((book) => (<BookComponent book={book}/>))
                 )}
+
                 <Box sx={{position: "fixed", bottom: "13rem", right: "1rem", zIndex: 1000}} data-testid="create-author-button">
                     <Create onClick={createAuthor} data-testid="create"/>
                 </Box>
