@@ -48,12 +48,12 @@ export const AppRoutes = (props: HeaderOptionProps) => {
                 {/* ruta para printeo gral */}
                 <Route path={`${paths.list.path}`} element={<List selectedOption={props.title}/>} />
 
-                <Route path={`${paths.author.list.path}`} element={<AuthorList />} />
+                {/* <Route path={`${paths.author.list.path}`} element={<AuthorList />} /> */}
                 <Route path={`${paths.author.create.path}`} element={<AuthorEdit editable={true} />} />
                 <Route path={`${paths.author.edit.path}/:id`} element={<AuthorEdit editable={true} />} />
                 <Route path={`${paths.author.show.path}/:id`} element={<AuthorEdit editable={false} />} />
 
-                <Route path={`${paths.books.list.path}`} element={<BooksView />} />
+                {/* <Route path={`${paths.books.list.path}`} element={<BooksView />} /> */}
                 <Route path={`${paths.books.create.path}`} element={<BookDetail editable={true}  />} />
                 <Route path={`${paths.books.display.path}/:id`} element={<BookDetail editable={false} />} />
                 <Route path={`${paths.books.edit.path}/:id`} element={<BookDetail editable={true}  />} />

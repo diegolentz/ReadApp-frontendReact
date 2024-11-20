@@ -10,7 +10,7 @@ export const Author = ({
     onDelete,
    
 }: {
-    renderAuthor: AuthorJSON[];
+    renderAuthor: AuthorJSON;
     onDelete: (id: number) => void;
    
 }) => {
@@ -38,10 +38,9 @@ export const Author = ({
             height="100%"
             padding={2} 
         >
-            {renderAuthor.map((author) => (
 
                 <Card
-                    key={author.id} variant="outlined"   data-testid="card" sx={{
+                    key={renderAuthor.id} variant="outlined"   data-testid="card" sx={{
                         display: "flex",
                         alignItems: "center",
                         padding: 1,
@@ -53,7 +52,7 @@ export const Author = ({
                       
                     }}>
 
-                    <CardContent onClick={() => showAuthor(author.id)} data-testid="cardContent" sx={{
+                    <CardContent onClick={() => showAuthor(renderAuthor.id)} data-testid="cardContent" sx={{
                         flexGrow: 1,
                         cursor: "pointer",
                         display: "flex",
@@ -68,7 +67,7 @@ export const Author = ({
                             data-testid="authorName"
                             sx={{ fontWeight: 'bold' }}
                         >
-                            {author.name} {author.lastName}
+                            {renderAuthor.name} {renderAuthor.lastName}
                         </Typography>
 
                         <Typography
@@ -77,7 +76,7 @@ export const Author = ({
                             data-testid="authorNationality"
                             sx={{ fontStyle: 'oblique' }}
                         >
-                            {author.nationality}
+                            {renderAuthor.nationality}
                         </Typography>
 
                     </CardContent>
@@ -91,7 +90,7 @@ export const Author = ({
                         gap={0.5} 
                     >
                         <IconButton
-                            onClick={() => showAuthor(author.id)}
+                            onClick={() => showAuthor(renderAuthor.id)}
                             color="default"
                             data-testid="showAuthor"
                             sx={{ height: "33%", padding: 0 }}
@@ -100,7 +99,7 @@ export const Author = ({
                         </IconButton>
 
                         <IconButton
-                            onClick={() => editAuthor(author.id)}
+                            onClick={() => editAuthor(renderAuthor.id)}
                             color="success"
                             data-testid="editAuthor"
                             sx={{
@@ -111,10 +110,10 @@ export const Author = ({
                             <EditIcon sx={{ width: "100%", height: "100%" }} />
                         </IconButton>
                         
-                        {!author.creator && (
+                        {!renderAuthor.creator && (
                             <IconButton
                                 sx={{ height: "33%", padding: 0 }}
-                                onClick={() => deleteAuthor(author.id)}
+                                onClick={() => deleteAuthor(renderAuthor.id)}
                                 color="error"
                                 data-testid="deleteAuthor"
                             >
@@ -125,7 +124,6 @@ export const Author = ({
                      
                     </Box>
                 </Card>
-            ))}
         </Box>
     );
 };

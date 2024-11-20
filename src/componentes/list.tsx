@@ -17,11 +17,9 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
     const navigate = useNavigate();
 
     const createAuthor = () => {
-        navigate(`/author/create`);
+        navigate(`/${selectedOption}/create`);
     };
     
-
-
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
     };
@@ -59,6 +57,7 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
             fetchData();
         } else {
             setIsBook(null);
+            // navigate('/dashboard');
         }
     }, [selectedOption]);
 
@@ -66,13 +65,7 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
         <>
             <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">
                 {!isBook ? (
-                    <Author 
-                        renderAuthor={authors} 
-                        onDelete={deleteAuthor} 
-                        // onSelect={toEdit} 
-                        // onDetail={showAuthor} 
-                        data-testid="authors-list" 
-                    />
+                    authors.map((autor) => (<Author renderAuthor={autor} onDelete={deleteAuthor}/>))
                 ) : (
                     <p>te la comes</p>
                 )}

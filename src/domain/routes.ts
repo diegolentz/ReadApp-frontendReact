@@ -2,8 +2,8 @@
 export const PathTestId = {
     login: 'login',
     dashboard: 'dashboard',
-    author: 'author',
-    books: 'books',
+    author: 'autor',
+    books: 'book',
     list: 'list',
 }
 
@@ -56,7 +56,7 @@ export const paths = {
             label: `Book details`
         },
         create: {
-            path: `${mainPaths.books}/creation`,
+            path: `${mainPaths.books}/create`,
             label: `Create book`
         },
         edit: {
