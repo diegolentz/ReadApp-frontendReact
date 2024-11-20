@@ -3,21 +3,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useNavigate } from "react-router-dom";
 
 export const Author = ({
     renderAuthor,
     onDelete,
-    onSelect,
-    onDetail,
+   
 }: {
     renderAuthor: AuthorJSON[];
     onDelete: (id: number) => void;
-    onSelect: (id: number) => void;
-    onDetail: (id: number) => void;
+   
 }) => {
+    const navigate = useNavigate();
 
     const editAuthor = (id: number) => {
-        onSelect(id);
+        navigate(`/author/edit/${id}`);
     };
 
     const deleteAuthor = (id: number) => {
@@ -25,7 +25,7 @@ export const Author = ({
     };
 
     const showAuthor = (id: number) => {
-        onDetail(id);
+        navigate(`/author/show/${id}`);
     };
 
     return (

@@ -19,14 +19,8 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
     const createAuthor = () => {
         navigate(`/author/create`);
     };
-
-    const toEdit = (id: number) => {
-        navigate(`/author/edit/${id}`);
-    };
     
-    const showAuthor = (id: number) => {
-        navigate(`/author/show/${id}`);
-    };
+
 
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
@@ -75,8 +69,8 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
                     <Author 
                         renderAuthor={authors} 
                         onDelete={deleteAuthor} 
-                        onSelect={toEdit} 
-                        onDetail={showAuthor} 
+                        // onSelect={toEdit} 
+                        // onDetail={showAuthor} 
                         data-testid="authors-list" 
                     />
                 ) : (
