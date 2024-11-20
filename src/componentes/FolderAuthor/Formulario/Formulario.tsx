@@ -60,7 +60,6 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
         };
         setErrors(updatedErrors);
     
-        // Comprobar si hay algún error
         const hasErrors = Object.values(updatedErrors).some((field) => field.error);
     
         if (hasErrors) {
