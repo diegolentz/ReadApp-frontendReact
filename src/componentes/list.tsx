@@ -49,22 +49,20 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
             if (isBook) {
                 await bookService.deleteBook(id);
                 setBooks((prevBooks) => prevBooks.filter((book: Book) => book.id !== id));
-                setSnackbarSeverity('success');
-                setSnackbarMessage('Book deleted successfully.');
-                setOpenSnackbar(true)
             } else {
                 await authorService.deleteAuthor(id);
                 setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
-                setSnackbarSeverity('success');
-                setSnackbarMessage('Author deleted successfully.');
-                setOpenSnackbar(true)
             };
+            setSnackbarSeverity('success');
+            setSnackbarMessage(`${selectedOption} deleted successfully.`);
+            setOpenSnackbar(true)
         } catch (error: any) {
             setSnackbarSeverity('error');
             mostrarMensajeError(error, setSnackbarMessage);
             setOpenSnackbar(true);
         }
     };
+    
     useEffect(() => {
         if (selectedOption === 'book') {
             setIsBook(true);
