@@ -63,7 +63,7 @@ export const AuthorList = () => {
     
     return (
         <>
-            <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">
+            {/* <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">
                 <Author 
                     renderAuthor={authors} 
                     onDelete={deleteAuthor} 
@@ -80,7 +80,7 @@ export const AuthorList = () => {
                 <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled" data-testid="snackbar-message">
                     {snackbarMessage}
                 </Alert>
-            </Snackbar>
+            </Snackbar> */}
         </>
     );
 };

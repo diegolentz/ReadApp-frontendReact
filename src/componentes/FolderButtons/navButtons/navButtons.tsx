@@ -48,11 +48,11 @@ export const NavButtonsComponent = () => {
                 </BottomNavigationAction>
             </StyledNavLink>
 
-            <StyledNavLink to={`${paths.author.list.path}`} data-testid={`link-${PathTestId.author}`}>
+            <StyledNavLink to={`list/autor`} data-testid={`link-${PathTestId.author}`}>
                 <BottomNavigationAction label="Author" value='author' icon={<PeopleAltTwoTone />}>
                 </BottomNavigationAction>
             </StyledNavLink>
-            <StyledNavLink to={`${paths.books.list.path}`} data-testid={`link-${PathTestId.books}`}>
+            <StyledNavLink to={`list/book`} data-testid={`link-${PathTestId.books}`}>
                 <BottomNavigationAction label="Book" value='book' icon={<BookOnlineTwoTone />}>
                 </BottomNavigationAction>
             </StyledNavLink>

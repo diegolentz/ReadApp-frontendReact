@@ -16,6 +16,9 @@ class BookService {
         return BookListDetail.prototype.fromJson(data.data);
     }
 
+    async deleteBook(id: number): Promise<void> {
+        await axios.delete(REST_SERVER_URL + "/deleteBook/" + id);
+    }
 
 }
 
