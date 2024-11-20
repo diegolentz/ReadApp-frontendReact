@@ -49,22 +49,34 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
     };
 
     const confirm = () => {
-        const hasErrors = Object.values(errors).some((field) => field.error);
-        if (!autorFormulario.nationality || hasErrors) {
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                nationality: { error: !autorFormulario.nationality, helperText: "Language selection is required." }
-            }));
-            setSnackbarSeverity('error');
+        // Revalidar todos los campos antes de continuar
+        const updatedErrors = {
+            name: validateField("name", autorFormulario.name || ""),
+            lastName: validateField("lastName", autorFormulario.lastName || ""),
+            nationality: {
+                error: !autorFormulario.nationality,
+                helperText: !autorFormulario.nationality ? "Language selection is required." : ""
+            }
+        };
+        setErrors(updatedErrors);
+    
+        // Comprobar si hay algún error
+        const hasErrors = Object.values(updatedErrors).some((field) => field.error);
+    
+        if (hasErrors) {
+            setSnackbarSeverity("error");
             setSnackbarMessage("Please correct the errors before saving.");
             setOpenSnackbar(true);
-        } else {
-            onSelect(autorFormulario);
-            setSnackbarSeverity('success');
-            setSnackbarMessage('Operation successful!');
-            setOpenSnackbar(true);
+            return;
         }
+    
+        // Si no hay errores, llamar a onSelect
+        onSelect(autorFormulario);
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Operation successful!");
+        setOpenSnackbar(true);
     };
+    
 
     useEffect(() => {
         setLenguajes(idiomas);

@@ -1,10 +1,9 @@
-import { AuthorJson, AuthorJSON, AutorEditJSON, CreateAuthorJSON } from "../../../domain/AuthorJSON";
+import { AuthorJson, AuthorJSON} from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { useNavigate, useParams } from "react-router-dom";
 import { mostrarMensajeError } from '../../../error-handling';
 import { Formulario } from "../Formulario/Formulario";
 import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
 
 export const AuthorEdit = ({ editable }: { editable: boolean }) => {
   const [author, setAuthor] = useState<AuthorJSON>(new AuthorJSON());
@@ -48,7 +47,7 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     const autor = AuthorJson.toAuthor(autorEdit);
     try {
       await authorService.editAuthor(autor);
-      setTimeout(() => navigate(`/author/list`), 1000);
+      setTimeout(() => navigate(`/list/autor`), 1000);
     } catch (error: any) {
       setSnackbarSeverity('error');
       mostrarMensajeError(error, setSnackbarMessage);
@@ -60,7 +59,7 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     const autor = AuthorJson.toCreateAuthor(autorCreate);
     try {
       await authorService.createAuthor(autor);
-      setTimeout(() => navigate(`/author/list`), 1000);
+      setTimeout(() => navigate(`/list/autor`), 1000);
     } catch (error: any) {
       setSnackbarSeverity('error');
       mostrarMensajeError(error, setSnackbarMessage);
