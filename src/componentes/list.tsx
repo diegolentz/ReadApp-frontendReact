@@ -17,23 +17,23 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    
+
     const navigate = useNavigate();
 
     const createAuthor = () => {
         navigate(`/${selectedOption}/create`);
     };
-    
+
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
     };
 
     const fetchData = async () => {
         try {
-            if(isBook){
+            if (isBook) {
                 const books = await bookService.getBooksShortData();
                 setBooks(books);
-            }else{
+            } else {
                 const autorData = await authorService.getAuthorData();
                 setAuthors(autorData);
             }
@@ -44,13 +44,21 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
         }
     };
 
-    const deleteAuthor = async (id: number) => {
+    const deleteObject = async (id: number) => {
         try {
-            await authorService.deleteAuthor(id);
-            setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
-            setSnackbarSeverity('success');
-            setSnackbarMessage('Author deleted successfully.');
-            setOpenSnackbar(true);
+            if (isBook) {
+                await bookService.deleteBook(id);
+                setBooks((prevBooks) => prevBooks.filter((book: Book) => book.id !== id));
+                setSnackbarSeverity('success');
+                setSnackbarMessage('Book deleted successfully.');
+                setOpenSnackbar(true)
+            } else {
+                await authorService.deleteAuthor(id);
+                setAuthors((prevAuthors) => prevAuthors.filter((author: AuthorJSON) => author.id !== id));
+                setSnackbarSeverity('success');
+                setSnackbarMessage('Author deleted successfully.');
+                setOpenSnackbar(true)
+            };
         } catch (error: any) {
             setSnackbarSeverity('error');
             mostrarMensajeError(error, setSnackbarMessage);
@@ -64,21 +72,21 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
             setIsBook(false);
         }
         fetchData();
-      
+
     }, [selectedOption, isBook]);
-    
+
     return (
         <>
             <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">
-                
+
                 {!isBook ? (
-                    authors.map((autor) => (<Author renderAuthor={autor} onDelete={deleteAuthor}/>))
+                    authors.map((autor) => (<Author renderAuthor={autor} onDelete={deleteObject} />))
                 ) : (
-                    books.map((book) => (<BookComponent book={book}/>))
+                    books.map((book) => (<BookComponent book={book} onDelete={deleteObject} />))
                 )}
 
-                <Box sx={{position: "fixed", bottom: "13rem", right: "1rem", zIndex: 1000}} data-testid="create-author-button">
-                    <Create onClick={createAuthor} data-testid="create"/>
+                <Box sx={{ position: "fixed", bottom: "13rem", right: "1rem", zIndex: 1000 }} data-testid="create-author-button">
+                    <Create onClick={createAuthor} data-testid="create" />
                 </Box>
             </Box>
 

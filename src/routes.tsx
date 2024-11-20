@@ -37,10 +37,8 @@ export const AppRoutes = (props: HeaderOptionProps) => {
             <Route element={<ViewLayoutComponent selectedOption={props.title} />}>
                 <Route path={`${paths.dashboard.path}`} element={<Dashboard/>} />
 
-
                 <Route path={`${paths.list.book.path}`} element={<List selectedOption={PathTestId.books}/>} />
                 <Route path={`${paths.list.autor.path}`} element={<List selectedOption={PathTestId.author}/>} />
-
 
                 <Route path={`${paths.author.create.path}`} element={<AuthorEdit editable={true} />} />
                 <Route path={`${paths.author.edit.path}/:id`} element={<AuthorEdit editable={true} />} />

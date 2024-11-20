@@ -5,13 +5,16 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import { paths } from '../../domain/routes';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const BookComponent = ({
     book,
+    onDelete
     // onEdition,
     // onDetail,
 }: {
     book: Book;
+    onDelete: (id: number) => void;
     // onEdition: (id: number) => void;
     // onDetail: (id: number) => void;
 }) => {
@@ -19,12 +22,14 @@ export const BookComponent = ({
     const navigate = useNavigate();
 
     const editBook = (id: number) => {
-        // onEdition(id);
         navigate(`${paths.books.edit.path}/${id}`)
     };
 
+    const deleteBook = (id: number) => {
+        onDelete(id);
+    };
+
     const displayBook = (id: number) => {
-        // onDetail(id);
         navigate(`${paths.books.display.path}/${id}`)
     };
 
@@ -48,6 +53,14 @@ export const BookComponent = ({
             >
                 <EditIcon sx={{ width: "100%", height: "100%" }} />
             </IconButton>
+            <IconButton
+                                sx={{ height: "33%", padding: 0 }}
+                                onClick={() => deleteBook(book.id)}
+                                color="error"
+                                data-testid="deleteAuthor"
+                            >
+                                <DeleteIcon sx={{ width: "100%", height: "100%" }} />
+                            </IconButton>
             <IconButton
                 onClick={() => displayBook(book.id)}
                 color="default"
