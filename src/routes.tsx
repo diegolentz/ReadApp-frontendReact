@@ -9,6 +9,7 @@ import { AuthorList } from './componentes/FolderAuthor/AuthorList/AuthorList';
 import AuthorEdit from './componentes/FolderAuthor/AuthorEdit/AuthorEdit';
 import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@emotion/react';
+import { List } from './componentes/list';
 
 
 interface HeaderOptionProps {
@@ -20,22 +21,32 @@ export const AppRoutes = (props: HeaderOptionProps) => {
     useEffect(() => {
         handleTitle()
     }, [location]);
-
     function handleTitle() {
         const currentPath = location.pathname;
-        const matchedLabel = Object.keys(pathToLabelMap).find(path => {
-
-            return currentPath === path || currentPath.startsWith(path.replace(/:id/, ''));
-        });
-        props.stateDispatcher(matchedLabel ? pathToLabelMap[matchedLabel] : paths.login.label);
+        const matchedLabel = Object.keys(pathToLabelMap).find(path =>
+            currentPath === path || currentPath.startsWith(path.replace(/:type/, ''))
+        );
+    
+        if (matchedLabel && matchedLabel.includes(':type')) {
+            // Extraer el tipo del parámetro dinámico
+            const type = currentPath.split('/').pop();
+            const dynamicLabel = type ? paths.list.label(type) : 'List';
+            props.stateDispatcher(dynamicLabel);
+        } else {
+            props.stateDispatcher(matchedLabel ? pathToLabelMap[matchedLabel] : paths.login.label);
+        }
     }
+    
 
     return <>
         <Routes>
             <Route path={`${paths.login.path}`} element={<Login />} />
 
             <Route element={<ViewLayoutComponent selectedOption={props.title} />}>
-                <Route path={`${paths.dashboard.path}`} element={<Dashboard />} />
+                <Route path={`${paths.dashboard.path}`} element={<Dashboard/>} />
+
+                {/* ruta para printeo gral */}
+                <Route path={`${paths.list.path}`} element={<List selectedOption={props.title}/>} />
 
                 <Route path={`${paths.author.list.path}`} element={<AuthorList />} />
                 <Route path={`${paths.author.create.path}`} element={<AuthorEdit editable={true} />} />
