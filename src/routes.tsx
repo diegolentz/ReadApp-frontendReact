@@ -2,10 +2,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'r
 import { Dashboard } from './componentes/dashboard/Dashboard';
 import { ViewLayoutComponent } from './componentes/viewLayout/viewLayout';
 import { Login } from './componentes/login/login';
-import { mainPaths, paths, pathToLabelMap } from './domain/routes';
-import { BooksView } from './componentes/Book/BooksView';
+import { paths, PathTestId, pathToLabelMap } from './domain/routes';
 import BookDetail from './componentes/BookCreation/BookDetail';
-import { AuthorList } from './componentes/FolderAuthor/AuthorList/AuthorList';
 import AuthorEdit from './componentes/FolderAuthor/AuthorEdit/AuthorEdit';
 import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@emotion/react';
@@ -21,20 +19,14 @@ export const AppRoutes = (props: HeaderOptionProps) => {
     useEffect(() => {
         handleTitle()
     }, [location]);
+    
     function handleTitle() {
         const currentPath = location.pathname;
-        const matchedLabel = Object.keys(pathToLabelMap).find(path =>
-            currentPath === path || currentPath.startsWith(path.replace(/:type/, ''))
-        );
-    
-        if (matchedLabel && matchedLabel.includes(':type')) {
-            // Extraer el tipo del parámetro dinámico
-            const type = currentPath.split('/').pop();
-            const dynamicLabel = type ? paths.list.label(type) : 'List';
-            props.stateDispatcher(dynamicLabel);
-        } else {
-            props.stateDispatcher(matchedLabel ? pathToLabelMap[matchedLabel] : paths.login.label);
-        }
+        const matchedLabel = Object.keys(pathToLabelMap).find(path => {
+
+            return currentPath === path || currentPath.startsWith(path.replace(/:id/, ''));
+        });
+        props.stateDispatcher(matchedLabel ? pathToLabelMap[matchedLabel] : paths.login.label);
     }
     
 
@@ -45,15 +37,15 @@ export const AppRoutes = (props: HeaderOptionProps) => {
             <Route element={<ViewLayoutComponent selectedOption={props.title} />}>
                 <Route path={`${paths.dashboard.path}`} element={<Dashboard/>} />
 
-                {/* ruta para printeo gral */}
-                <Route path={`${paths.list.path}`} element={<List selectedOption={props.title}/>} />
 
-                {/* <Route path={`${paths.author.list.path}`} element={<AuthorList />} /> */}
+                <Route path={`${paths.list.book.path}`} element={<List selectedOption={PathTestId.books}/>} />
+                <Route path={`${paths.list.autor.path}`} element={<List selectedOption={PathTestId.author}/>} />
+
+
                 <Route path={`${paths.author.create.path}`} element={<AuthorEdit editable={true} />} />
                 <Route path={`${paths.author.edit.path}/:id`} element={<AuthorEdit editable={true} />} />
                 <Route path={`${paths.author.show.path}/:id`} element={<AuthorEdit editable={false} />} />
 
-                {/* <Route path={`${paths.books.list.path}`} element={<BooksView />} /> */}
                 <Route path={`${paths.books.create.path}`} element={<BookDetail editable={true}  />} />
                 <Route path={`${paths.books.display.path}/:id`} element={<BookDetail editable={false} />} />
                 <Route path={`${paths.books.edit.path}/:id`} element={<BookDetail editable={true}  />} />

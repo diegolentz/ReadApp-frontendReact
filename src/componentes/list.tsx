@@ -66,6 +66,7 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
         fetchData();
       
     }, [selectedOption, isBook]);
+    
     return (
         <>
             <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">

@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from "react-router-dom";
+import { paths } from "../../../domain/routes";
 
 export const Author = ({
     renderAuthor,
@@ -17,7 +18,7 @@ export const Author = ({
     const navigate = useNavigate();
 
     const editAuthor = (id: number) => {
-        navigate(`/author/edit/${id}`);
+        navigate(`${paths.author.edit.path}/${id}`); 
     };
 
     const deleteAuthor = (id: number) => {
@@ -25,7 +26,7 @@ export const Author = ({
     };
 
     const showAuthor = (id: number) => {
-        navigate(`/author/show/${id}`);
+        navigate(`${paths.author.show.path}/${id}`);
     };
 
     return (

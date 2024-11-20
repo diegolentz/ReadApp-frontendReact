@@ -4,7 +4,7 @@ export const PathTestId = {
     dashboard: 'dashboard',
     author: 'autor',
     books: 'book',
-    list: 'list',
+    list : 'list',
 }
 
 export const mainPaths = {
@@ -12,7 +12,7 @@ export const mainPaths = {
     dashboard: `/${PathTestId.dashboard}`,
     author: `/${PathTestId.author}`,
     books: `/${PathTestId.books}`,
-    list: `/${PathTestId.list}`,
+    list: `/${PathTestId.list}`
 }
 
 export const paths = {
@@ -24,10 +24,17 @@ export const paths = {
         path: `${mainPaths.dashboard}`,
         label: 'Dashboard'
     },
-    list: {
-        path: `${mainPaths.list}/:type`,
-        label: (type: string) => `${type}`
-    },
+    list:{
+        autor:{
+            path: `${mainPaths.list}/autor`,
+            label: `Autor list `
+        },
+        book:{
+
+            path: `${mainPaths.list}/book`,
+            label: `Book list `
+        }
+        },
     author: {
         list: {
             path: `${mainPaths.author}/list`,
@@ -87,5 +94,9 @@ export const pathToLabelMap = {
     [paths.books.display.path]: paths.books.display.label,
 
     [paths.books.edit.path]: paths.books.edit.label,
-    [paths.list.path]: paths.list.label
+
+
+    [paths.list.book.path]: paths.list.book.label,
+
+    [paths.list.autor.path]: paths.list.autor.label
 };
