@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { Alert, Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
 
 export const Formulario = ({ autor, idiomas, onSelect, isEdit }: 
     { autor: AuthorJSON, idiomas: string[], onSelect: (updatedAuthor: AuthorJSON) => void, isEdit: boolean }) => {
@@ -49,7 +50,6 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
     };
 
     const confirm = () => {
-        // Revalidar todos los campos antes de continuar
         const updatedErrors = {
             name: validateField("name", autorFormulario.name || ""),
             lastName: validateField("lastName", autorFormulario.lastName || ""),
@@ -129,17 +129,9 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
                         <FormHelperText>{errors.nationality.helperText}</FormHelperText>
                     )}
                 </FormControl>
-
-                <Button
-                    onClick={confirm}
-                    variant="contained"
-                    color="success"
-                    sx={{ width: '10rem', borderRadius: "4rem" }}
-                    data-testid="save-button"
-                >
-                    Save
-                </Button>
             </Box>
+            <SaveCancelButton onClick={confirm} isBook={false} editable={isEdit} />
+
         </Box>
     );
-};
+}
