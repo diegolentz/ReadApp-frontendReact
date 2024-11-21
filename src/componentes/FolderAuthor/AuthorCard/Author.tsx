@@ -53,9 +53,8 @@ export const Author = ({renderAuthor,onDelete }:
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "start",
-                        gap: 2,
-
-                    }}>
+                        gap: 2,}}>
+                            
                         <Typography
                             variant="h5"
                             color="text.primary"
