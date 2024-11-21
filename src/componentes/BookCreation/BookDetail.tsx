@@ -14,13 +14,16 @@ export const BookDetail = ({
 }) => {
 
     const [book, setBook] = useState<BookListDetail>(new BookListDetail());
+    const [authors, setAuthors] = useState<AuthorBook[]>([]);
     const [nativeLanguage, setNativeLanguage] = useState<string>(book.author.nacionalidad);
     const [languages, setLanguages] = useState<string[]>([]);
     const params = useParams();
 
     const [checkedComplex, setCheckedComplex] = useState<boolean>(book.complex);
-    const [authors, setAuthors] = useState<AuthorBook[]>([]);
-    const [selectedAuthor, setSelectedAuthor] = useState<string>(book.author.nombre)
+    
+    const [selectedAuthor, setSelectedAuthor] = useState<string>(book.author.nombre);
+
+    
 
     const [idiomas, setIdiomas] = useState({
         frances: true,
@@ -38,28 +41,24 @@ export const BookDetail = ({
       const { ingles, frances, hindi } = idiomas;
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
-        console.log(event.target.value);
-        const localId = Number(event.target.value);
-        const localAuthor: AuthorBook = authors.find((author: AuthorBook) => (author.id === localId))
+        const localAuthor: AuthorBook = authors.find((author: AuthorBook) => (author.id === Number(event.target.value)))
         setNativeLanguage(localAuthor.nacionalidad);
-        //console.log(localAuthor)
-        setSelectedAuthor(localAuthor.nombre + "" + localAuthor.apellido)
+        setSelectedAuthor(localAuthor.nombre + " " + localAuthor.apellido)
         editBook(event)
     }
 
     const handleChangeCheckComplex = (event: ChangeEvent<HTMLInputElement>) => {
         setCheckedComplex(event.target.checked);
-    };
-
-    const checkedLanguage = (language: string) => {
-        return book.translations.includes(language)
+        editBook(event)
     };
 
     const getLanguages = async () => {
         const languages = await authorService.getIdiomas()
         setLanguages(languages)
+        console.log(languages);
     }
-    console.log(languages);
+
+
 
     const getBook = async () => {
         const id = Number(params.id);
@@ -73,20 +72,27 @@ export const BookDetail = ({
     const getAuthors = async () => {
         const fetchedAuthors = await authorService.getAuthorDataForBooks();
         setAuthors(fetchedAuthors)
-        //console.log(fetchedAuthors)
     };
 
-    const editBook = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
-        const { name, value } = event.target;
+    const editBook = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
+      ) => {
+        const { name, type } = event.target;
+        const value = type === "checkbox" ? (event.target as HTMLInputElement).checked : event.target.value;
+      
         const updatedBook = { ...book, [name]: value };
         setBook(Object.assign(new BookListDetail(), updatedBook));
-    };
+      
+        //console.log(`Updated field: ${name}, New value: ${value}`);
+        //console.log(book.complex); // Para depuración
+      };
 
     useEffect(() => {
         getLanguages();
         if (params.id) getBook();
         if (editable) getAuthors()
     }, [params.id]);
+
 
     return (
         <>
@@ -105,7 +111,7 @@ export const BookDetail = ({
                         <Select
                             labelId="author-select-label"
                             id="nationality-select"
-                            name="Author"
+                            name="author"
                             disabled={!editable}
                             defaultValue={selectedAuthor}
                             //label="Author"
@@ -155,13 +161,18 @@ export const BookDetail = ({
                         disabled={!editable}
                         value={book.weeklySales || ''}
                     />
-
-                    <Checkbox
-                        checked={checkedComplex}
-                        onChange={handleChangeCheckComplex}
-                        name="complex"
-                        disabled={!editable}
-                    />
+                    <FormControlLabel
+                            control={
+                            <Checkbox
+                            checked={checkedComplex}
+                            onChange={handleChangeCheckComplex}
+                            name="complex"
+                            disabled={!editable}
+                        />
+                            }
+                            label="complex to read"
+                        />
+                    
                     <TextField
                         label="Native language"
                         name="nativeLanguage"
