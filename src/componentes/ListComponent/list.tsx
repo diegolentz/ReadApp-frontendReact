@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { authorService } from '../../service/authorService';
 import { AuthorJSON } from '../../domain/AuthorJSON';
 import { mostrarMensajeError } from '../../error-handling';
-import Author from '../FolderAuthor/Author/Author';
+import Author from '../FolderAuthor/AuthorCard/Author';
 import { Alert, Box, Snackbar } from '@mui/material';
 import { Create } from '../FolderButtons/CreateButton/Create';
 import { Book } from '../../domain/BookJSON';

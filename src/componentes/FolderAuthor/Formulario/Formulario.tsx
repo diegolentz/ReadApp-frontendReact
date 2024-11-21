@@ -131,7 +131,6 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
                 </FormControl>
             </Box>
             <SaveCancelButton onClick={confirm} isBook={false} editable={isEdit} />
-
         </Box>
     );
 }
