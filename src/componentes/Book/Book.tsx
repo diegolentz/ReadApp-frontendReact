@@ -11,17 +11,7 @@ import AbcOutlinedIcon from '@mui/icons-material/AbcOutlined';
 import WhatshotOutlinedIcon from '@mui/icons-material/WhatshotOutlined';
 import CardMembershipRoundedIcon from '@mui/icons-material/CardMembershipRounded';
 
-export const BookComponent = ({
-    book,
-    onDelete
-    // onEdition,
-    // onDetail,
-}: {
-    book: Book;
-    onDelete: (id: number) => void;
-    // onEdition: (id: number) => void;
-    // onDetail: (id: number) => void;
-}) => {
+export const BookComponent = ({book,onDelete}: {book: Book;onDelete: (id: number) => void;}) => {
 
     const navigate = useNavigate();
 

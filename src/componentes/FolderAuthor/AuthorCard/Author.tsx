@@ -6,13 +6,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../../domain/routes";
 
-export const Author = ({renderAuthor,onDelete }: 
-    {renderAuthor: AuthorJSON; onDelete: (id: number) => void }) => {
-    
+export const Author = ({ renderAuthor, onDelete }:
+    { renderAuthor: AuthorJSON; onDelete: (id: number) => void }) => {
+
     const navigate = useNavigate();
-    
+
     const editAuthor = (id: number) => {
-        navigate(`${paths.author.edit.path}/${id}`); 
+        navigate(`${paths.author.edit.path}/${id}`);
     };
 
     const deleteAuthor = (id: number) => {
@@ -28,96 +28,89 @@ export const Author = ({renderAuthor,onDelete }:
             display="flex"
             flexDirection="column"
             alignItems="center"
-            gap={1.5}
-            width="100%"
-            height="100%"
-            padding={2} 
+            width="30rem"
+            height="15rem"
+            margin="auto"
+            padding="1rem"
         >
 
-                <Card
-                    key={renderAuthor.id} variant="outlined"   data-testid="card" sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        padding: 1,
-                        width: 250,
-                        height: 100,
-                        borderRadius: 2,
-                        borderColor: '#212121',
-                        backgroundColor: "#ff8a80",
-                      
-                    }}>
+            <Card
+                key={renderAuthor.id} variant="outlined" data-testid="card" sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "2rem",
+                    borderColor: '#212121',
+                    backgroundColor: "#ff8a80",
 
-                    <CardContent onClick={() => showAuthor(renderAuthor.id)} data-testid="cardContent" sx={{
-                        flexGrow: 1,
-                        cursor: "pointer",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "start",
-                        gap: 2,}}>
-                            
-                        <Typography
-                            variant="h5"
-                            color="text.primary"
-                            data-testid="authorName"
-                            sx={{ fontWeight: 'bold' }}
-                        >
-                            {renderAuthor.name} {renderAuthor.lastName}
-                        </Typography>
+                }}>
 
-                        <Typography
-                            variant="h6"
-                            color="text.primary"
-                            data-testid="authorNationality"
-                            sx={{ fontStyle: 'oblique' }}
-                        >
-                            {renderAuthor.nationality}
-                        </Typography>
+                <CardContent onClick={() => showAuthor(renderAuthor.id)} data-testid="cardContent" sx={{
+                    width: "80%",
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "start",
+                    gap: "1.5rem",
+                }}>
 
-                    </CardContent>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        width="20%"
-                        height="100%"
-                        gap={0.5} 
+                    <Typography
+                        variant="h4"
+                        color="text.primary"
+                        data-testid="authorName"
+                        sx={{ fontWeight: 'bold' }}
                     >
-                        <IconButton
-                            onClick={() => showAuthor(renderAuthor.id)}
-                            color="default"
-                            data-testid="showAuthor"
-                            sx={{ height: "33%", padding: 0 }}
-                        >
-                            <MoreVertIcon sx={{ width: "100%", height: "100%" }} />
-                        </IconButton>
+                        {renderAuthor.name} {renderAuthor.lastName}
+                    </Typography>
 
+                    <Typography
+                        variant="h5"
+                        color="text.primary"
+                        data-testid="authorNationality"
+                        sx={{ fontStyle: 'oblique' }}
+                    >
+                        {renderAuthor.nationality}
+                    </Typography>
+
+                </CardContent>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="space-evenly"
+                    width="20%"
+                    height="100%"
+                >
+                    <IconButton
+                        onClick={() => showAuthor(renderAuthor.id)}
+                        data-testid="showAuthor"
+                        sx={{ height: "3rem", padding: 0, color: "black" }}
+                    >
+                        <MoreVertIcon sx={{ width: "100%", height: "100%" }} />
+                    </IconButton>
+
+                    <IconButton
+                        onClick={() => editAuthor(renderAuthor.id)}
+                        data-testid="editAuthor"
+                        sx={{ height: "3rem", padding: 0, color: "green" }}
+                    >
+                        <EditIcon sx={{ width: "100%", height: "100%" }} />
+                    </IconButton>
+
+                    {!renderAuthor.creator && (
                         <IconButton
-                            onClick={() => editAuthor(renderAuthor.id)}
-                            color="success"
-                            data-testid="editAuthor"
-                            sx={{
-                                height: "33%",
-                                padding: 0,
-                            }}
+                            sx={{ height: "3rem", padding: 0 }}
+                            onClick={() => deleteAuthor(renderAuthor.id)}
+                            color="error"
+                            data-testid="deleteAuthor"
                         >
-                            <EditIcon sx={{ width: "100%", height: "100%" }} />
+                            <DeleteIcon sx={{ width: "100%", height: "100%" }} />
                         </IconButton>
-                        
-                        {!renderAuthor.creator && (
-                            <IconButton
-                                sx={{ height: "33%", padding: 0 }}
-                                onClick={() => deleteAuthor(renderAuthor.id)}
-                                color="error"
-                                data-testid="deleteAuthor"
-                            >
-                                <DeleteIcon sx={{ width: "100%", height: "100%" }} />
-                            </IconButton>
-                        )}
-                        
-                     
-                    </Box>
-                </Card>
+                    )}
+
+                </Box>
+            </Card>
         </Box>
     );
 };
