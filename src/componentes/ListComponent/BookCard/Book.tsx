@@ -1,9 +1,9 @@
 import { Box, Card, CardContent, IconButton } from '@mui/material';
-import { Book } from '../../domain/BookJSON';
+import { Book } from '../../../domain/BookJSON';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
-import { paths } from '../../domain/routes';
+import { paths } from '../../../domain/routes';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';

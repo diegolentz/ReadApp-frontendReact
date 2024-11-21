@@ -5,9 +5,9 @@ import { Book, BookJSON, BookListDetail } from "../domain/BookJSON";
 class BookService {
     async getBooksShortData(): Promise<Book[]> {
         const books = await axios.get(REST_SERVER_URL + "/getBooksReact");
-        console.log(books)
+        // console.log(books)
         const books2 = books.data.map((item: BookJSON) => Book.prototype.fromJson(item))
-        console.log(books2)
+        // console.log(books2)
         return books.data.map((item: BookJSON) => Book.prototype.fromJson(item));
     }
 
@@ -19,6 +19,14 @@ class BookService {
     async deleteBook(id: number): Promise<void> {
         await axios.delete(REST_SERVER_URL + "/deleteBook/" + id);
     }
+
+    async findBook(text: string): Promise<Book[]> {
+        const response = await axios.get(`${REST_SERVER_URL}/librosSearch/filter`, {
+            params: { filtro: text }, // Usar 'params' para parámetros de consulta
+        });
+        return response.data.map((item: BookJSON) => Book.prototype.fromJson(item));
+    }
+    
 
 }
 

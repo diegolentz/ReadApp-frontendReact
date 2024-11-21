@@ -36,6 +36,11 @@ class AuthorService {
         
     }
 
+    async findAuthor(text: string): Promise<AuthorJSON[]> {
+        const authors = await axios.get(REST_SERVER_URL + "/findAuthor/" + text);
+        return authors.data.map((item: AuthorJSON) => AuthorJson.fromJson(item));
+    }
+
 }
 
 export const authorService = new AuthorService();

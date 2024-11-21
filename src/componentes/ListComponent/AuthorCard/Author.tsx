@@ -28,8 +28,8 @@ export const Author = ({ renderAuthor, onDelete }:
             display="flex"
             flexDirection="column"
             alignItems="center"
-            width="30rem"
-            height="15rem"
+            width="25rem"
+            height="14rem"
             margin="auto"
             padding="1rem"
         >
@@ -56,7 +56,7 @@ export const Author = ({ renderAuthor, onDelete }:
                 }}>
 
                     <Typography
-                        variant="h4"
+                        variant="h5"
                         color="text.primary"
                         data-testid="authorName"
                         sx={{ fontWeight: 'bold' }}
@@ -65,7 +65,7 @@ export const Author = ({ renderAuthor, onDelete }:
                     </Typography>
 
                     <Typography
-                        variant="h5"
+                        variant="h6"
                         color="text.primary"
                         data-testid="authorNationality"
                         sx={{ fontStyle: 'oblique' }}
@@ -85,7 +85,7 @@ export const Author = ({ renderAuthor, onDelete }:
                     <IconButton
                         onClick={() => showAuthor(renderAuthor.id)}
                         data-testid="showAuthor"
-                        sx={{ height: "3rem", padding: 0, color: "black" }}
+                        sx={{ height: "2.5rem", padding: 0, color: "black" }}
                     >
                         <MoreVertIcon sx={{ width: "100%", height: "100%" }} />
                     </IconButton>
@@ -93,14 +93,14 @@ export const Author = ({ renderAuthor, onDelete }:
                     <IconButton
                         onClick={() => editAuthor(renderAuthor.id)}
                         data-testid="editAuthor"
-                        sx={{ height: "3rem", padding: 0, color: "green" }}
+                        sx={{ height: "2.5rem", padding: 0, color: "green" }}
                     >
                         <EditIcon sx={{ width: "100%", height: "100%" }} />
                     </IconButton>
 
                     {!renderAuthor.creator && (
                         <IconButton
-                            sx={{ height: "3rem", padding: 0 }}
+                            sx={{ height: "2.5rem", padding: 0 }}
                             onClick={() => deleteAuthor(renderAuthor.id)}
                             color="error"
                             data-testid="deleteAuthor"
