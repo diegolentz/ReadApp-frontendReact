@@ -1,6 +1,9 @@
+import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import SaveIcon from '@mui/icons-material/Save';
 
-export const SaveCancelButton = ({onClick, isBook, editable} : {onClick :() => void, isBook : boolean, editable : boolean }) => {
+export const SaveCancelButton = ({ onClick, isBook, editable }: { onClick: () => void, isBook: boolean, editable: boolean }) => {
 
     const navigate = useNavigate();
 
@@ -15,10 +18,33 @@ export const SaveCancelButton = ({onClick, isBook, editable} : {onClick :() => v
         }
     }
 
+    // if (isBook) {
+    //     navigate(`${paths.books.list.path}`);
+    // } else {
+    //     navigate(`${paths.author.list.path}`);
+    // }
+
+
     return (
         <>
-                {editable && <button onClick={confirm}>Confirm</button>}
-                <button onClick={cancel}>Cancel</button>
+            <Box display="flex" flexDirection="row" justifyContent="center">
+
+                
+                    <Button>
+                        <ReplyAllIcon
+                            fontSize="large"
+                            sx={{ color: "red", fontSize: "4rem" }}
+                            onClick={cancel} />
+                    </Button>
+                    {editable &&
+                <Button>
+                    <SaveIcon
+                        fontSize="large"
+                        sx={{ color: "green", fontSize: "4rem" }}
+                        onClick={confirm} />
+                </Button>
+                }
+            </Box>
         </>
     );
 }
