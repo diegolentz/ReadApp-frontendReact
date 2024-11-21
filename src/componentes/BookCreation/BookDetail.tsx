@@ -22,6 +22,21 @@ export const BookDetail = ({
     const [authors, setAuthors] = useState<AuthorBook[]>([]);
     const [selectedAuthor, setSelectedAuthor] = useState<string>(book.author.nombre)
 
+    const [idiomas, setIdiomas] = useState({
+        frances: true,
+        ingles: false,
+        hindi: false,
+      });
+    
+    const handleChangeIdiomas = (event: ChangeEvent<HTMLInputElement>) => {
+        setIdiomas({
+          ...idiomas,
+          [event.target.name]: event.target.checked,
+        });
+      };
+    
+      const { ingles, frances, hindi } = idiomas;
+
     const handleChangeSelect = (event: SelectChangeEvent) => {
         console.log(event.target.value);
         const localId = Number(event.target.value);
@@ -41,8 +56,8 @@ export const BookDetail = ({
     };
 
     const getLanguages = async () => {
-        const idiomas = await authorService.getIdiomas()
-        setLanguages(idiomas)
+        const languages = await authorService.getIdiomas()
+        setLanguages(languages)
     }
     console.log(languages);
 
@@ -155,16 +170,45 @@ export const BookDetail = ({
                         sx={{ width: '20rem' }} />
                     <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="mock"> 
                         <FormGroup sx={{ gap: 2 }}>
-                            {languages.map((lenguaje) => (
+                            
+                        {/* <FormControlLabel
+                            control={
+                            <Checkbox checked={frances} onChange={handleChangeIdiomas} name="frances" />
+                            }
+                            label="Frances"
+                        />
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={ingles} onChange={handleChangeIdiomas} name="ingles" />
+                            }
+                            label="Ingles"
+                        />
+                        <FormControlLabel
+                            control={
+                            <Checkbox checked={hindi} onChange={handleChangeIdiomas} name="hindi" />
+                            }
+                            label="Hindi"
+                        /> */}
+                            
+                            {/* {languages.map((lenguaje) => 
+                                <FormControlLabel
+                            control={
+                            <Checkbox checked={frances} onChange={handleChangeIdiomas} name="frances" />
+                            }
+                            label="Frances"
+                        />
+                            )} */}
+                             
+                            {/* {languages.map((lenguaje) => (
                                 <div key={lenguaje}>
                                     <input
                                         type="checkbox"
                                         value={lenguaje}
                                         name="languages"
                                     />
-                                    <label >{lenguaje} </label>
+                                    <label>{lenguaje} </label>
                                 </div>
-                            ))}
+                            ))} */}
                         </FormGroup>
 
                     </Box>
