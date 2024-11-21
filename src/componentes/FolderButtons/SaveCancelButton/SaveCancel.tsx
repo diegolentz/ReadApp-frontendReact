@@ -18,18 +18,9 @@ export const SaveCancelButton = ({ onClick, isBook, editable }: { onClick: () =>
         }
     }
 
-    // if (isBook) {
-    //     navigate(`${paths.books.list.path}`);
-    // } else {
-    //     navigate(`${paths.author.list.path}`);
-    // }
-
-
     return (
         <>
             <Box display="flex" flexDirection="row" justifyContent="center">
-
-                
                     <Button>
                         <ReplyAllIcon
                             fontSize="large"
