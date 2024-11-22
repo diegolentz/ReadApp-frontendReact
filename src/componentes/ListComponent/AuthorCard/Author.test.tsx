@@ -13,7 +13,6 @@ const author = new AuthorJSON();
     author.nationality = 'PORTUGUES';
     author.creator = false;
 
-
     const onDelete = vi.fn();
     const navigateMock = vi.fn();
 
@@ -40,7 +39,7 @@ describe('Author Component render', () => {
     });
 
     it('card renders correctly', async () => {
-        const card = await screen.findByTestId('card'); // Añadir await
+        const card = await screen.findByTestId('card'); 
         expect(card).toBeInTheDocument();
     });
 

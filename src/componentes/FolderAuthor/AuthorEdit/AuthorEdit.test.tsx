@@ -22,11 +22,10 @@ vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
     return {
         ...actual,
-        useParams: () => ({ id: '1' }), // Simula que estás editando un autor con id=1
+        useParams: () => ({ id: '1' }), 
         useNavigate: vi.fn(),
     };
 });
-
 
 describe('renders component create mode correctly', () => {
 
