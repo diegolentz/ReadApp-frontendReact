@@ -1,6 +1,6 @@
 import axios from "axios";
 import { REST_SERVER_URL } from "../constants";
-import { Book, BookJSON, BookListDetail } from "../domain/BookJSON";
+import { Book, bookJson, BookJSON, BookListDetail } from "../domain/BookJSON";
 
 class BookService {
     async getBooksShortData(): Promise<Book[]> {
@@ -22,9 +22,11 @@ class BookService {
 
     async findBook(text: string): Promise<Book[]> {
         const response = await axios.get(`${REST_SERVER_URL}/librosSearch/filter`, {
-            params: { filtro: text }, // Usar 'params' para parámetros de consulta
+            params: { filtro: text }
         });
-        return response.data.map((item: BookJSON) => Book.prototype.fromJson(item));
+
+        console.log(response.data);
+        return response.data.map((item: any) => bookJson.fromJson(item));
     }
     
 

@@ -7,7 +7,7 @@ import Author from './AuthorCard/Author';
 import { Alert, Box, Snackbar } from '@mui/material';
 import { Create } from '../FolderButtons/CreateButton/Create';
 import { Book } from '../../domain/BookJSON';
-import {bookService} from '../../service/bookService';
+import { bookService } from '../../service/bookService';
 import { BookComponent } from './BookCard/Book';
 import { Search } from './Search/Search';
 
@@ -64,13 +64,14 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
         }
     };
 
-    const filterObject = (objects : any) => {
-        if(isBook){
+    const filterObject = (objects: any) => {
+        if (isBook) {
             setBooks(objects)
-    }else{
-        setAuthors(objects)
+        } else {
+            setAuthors(objects)
+        }
+        console.log(objects)
     }
-}
 
     useEffect(() => {
         if (selectedOption === 'book') {
@@ -80,23 +81,36 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
         }
         fetchData();
 
-    }, [selectedOption, isBook]);
+    }, [selectedOption, setIsBook,setAuthors,setBooks]);
 
     return (
         <>
             <Box position="sticky" top={0} zIndex={2} >
-                <Search Book={isBook} filter={filterObject}/>
+                <Search Book={isBook} filter={filterObject} />
             </Box>
             <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container" marginTop="2rem">
                 {!isBook ? (
-                    authors.map((autor) => (<Author renderAuthor={autor} onDelete={deleteObject} />))
+                    authors.map((autor) => (
+                        <Author
+                            key={autor.id} 
+                            renderAuthor={autor}
+                            onDelete={deleteObject}
+                        />
+                    ))
                 ) : (
-                    books.map((book) => (<BookComponent book={book} onDelete={deleteObject} />))
+                    books.map((book) => (
+                        <BookComponent
+                            key={book.id} 
+                            book={book}
+                            onDelete={deleteObject}
+                        />
+                    ))
                 )}
                 <Box sx={{ position: "fixed", bottom: "13rem", right: "1rem", zIndex: 1000 }} data-testid="create-author-button">
                     <Create onClick={createAuthor} data-testid="create" />
                 </Box>
             </Box>
+
             <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled" data-testid="snackbar-message">
                     {snackbarMessage}
