@@ -12,7 +12,8 @@ import { BookComponent } from './BookCard/Book';
 import { Search } from './Search/Search';
 
 export const List = ({ selectedOption }: { selectedOption: string }) => {
-    const [isBook, setIsBook] = useState<boolean | null>(null);
+    
+    const [isBook, setIsBook] = useState<boolean >(selectedOption === 'book');
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
     const [books, setBooks] = useState<Array<Book>>([]);
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -73,15 +74,19 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
         console.log(objects)
     }
 
-    useEffect(() => {
+    const updateStateAndFetch = async () => {
         if (selectedOption === 'book') {
             setIsBook(true);
         } else if (selectedOption === 'autor') {
             setIsBook(false);
         }
-        fetchData();
+        await fetchData();
+    };
+    
+    useEffect( () => {
+        updateStateAndFetch();
 
-    }, [selectedOption, setIsBook,setAuthors,setBooks]);
+    }, [selectedOption,isBook,setAuthors,setBooks]);
 
     return (
         <>
