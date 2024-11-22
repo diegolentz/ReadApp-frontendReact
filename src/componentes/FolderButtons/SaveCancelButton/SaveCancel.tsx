@@ -32,7 +32,8 @@ export const SaveCancelButton = ({ onClick, isBook, editable }: { onClick: () =>
                     <SaveIcon
                         fontSize="large"
                         sx={{ color: "green", fontSize: "4rem" }}
-                        onClick={confirm} />
+                        onClick={confirm} 
+                        data-testid= 'save-button'/>
                 </Button>
                 }
             </Box>
