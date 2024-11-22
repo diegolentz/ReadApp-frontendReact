@@ -35,10 +35,11 @@ class AuthorService {
         return data.data.map((item: AuthorBookJSON) => AuthorBookJSON.fromJson(item));
         
     }
-
-    async findAuthor(text: string): Promise<AuthorJSON[]> {
-        const authors = await axios.get(REST_SERVER_URL + "/findAuthor/" + text);
-        return authors.data.map((item: AuthorJSON) => AuthorJson.fromJson(item));
+    async findAuthor(filter: string): Promise<AuthorJSON[]> {
+        const response = await axios.get(`${REST_SERVER_URL}/findAuthor`, { params: { filter } });
+        const autors = response.data; 
+        console.log(autors);
+        return autors.map((item: any) => AuthorJson.fromJson(item));
     }
 
 }

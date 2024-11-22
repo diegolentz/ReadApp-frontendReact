@@ -5,6 +5,7 @@ import { bookService } from "../../../service/bookService";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { Book } from "../../../domain/BookJSON";
 import { authorService } from "../../../service/authorService";
+import { useNavigate } from "react-router-dom";
 
 export const Search = ({Book, filter}:{Book : boolean | null, filter :(items: AuthorJSON[] | Book[]) => void}) => {
     const [isBook, setIsBook] = useState<boolean | null>(Book);
@@ -14,27 +15,27 @@ export const Search = ({Book, filter}:{Book : boolean | null, filter :(items: Au
 
     const textSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         const text = event.target.value;
-        const textLower = text.toLowerCase().replace(/\s+/g, '');
-        setText(textLower);
+        setText(text);
     }
 
     const searchObject = async () => {
-        if(isBook){
+        console.log(text);
+        if (isBook) {
             const filterbooks = await bookService.findBook(text);
             setBooks(filterbooks);
-            filter(books);
-            // console.log(books);
-        }else{
+            filter(filterbooks);
+        } else {
             const filterauthors = await authorService.findAuthor(text);
             setAuthors(filterauthors);
-            filter(authors);
-            // console.log(authors);
+            filter(filterauthors);
         }
     }
+    
 
     useEffect(() => {
         setIsBook(Book);
-    }, [Book]);
+        // setText("");
+    }, [Book,useNavigate]);
 
     return (
         <Box width="100vw" height="5rem" display="flex" flexDirection="row">
@@ -49,13 +50,14 @@ export const Search = ({Book, filter}:{Book : boolean | null, filter :(items: Au
                     backgroundColor: "white",
                 }}
                 slotProps={{ input: { style: { fontSize: '1.8rem' } } }}
-            />
+                />
             <Button onClick = {searchObject} 
             sx={{
                 width: "15%", 
                 height: "100%",
                 border: "1px solid grey", 
                 borderRadius: "0px",
+                backgroundColor: "white",
             }}>
                 <ManageSearchSharpIcon sx={{ color: "black", width: "100%", height: "100%", backgroundColor: "secondary" }} />
             </Button>
