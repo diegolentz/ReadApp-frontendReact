@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { authorService } from "../../../service/authorService";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
-import { Author } from "../Author/Author";
+import { Author } from "../../ListComponent/AuthorCard/Author";
 import { Create } from "../../FolderButtons/CreateButton/Create";
 import { useNavigate } from "react-router-dom";
 import { Box, Snackbar, Alert } from "@mui/material";
