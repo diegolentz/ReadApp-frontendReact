@@ -126,8 +126,10 @@ export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, cr
                             color="success"
                             type="submit"
                             startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
+                            data-testid="create-account-btn"
+                            
                         >
-                            <p>Create Account</p>
+                            <p id = "btnn">Create Account</p>
                         </Button>
 
                         <Button
