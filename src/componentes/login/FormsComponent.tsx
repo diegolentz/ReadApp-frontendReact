@@ -101,7 +101,7 @@ export const FormsComponent = ({
 
       <TextField
         id="username"
-        label="Username"
+        label="Username"    
         variant="outlined"
         type="text"
         value={username}
@@ -127,9 +127,9 @@ export const FormsComponent = ({
           endAdornment: (
             <InputAdornment position="end" onClick={changeVisibility}>
               {visibility === 'password' ? (
-                <VisibilityOffIcon fontSize="large" />
+                <VisibilityOffIcon fontSize="large" data-testid="visibility-icon" />
               ) : (
-                <VisibilityIcon fontSize="large" />
+                <VisibilityIcon fontSize="large" data-testid="visibility-icon"/>
               )}
             </InputAdornment>
           )
