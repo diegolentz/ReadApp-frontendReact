@@ -24,12 +24,11 @@ export const FormsComponent = ({
   const [visibility, setVisibility] = useState<'text' | 'password'>('password');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Validar si el formulario es válido
   const isFormValid = () => {
-    const emailIsValid = /^[^@]+@[^@]+\.[^@]+$/.test(email); // Validación de email
-    const nameIsValid = /^[A-Za-zÀ-ÿ\s]+$/.test(name); // Validación de nombre
-    const usernameIsValid = username.trim() !== ''; // Validación de nombre de usuario
-    const passwordIsValid = password.trim() !== ''; // Validación de la contraseña (ya no tiene la restricción de longitud mínima)
+    const emailIsValid = /^[^@]+@[^@]+\.[^@]+$/.test(email)
+    const nameIsValid = /^[A-Za-zÀ-ÿ\s]+$/.test(name)
+    const usernameIsValid = username.trim() !== ''
+    const passwordIsValid = password.trim() !== ''
 
     if(isLoginPage){
         return  usernameIsValid && passwordIsValid
@@ -70,7 +69,7 @@ export const FormsComponent = ({
       maxWidth="400px"
       mx="auto"
     >
-      {/* Si no es la página de login, mostrar campos para email y nombre */}
+      
       {!isLoginPage && (
         <>
           <TextField
