@@ -61,4 +61,5 @@ describe('Login Component', () => {
       expect(alert).toHaveTextContent(/An error occurred while connecting to the backend. Please contact the system administrator/i);
     });
   });
+  
 });
