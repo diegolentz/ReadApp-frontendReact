@@ -80,6 +80,7 @@ export const FormsComponent = ({
             fullWidth
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            data-testid="email-input"
             helperText={isSubmitted && !email ? 'Field is required' :
               (isSubmitted && email && !/^[^@]+@[^@]+\.[^@]+$/.test(email)) ? 'Email must be a valid email address' : ''}
             error={isSubmitted && (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email))}
@@ -95,7 +96,9 @@ export const FormsComponent = ({
             helperText={isSubmitted && !name ? 'Field is required' :
               (isSubmitted && name && !/^[A-Za-zÀ-ÿ\s]+$/.test(name)) ? 'Name must only contain letters and spaces' : ''}
             error={isSubmitted && (!name || !/^[A-Za-zÀ-ÿ\s]+$/.test(name))}
-          />
+            data-testid="name-input"
+        />
+
         </>
       )}
 
@@ -108,6 +111,8 @@ export const FormsComponent = ({
         onChange={(event) => setUsername(event.target.value)}
         helperText={isSubmitted && !username ? 'Field is required' : ""}
         error={isSubmitted && !username}
+        data-testid="username-input"
+
       />
 
       <TextField
@@ -134,6 +139,8 @@ export const FormsComponent = ({
             </InputAdornment>
           )
         }}
+        data-testid="password-input"
+
       />
 
       {/* Botones */}
