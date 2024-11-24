@@ -3,7 +3,7 @@ import { Dashboard } from './componentes/dashboard/Dashboard';
 import { ViewLayoutComponent } from './componentes/viewLayout/viewLayout';
 import { Login } from './componentes/login/login';
 import { paths, PathTestId, pathToLabelMap } from './domain/routes';
-import BookDetail from './componentes/BookCreation/BookDetail';
+import {BookDetail} from './componentes/BookCreation/BookDetail';
 import AuthorEdit from './componentes/FolderAuthor/AuthorEdit/AuthorEdit';
 import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@emotion/react';

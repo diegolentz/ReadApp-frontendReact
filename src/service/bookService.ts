@@ -1,6 +1,7 @@
 import axios from "axios";
 import { REST_SERVER_URL } from "../constants";
-import { Book, BookJSON, BookListDetail } from "../domain/BookJSON";
+import { Book, BookJSON, BookList, BookListDetail } from "../domain/BookJSON";
+import { AuthorBook } from "../domain/AuthorJSON";
 
 class BookService {
     async getBooksShortData(): Promise<Book[]> {
@@ -11,9 +12,9 @@ class BookService {
         return books.data.map((item: BookJSON) => Book.prototype.fromJson(item));
     }
 
-    async getBook(id: number): Promise<BookListDetail> {
+    async getBook(id: number): Promise<[BookListDetail, AuthorBook]> {
         const data = await axios.get(REST_SERVER_URL + "/getBookReact/" + id);
-        return BookListDetail.prototype.fromJson(data.data);
+        return BookList.fromJson(data.data);
     }
 
     async deleteBook(id: number): Promise<void> {

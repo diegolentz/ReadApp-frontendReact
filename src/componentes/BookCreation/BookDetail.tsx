@@ -1,11 +1,11 @@
-import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Box, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { BookListDetail } from "../../domain/BookJSON";
 import { bookService } from "../../service/bookService";
 import { useParams } from "react-router-dom";
 import { authorService } from "../../service/authorService";
 import { AuthorBook } from "../../domain/AuthorJSON";
-import { CheckBox } from "@mui/icons-material";
+import { LanguageCheckbox } from '../BookCreation/LanguageCheckbok/LanguageCheckbox';
 
 export const BookDetail = ({
     editable,
@@ -14,38 +14,22 @@ export const BookDetail = ({
 }) => {
 
     const [book, setBook] = useState<BookListDetail>(new BookListDetail());
-    const [authors, setAuthors] = useState<AuthorBook[]>([]);
-    const [nativeLanguage, setNativeLanguage] = useState<string>(book.author.nacionalidad);
+    const [author, setAuthor] = useState<AuthorBook>(new AuthorBook());
+    const [authorsSystemList, setAuthorsSystemList] = useState<AuthorBook[]>([]);
+    const [nativeLanguage, setNativeLanguage] = useState<string>(author.nacionalidad);
     const [languages, setLanguages] = useState<string[]>([]);
     const params = useParams();
 
     const [checkedComplex, setCheckedComplex] = useState<boolean>(book.complex);
     
-    const [selectedAuthor, setSelectedAuthor] = useState<string>(book.author.nombre);
+    const [selectedAuthor, setSelectedAuthor] = useState<string>('');
 
-    
-
-    const [idiomas, setIdiomas] = useState({
-        frances: true,
-        ingles: false,
-        hindi: false,
-      });
-    
-    const handleChangeIdiomas = (event: ChangeEvent<HTMLInputElement>) => {
-        setIdiomas({
-          ...idiomas,
-          [event.target.name]: event.target.checked,
-        });
-      };
-    
-      const { ingles, frances, hindi } = idiomas;
-
-    const handleChangeSelect = (event: SelectChangeEvent) => {
-        const localAuthor: AuthorBook = authors.find((author: AuthorBook) => (author.id === Number(event.target.value)))
-        setNativeLanguage(localAuthor.nacionalidad);
-        setSelectedAuthor(localAuthor.nombre + " " + localAuthor.apellido)
-        editBook(event)
-    }
+    // const handleChangeSelect = (event: SelectChangeEvent) => {
+    //     const localAuthor: AuthorBook = authorsSystemList.find((author: AuthorBook) => (author.id === Number(event.target.value)))
+    //     setNativeLanguage(localAuthor.nacionalidad);
+    //     setSelectedAuthor(localAuthor.nombre + " " + localAuthor.apellido)
+    //     editBook(event)
+    // }
 
     const handleChangeCheckComplex = (event: ChangeEvent<HTMLInputElement>) => {
         setCheckedComplex(event.target.checked);
@@ -58,20 +42,18 @@ export const BookDetail = ({
         console.log(languages);
     }
 
-
-
     const getBook = async () => {
         const id = Number(params.id);
-        const fetchedBook = await bookService.getBook(id);
+        const [fetchedBook, fetchedAuthor] = await bookService.getBook(id);
 
         setBook(fetchedBook);
-        const localstring = fetchedBook.author.apellido
-        //console.log(localstring)
+        setAuthor(fetchedAuthor);
+        console.log("HOLA")
     };
 
     const getAuthors = async () => {
         const fetchedAuthors = await authorService.getAuthorDataForBooks();
-        setAuthors(fetchedAuthors)
+        setAuthorsSystemList(fetchedAuthors)
     };
 
     const editBook = (
@@ -82,10 +64,9 @@ export const BookDetail = ({
       
         const updatedBook = { ...book, [name]: value };
         setBook(Object.assign(new BookListDetail(), updatedBook));
-      
-        //console.log(`Updated field: ${name}, New value: ${value}`);
-        //console.log(book.complex); // Para depuración
+
       };
+
 
     useEffect(() => {
         getLanguages();
@@ -106,27 +87,28 @@ export const BookDetail = ({
                         disabled={!editable}
                         value={book.title || ''}
                     />
-                    <FormControl fullWidth>
+                    {/* <FormControl fullWidth>
                         <InputLabel id="author-select-label">Author</InputLabel>
+                        <p>{author.nombre} {author.apellido}</p>
                         <Select
                             labelId="author-select-label"
                             id="nationality-select"
                             name="author"
                             disabled={!editable}
-                            defaultValue={selectedAuthor}
+                            value={author.id}
                             //label="Author"
                             onChange={handleChangeSelect}
                         >
-                            {authors.map((author) => (
+                            {authorsSystemList.map((author) => (
                                 <MenuItem
-                                    key={author.nombre}
+                                    //key={author.nombre}
                                     value={author.id}
                                 >
                                     {author.nombre + " " + author.apellido}
                                 </MenuItem>
                             ))}
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
                     <TextField fullWidth
                         label="Editions"
                         variant="outlined"
@@ -173,56 +155,13 @@ export const BookDetail = ({
                             label="complex to read"
                         />
                     
-                    <TextField
+                    {/* <TextField
                         label="Native language"
                         name="nativeLanguage"
                         disabled
-                        value={nativeLanguage}
+                        value={author.nacionalidad}
                         sx={{ width: '20rem' }} />
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="mock"> 
-                        <FormGroup sx={{ gap: 2 }}>
-                            
-                        {/* <FormControlLabel
-                            control={
-                            <Checkbox checked={frances} onChange={handleChangeIdiomas} name="frances" />
-                            }
-                            label="Frances"
-                        />
-                        <FormControlLabel
-                            control={
-                            <Checkbox checked={ingles} onChange={handleChangeIdiomas} name="ingles" />
-                            }
-                            label="Ingles"
-                        />
-                        <FormControlLabel
-                            control={
-                            <Checkbox checked={hindi} onChange={handleChangeIdiomas} name="hindi" />
-                            }
-                            label="Hindi"
-                        /> */}
-                            
-                            {/* {languages.map((lenguaje) => 
-                                <FormControlLabel
-                            control={
-                            <Checkbox checked={frances} onChange={handleChangeIdiomas} name="frances" />
-                            }
-                            label="Frances"
-                        />
-                            )} */}
-                             
-                            {/* {languages.map((lenguaje) => (
-                                <div key={lenguaje}>
-                                    <input
-                                        type="checkbox"
-                                        value={lenguaje}
-                                        name="languages"
-                                    />
-                                    <label>{lenguaje} </label>
-                                </div>
-                            ))} */}
-                        </FormGroup>
-
-                    </Box>
+                    <LanguageCheckbox fullLanguageList = {book.translations} nativeLanguage = {book.author.nacionalidad}></LanguageCheckbox> */}
                 </Box>
             )}
         </>
@@ -230,4 +169,3 @@ export const BookDetail = ({
     );
 };
 
-export default BookDetail;
