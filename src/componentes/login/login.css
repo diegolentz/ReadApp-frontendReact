@@ -85,12 +85,12 @@ label {
     font-weight: normal;
     padding: 0.15rem;
     text-transform: uppercase;
-    pointer-events: none;
+    /* pointer-events: none; */
     transition: 0.25s;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    position: absolute;
+    /* position: absolute; */
     left: 1rem;
     top: 28%;
 }

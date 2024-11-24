@@ -55,7 +55,6 @@ export class BookListDetail {
     constructor(        
         public id : number = 0,
         public title : string = "",
-        public author : AuthorBook = new AuthorBook,
         public numberOfPages : number = 0,
         public numberOfWords : number = 0,
         public translations : string[]= [],
@@ -66,14 +65,17 @@ export class BookListDetail {
         public weeklySales: number = 0,
         public complex: boolean = false) { }
 
-    fromJson(data: BookListDetailJSON): BookListDetail {
+    fromJson(data: BookListDetailJSON) : [BookListDetail, AuthorBook] {
 
-        const localAuthor  = Object.assign(new AuthorBook(), data.author)
-        
-        return new BookListDetail(
+        const autor = new AuthorBook (
+            data.author.id, 
+            data.author.nombre, 
+            data.author.apellido, 
+            data.author.nacionalidad)
+
+        const book = new BookListDetail(
             data.id,
             data.title,
-            localAuthor,
             data.numberOfPages,
             data.numberOfWords,
             data.translations,
@@ -84,6 +86,8 @@ export class BookListDetail {
             data.weeklySales,
             data.complex
         )
+
+        return [book, autor]
         
     }
 
@@ -99,4 +103,7 @@ export class BookListDetail {
 //     bestSeller: boolean;
 //     challenging: boolean;
 // }
+
+export const BookList = new BookListDetail()
+
 export const bookJson = new Book();
