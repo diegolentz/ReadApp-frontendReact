@@ -116,7 +116,8 @@ export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, cr
                         <Button
                             variant="contained"
                             onClick={changePage}
-                            startIcon={<AccountCircleOutlinedIcon fontSize="large" />}>
+                            startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
+                            data-testid='new-account-btn'>
                             <p>New account</p>
                         </Button>
                     </> :
@@ -126,10 +127,8 @@ export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, cr
                             color="success"
                             type="submit"
                             startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
-                            data-testid="create-account-btn"
-                            
                         >
-                            <p id = "btnn">Create Account</p>
+                            <p>Create Account</p>
                         </Button>
 
                         <Button
