@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { authorService } from '../../service/authorService';
 import { AuthorJSON } from '../../domain/AuthorJSON';
 import { mostrarMensajeError } from '../../error-handling';
-import Author from '../FolderAuthor/Author/Author';
+import Author from './AuthorCard/Author';
 import { Alert, Box, Snackbar } from '@mui/material';
 import { Create } from '../FolderButtons/CreateButton/Create';
 import { Book } from '../../domain/BookJSON';
 import { bookService } from '../../service/bookService';
-import { BookComponent } from '../Book/Book';
+import { BookComponent } from './BookCard/Book';
+import { Search } from './Search/Search';
 
 export const List = ({ selectedOption }: { selectedOption: string }) => {
-    const [isBook, setIsBook] = useState<boolean | null>(null);
+    
+    const [isBook, setIsBook] = useState<boolean >(selectedOption === 'book');
     const [authors, setAuthors] = useState<AuthorJSON[]>([]);
     const [books, setBooks] = useState<Array<Book>>([]);
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -62,27 +64,53 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
             setOpenSnackbar(true);
         }
     };
-    
-    useEffect(() => {
+
+    const filterObject = (objects: any) => {
+        if (isBook) {
+            setBooks(objects)
+        } else {
+            setAuthors(objects)
+        }
+        console.log(objects)
+    }
+
+    const updateStateAndFetch = async () => {
         if (selectedOption === 'book') {
             setIsBook(true);
         } else if (selectedOption === 'autor') {
             setIsBook(false);
         }
-        fetchData();
+        await fetchData();
+    };
+    
+    useEffect( () => {
+        updateStateAndFetch();
 
-    }, [selectedOption, isBook]);
+    }, [selectedOption,isBook,setAuthors,setBooks]);
 
     return (
         <>
-            <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container">
-
+            <Box position="sticky" top={0} zIndex={2} >
+                <Search Book={isBook} filter={filterObject} />
+            </Box>
+            <Box display="flex" flexDirection="column" position="relative" height="auto" data-testid="authors-container" marginTop="2rem">
                 {!isBook ? (
-                    authors.map((autor) => (<Author renderAuthor={autor} onDelete={deleteObject} />))
+                    authors.map((autor) => (
+                        <Author
+                            key={autor.id} 
+                            renderAuthor={autor}
+                            onDelete={deleteObject}
+                        />
+                    ))
                 ) : (
-                    books.map((book) => (<BookComponent book={book} onDelete={deleteObject} />))
+                    books.map((book) => (
+                        <BookComponent
+                            key={book.id} 
+                            book={book}
+                            onDelete={deleteObject}
+                        />
+                    ))
                 )}
-
                 <Box sx={{ position: "fixed", bottom: "13rem", right: "1rem", zIndex: 1000 }} data-testid="create-author-button">
                     <Create onClick={createAuthor} data-testid="create" />
                 </Box>

@@ -1,14 +1,14 @@
 import axios from "axios";
 import { REST_SERVER_URL } from "../constants";
-import { Book, BookJSON, BookList, BookListDetail } from "../domain/BookJSON";
 import { AuthorBook } from "../domain/AuthorJSON";
+import { Book, bookJson, BookJSON, BookListDetail, BookList } from "../domain/BookJSON";
 
 class BookService {
     async getBooksShortData(): Promise<Book[]> {
         const books = await axios.get(REST_SERVER_URL + "/getBooksReact");
-        console.log(books)
+        // console.log(books)
         const books2 = books.data.map((item: BookJSON) => Book.prototype.fromJson(item))
-        console.log(books2)
+        // console.log(books2)
         return books.data.map((item: BookJSON) => Book.prototype.fromJson(item));
     }
 
@@ -20,6 +20,16 @@ class BookService {
     async deleteBook(id: number): Promise<void> {
         await axios.delete(REST_SERVER_URL + "/deleteBook/" + id);
     }
+
+    async findBook(text: string): Promise<Book[]> {
+        const response = await axios.get(`${REST_SERVER_URL}/librosSearch/filter`, {
+            params: { filtro: text }
+        });
+
+        console.log(response.data);
+        return response.data.map((item: any) => bookJson.fromJson(item));
+    }
+    
 
 }
 

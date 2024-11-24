@@ -7,7 +7,7 @@ import {BookDetail} from './componentes/BookCreation/BookDetail';
 import AuthorEdit from './componentes/FolderAuthor/AuthorEdit/AuthorEdit';
 import { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from '@emotion/react';
-import { List } from './componentes/list';
+import { List } from './componentes/ListComponent/list';
 
 
 interface HeaderOptionProps {

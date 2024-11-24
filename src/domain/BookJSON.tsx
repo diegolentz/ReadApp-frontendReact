@@ -14,6 +14,7 @@ export type BookJSON = {
     image: string
 }
 export class Book {
+    
 
     constructor(        
         public id : number = 0,
@@ -104,3 +105,5 @@ export class BookListDetail {
 // }
 
 export const BookList = new BookListDetail()
+
+export const bookJson = new Book();
