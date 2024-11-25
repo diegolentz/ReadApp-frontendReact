@@ -77,8 +77,6 @@ export const List = ({ selectedOption }: { selectedOption: string }) => {
     const updateStateAndFetch = async () => {
         const variable = selectedOption === 'book';
         setIsBook(variable);
-
-        // (selectedOption === 'book')?  setIsBook(true) : setIsBook(false);
         await fetchData();
     };
     
