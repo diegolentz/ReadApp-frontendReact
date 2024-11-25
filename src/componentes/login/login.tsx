@@ -15,11 +15,8 @@ export const Login = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success')
 
-    const [isSubmitted, setIsSubmitted] = useState(false)  
-
     const login = async (username:string,password:string) => {
         const loginRequest = {username,password}
-        setIsSubmitted(true)  
 
         if (!username || !password) {
             return
@@ -36,7 +33,6 @@ export const Login = () => {
         }
     }
     const create = async (email:string,username:string,password:string,name:string) => {
-        setIsSubmitted(true)  
         const createRequest = {email,username,password,name}
         
         if (!email || !username || !password || !name) {
@@ -61,7 +57,6 @@ export const Login = () => {
     
     const changePage = () => {
         setLoginPage(!isLoginPage)
-        setIsSubmitted(false)  
     }
 
     const handleCloseSnackbar = () => {
@@ -85,7 +80,6 @@ export const Login = () => {
             
                 <FormsComponent 
                     isLoginPage = {isLoginPage}
-                    isSubmitted = {isSubmitted} 
                     login       = {login}
                     changePage  = {changePage}
                     create      = {create} 

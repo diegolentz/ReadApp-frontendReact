@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { AuthorJSON } from "../../../domain/AuthorJSON";
 import { Alert, Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import { SaveCancelButton } from "../../FolderButtons/SaveCancelButton/SaveCancel";
 
 export const Formulario = ({ autor, idiomas, onSelect, isEdit }: 
     { autor: AuthorJSON, idiomas: string[], onSelect: (updatedAuthor: AuthorJSON) => void, isEdit: boolean }) => {
@@ -49,22 +50,32 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
     };
 
     const confirm = () => {
-        const hasErrors = Object.values(errors).some((field) => field.error);
-        if (!autorFormulario.nationality || hasErrors) {
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                nationality: { error: !autorFormulario.nationality, helperText: "Language selection is required." }
-            }));
-            setSnackbarSeverity('error');
+        const updatedErrors = {
+            name: validateField("name", autorFormulario.name || ""),
+            lastName: validateField("lastName", autorFormulario.lastName || ""),
+            nationality: {
+                error: !autorFormulario.nationality,
+                helperText: !autorFormulario.nationality ? "Language selection is required." : ""
+            }
+        };
+        setErrors(updatedErrors);
+    
+        const hasErrors = Object.values(updatedErrors).some((field) => field.error);
+    
+        if (hasErrors) {
+            setSnackbarSeverity("error");
             setSnackbarMessage("Please correct the errors before saving.");
             setOpenSnackbar(true);
-        } else {
-            onSelect(autorFormulario);
-            setSnackbarSeverity('success');
-            setSnackbarMessage('Operation successful!');
-            setOpenSnackbar(true);
+            return;
         }
+    
+        // Si no hay errores, llamar a onSelect
+        onSelect(autorFormulario);
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Operation successful!");
+        setOpenSnackbar(true);
     };
+    
 
     useEffect(() => {
         setLenguajes(idiomas);
@@ -118,17 +129,8 @@ export const Formulario = ({ autor, idiomas, onSelect, isEdit }:
                         <FormHelperText>{errors.nationality.helperText}</FormHelperText>
                     )}
                 </FormControl>
-
-                <Button
-                    onClick={confirm}
-                    variant="contained"
-                    color="success"
-                    sx={{ width: '10rem', borderRadius: "4rem" }}
-                    data-testid="save-button"
-                >
-                    Save
-                </Button>
             </Box>
+            <SaveCancelButton onClick={confirm} isBook={false} editable={isEdit} />
         </Box>
     );
-};
+}

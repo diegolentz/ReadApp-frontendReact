@@ -1,180 +1,174 @@
-import { Checkbox, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Box, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { BookListDetail } from "../../domain/BookJSON";
 import { bookService } from "../../service/bookService";
 import { useParams } from "react-router-dom";
 import { authorService } from "../../service/authorService";
 import { AuthorBook } from "../../domain/AuthorJSON";
+import { LanguageCheckbox } from '../BookCreation/LanguageCheckbok/LanguageCheckbox';
 
 export const BookDetail = ({
-  editable,
-  emptyForm
+    editable,
 }: {
-  editable: boolean;
-  emptyForm: boolean;
+    editable: boolean;
 }) => {
 
-  // const [book, setBook] = useState<CreateBookJSON>(new CreateBookJSON());
-  const [book, setBook] = useState<BookListDetail>(new BookListDetail());
-  const [nativeLanguage, setNativeLanguage] = useState<string>(book.author.nacionalidad)
+    const [book, setBook] = useState<BookListDetail>(new BookListDetail());
+    const [author, setAuthor] = useState<AuthorBook>(new AuthorBook());
+    const [authorsSystemList, setAuthorsSystemList] = useState<AuthorBook[]>([]);
+    const [nativeLanguage, setNativeLanguage] = useState<string>(author.nacionalidad);
+    const [languages, setLanguages] = useState<string[]>([]);
+    const params = useParams();
 
-  const params = useParams();
+    const [checkedComplex, setCheckedComplex] = useState<boolean>(book.complex);
 
-  const [checked, setChecked] = useState<boolean>(book.complex);
-  const [authors, setAuthors] = useState<AuthorBook[]>([]);
-  const [selectedAuthor, setSelectedAuthor] = useState<string>(book.author.nombre)
-  const [mock, setMock] = useState("a")
+    const handleChangeSelect = (event: SelectChangeEvent) => {
+        const authorId = Number(event.target.value);
+        const localAuthor = authorsSystemList.find((author: AuthorBook) => author.id === authorId);
+        
+        if (localAuthor) {
+            setAuthor(localAuthor);  // Actualiza el objeto author directamente
+        }
 
-  const handleChangeSelect = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
-    const localId = Number(event.target.value);
-    const localAuthor: AuthorBook = authors.find((author: AuthorBook) => (author.id === localId))
-    setNativeLanguage(localAuthor.nacionalidad);
-    //console.log(localAuthor)
-    //console.log(mock);
-    setSelectedAuthor(localAuthor.nombre + "" + localAuthor.apellido)
-    editBook(event)
-  }
+        editBook(event);
+    };
 
-  const handleChangeCheck = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
+    const handleChangeCheckComplex = (event: ChangeEvent<HTMLInputElement>) => {
+        setCheckedComplex(event.target.checked);
+        editBook(event);
+    };
 
-  const getBook = async () => {
-    const id = Number(params.id);
-    const fetchedBook = await bookService.getBook(id);
-    //console.log(fetchedBook);
+    const getLanguages = async () => {
+        const languages = await authorService.getIdiomas();
+        setLanguages(languages);
+        console.log(languages);
+    };
 
-    setBook(fetchedBook);
-    const localstring = fetchedBook.author.apellido
-    setMock(localstring)
-    console.log(fetchedBook.author.apellido)
-    console.log(mock);
-  };
+    const getBook = async () => {
+        const id = Number(params.id);
+        const [fetchedBook, fetchedAuthor] = await bookService.getBook(id);
 
-  const getAuthors = async () => {
-    const fetchedAuthors = await authorService.getAuthorDataForBooks();
-    setAuthors(fetchedAuthors)
-    //console.log(fetchedAuthors)
-  };
+        setBook(fetchedBook);
+        setAuthor(fetchedAuthor);
+    };
 
-  const editBook = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
-    const { name, value } = event.target;
-    const updatedBook = { ...book, [name]: value };
-    setBook(Object.assign(new BookListDetail(), updatedBook));
-  };
+    const getAuthors = async () => {
+        const fetchedAuthors = await authorService.getAuthorDataForBooks();
+        setAuthorsSystemList(fetchedAuthors);
+    };
 
-  useEffect(() => {
-    if (params.id) getBook();
-    if (editable) getAuthors()
-  }, []);
+    const editBook = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
+    ) => {
+        const { name, type } = event.target;
+        const value = type === "checkbox" ? (event.target as HTMLInputElement).checked : event.target.value;
 
-  return (
-    <>
-      {emptyForm && (
+        setBook((prevBook) => ({
+            ...prevBook,
+            [name]: value,
+        }));
+    };
 
+    const handleLanguageChange = (selectedLanguages: string[]) => {
+        setBook((prevBook) => ({
+            ...prevBook,
+            translations: selectedLanguages,
+        }));
+    };
 
-        <p>ACA PODRE CREAR UN LIBRO</p>
-      )}
-      {!emptyForm && (
-        <><TextField
-          label="Title"
-          variant="outlined"
-          onChange={editBook}
-          name="title"
-          disabled={!editable}
-          value={book.title || ''}
-          sx={{ width: '20rem' }} />
-          {/* <TextField
-              label="Author"
-              variant="outlined"
-              onChange={editBook}
-              name="author"
-              disabled={!editable}
-              value={book.author.nombre || ''}
-              sx={{ width: '20rem' }} /> */}
-          <FormControl sx={{ width: '20rem' }} >
-            <InputLabel id="author-select-label">Author</InputLabel>
-            <Select
-              labelId="author-select-label"
-              id="nationality-select"
-              name="Author"
-              disabled={!editable}
-              // defaultValue="gola"
-              defaultValue={book.author.nombre}
-              label="Author"
-              onChange={handleChangeSelect}
-              sx={{ width: '20rem' }}
-            >
-              {authors.map((author) => (
-                <MenuItem
-                  key={author.nombre}
-                  value={author.id}
-                >
-                  {author.nombre + " " + author.apellido}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            label="Editions"
-            variant="outlined"
-            onChange={editBook}
-            name="numberOfEditions"
-            disabled={!editable}
-            value={book.numberOfEditions || ''}
-            sx={{ width: '20rem' }} />
-          <TextField
-            label="Number of pages"
-            variant="outlined"
-            onChange={editBook}
-            name="numberOfPages"
-            disabled={!editable}
-            value={book.numberOfPages || ''}
-            sx={{ width: '20rem' }} />
-          <TextField
-            label="Number of words"
-            variant="outlined"
-            onChange={editBook}
-            name="numberOfWords"
-            disabled={!editable}
-            value={book.numberOfWords || ''}
-            sx={{ width: '20rem' }} />
-          <TextField
-            label="Weekly sales"
-            variant="outlined"
-            onChange={editBook}
-            name="weeklySales"
-            disabled={!editable}
-            value={book.weeklySales || ''}
-            sx={{ width: '20rem' }} />
-          <Checkbox
-            checked={checked}
-            onChange={handleChangeCheck}
-            name="complex"
-            disabled={!editable}
-          />
-          {/* <FormControlLabel control={
-                <Checkbox 
-                checked={checked}
-                onChange={handleChange}
-                inputProps={{ 'aria-label': 'controlled' }}
-                name = "complex"
-                disabled={!editable}
-                 />} label="Complex to read"/> */}
-          <TextField
-            label="Native language"
-            variant="outlined"
-            name="weeklySales"
-            disabled={!editable}
-            value={nativeLanguage}
-            sx={{ width: '20rem' }} />
+    useEffect(() => {
+        getLanguages();
+        if (params.id) getBook();
+        if (editable) getAuthors();
+    }, [params.id]);
 
+    return (
+        <>
+            {(
+                <Box display="flex" flexDirection="column" justifyContent="space-between"
+                    alignItems="center" gap={3} sx={{ width: 500, maxWidth: '100%' }} padding={5}>
+                    <TextField fullWidth
+                        label="Title"
+                        onChange={editBook}
+                        name="title"
+                        disabled={!editable}
+                        value={book.title || ''}
+                    />
+                    <FormControl fullWidth>
+                        <InputLabel id="author-select-label">Author</InputLabel>
+                        <Select
+                            labelId="author-select-label"
+                            id="nationality-select"
+                            name="author"
+                            disabled={!editable}
+                            value={author.id.toString()}  
+                            onChange={handleChangeSelect}
+                        >
+                            {authorsSystemList.map(author => (
+                                <MenuItem key={author.id} value={author.id.toString()}>
+                                    {author.nombre + " " + author.apellido}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <TextField fullWidth
+                        label="Editions"
+                        variant="outlined"
+                        onChange={editBook}
+                        name="numberOfEditions"
+                        disabled={!editable}
+                        value={book.numberOfEditions || ''}
+                    />
+                    <Box display="flex" flexDirection="row" gap={3} sx={{ width: "100%" }} >
+                        <TextField
+                            label="Number of pages"
+                            variant="outlined"
+                            onChange={editBook}
+                            name="numberOfPages"
+                            disabled={!editable}
+                            value={book.numberOfPages || ''}
+                            sx={{ width: '20rem' }} />
+                        <TextField
+                            label="Number of words"
+                            variant="outlined"
+                            onChange={editBook}
+                            name="numberOfWords"
+                            disabled={!editable}
+                            value={book.numberOfWords || ''}
+                            sx={{ width: '20rem' }} />
+                    </Box>
+                    <TextField fullWidth
+                        label="Weekly sales"
+                        variant="outlined"
+                        onChange={editBook}
+                        name="weeklySales"
+                        disabled={!editable}
+                        value={book.weeklySales || ''}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkedComplex}
+                                onChange={handleChangeCheckComplex}
+                                name="complex"
+                                disabled={!editable}
+                            />
+                        }
+                        label="complex to read"
+                    />
+                    
+                    <TextField
+                        label="Native language"
+                        name="nativeLanguage"
+                        disabled
+                        value={author.nacionalidad}
+                        sx={{ width: '20rem' }} />
+                    <LanguageCheckbox
+                        fullLanguageList={book.translations}
+                        nativeLanguage={author.nacionalidad}
+                        onChange={handleLanguageChange}/>
+                </Box>
+            )}
         </>
-      )}
-    </>
-
-  );
+    );
 };
-
-export default BookDetail;

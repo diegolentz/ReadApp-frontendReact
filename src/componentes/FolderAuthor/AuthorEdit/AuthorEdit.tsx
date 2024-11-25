@@ -1,10 +1,10 @@
-import { AuthorJson, AuthorJSON, AutorEditJSON, CreateAuthorJSON } from "../../../domain/AuthorJSON";
+import { AuthorJson, AuthorJSON} from "../../../domain/AuthorJSON";
 import { authorService } from "../../../service/authorService";
 import { useNavigate, useParams } from "react-router-dom";
 import { mostrarMensajeError } from '../../../error-handling';
 import { Formulario } from "../Formulario/Formulario";
 import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
+import { paths } from "../../../domain/routes";
 
 export const AuthorEdit = ({ editable }: { editable: boolean }) => {
   const [author, setAuthor] = useState<AuthorJSON>(new AuthorJSON());
@@ -22,8 +22,7 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
       const id = Number(params.id);
       const fetchedAuthor = await authorService.getAuthor(id);
       setAuthor(fetchedAuthor);
-      const idiomas = await authorService.getIdiomas();
-      setLenguajes(idiomas);
+      await getIdiomas();
 
     } catch (error: any) {
       setSnackbarSeverity('error');
@@ -44,11 +43,14 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
   };
 
   const confirmEdit = async (autorEdit: AuthorJSON) => {
+    if (JSON.stringify(autorEdit) === JSON.stringify(author)) {
+      navigate(`${paths.list.autor.path}`);
+    }
 
     const autor = AuthorJson.toAuthor(autorEdit);
     try {
       await authorService.editAuthor(autor);
-      setTimeout(() => navigate(`/author/list`), 1000);
+      setTimeout(() => navigate(`${paths.list.autor.path}`), 1000);
     } catch (error: any) {
       setSnackbarSeverity('error');
       mostrarMensajeError(error, setSnackbarMessage);
@@ -60,7 +62,7 @@ export const AuthorEdit = ({ editable }: { editable: boolean }) => {
     const autor = AuthorJson.toCreateAuthor(autorCreate);
     try {
       await authorService.createAuthor(autor);
-      setTimeout(() => navigate(`/author/list`), 1000);
+      setTimeout(() => navigate(`${paths.list.autor.path}`), 1000);
     } catch (error: any) {
       setSnackbarSeverity('error');
       mostrarMensajeError(error, setSnackbarMessage);
