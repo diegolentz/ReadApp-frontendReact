@@ -47,6 +47,7 @@ export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, cr
                             label="Email"
                             variant="outlined"
                             type="email"
+                            data-testid='input-email'
                             fullWidth
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -58,6 +59,7 @@ export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, cr
                             label="Name"
                             variant="outlined"
                             type="text"
+                            data-testid='input-name'
                             fullWidth
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -126,6 +128,7 @@ export const FormsComponent = ({ isLoginPage, isSubmitted, login, changePage, cr
                             variant="contained"
                             color="success"
                             type="submit"
+                            data-testid='btn-create-account'
                             startIcon={<AccountCircleOutlinedIcon fontSize="large" />}
                         >
                             <p>Create Account</p>
