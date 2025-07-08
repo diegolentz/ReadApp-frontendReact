@@ -41,15 +41,4 @@
 - **Gestión de Estado:** Context API, Redux o similar (según implementación)
 - **Estilos:** Material UI, styled-components u otra librería de UI moderna
 - **Ruteo:** React Router DOM
-- **Consumo de API:** Axios o fetch
-- **Testing:** React Testing Library, Jest (si aplica)
-
----
-
-## 🛡️ Licencia
-
-Este repositorio está protegido bajo una licencia privada. Su uso está reservado exclusivamente a los miembros autorizados del equipo.
-
----
-
-¡Disfruta la experiencia de lectura digital con **ReadApp**! 🚀📚
+- **Consumo de API:** Axios
